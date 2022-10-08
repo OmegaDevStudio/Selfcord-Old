@@ -5,7 +5,7 @@ import asyncio
 from selfcord.api.errors import LoginFailure
 
 
-from ..models import user
+from ..models import User
 
 class http:
     def __init__(self) -> None:
@@ -16,7 +16,7 @@ class http:
     async def static_login(self, token: str):
         self.token = token
         data = await self.request("get", "/users/@me")
-        self.client = user(data)
+        self.client = User(data)
         print(self.client)
 
     async def request(self, method: str, endpoint: str, *args, **kwargs) -> dict:

@@ -1,1 +1,2 @@
-from .user import user
+from .user import User
+from .client import Client

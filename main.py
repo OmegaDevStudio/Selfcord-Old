@@ -1,8 +1,11 @@
 from selfcord.bot import Bot
 import asyncio
 import json
+import sys
 
-bot = Bot()
+sys.dont_write_bytecode = True
+
+bot = Bot(True)
 
 with open("./config.json", "r") as f:
     config = json.load(f)
