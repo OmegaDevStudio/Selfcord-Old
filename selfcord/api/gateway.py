@@ -11,29 +11,22 @@ class gateway:
     def __init__(self, token: str, show_heartbeat=False):
         self.show_heartbeat = show_heartbeat
         self.token = token
-        self.id = None
-        self.is_connected = False
-        self.mode = "xsalsa20_poly1305"
-        self.socket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.socket.setblocking(False)
         self.zlib = zlib.decompressobj()
         self.zlib_suffix = b"\x00\x00\xff\xff"
-        self.latency1 = None
 
 
     async def recv_json(self):
-        try:
-            item = await self.ws.recv()
-            buffer = bytearray()
-            buffer.extend(item)
-            if len(item) < 4 or item[-4:] != self.zlib_suffix:
-                return
-            if item:
-                item = self.zlib.decompress(item)
-                # await aioconsole.aprint(item)
-                return json.loads(item)
-        except Exception as e:
-            await self.simple_connect()
+        item = await self.ws.recv()
+        buffer = bytearray()
+        buffer.extend(item)
+        if len(item) < 4 or item[-4:] != self.zlib_suffix:
+            return
+        if item:
+            item = self.zlib.decompress(item)
+            # Get op codes and events
+            # Handle everything op code/event related here, don't return anything
+            # I guess we kinda scrapping everything
+            return json.loads(item)
 
 
 

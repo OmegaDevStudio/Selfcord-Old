@@ -2,6 +2,8 @@ from aiohttp import ClientSession
 from aioconsole import aprint
 import asyncio
 
+from selfcord.api.errors import LoginFailure
+
 
 from ..models import user
 
@@ -39,9 +41,25 @@ class http:
                             text = await resp.text()
                             await aprint(text)
                             break
-                    else:
+                    elif resp.status == 401:
+                        json = await resp.json()
+                        raise LoginFailure(json, resp.status)
+                    elif resp.status == 403:
+                        json = await resp.json()
+                        raise LoginFailure(json, resp.status)
+                    elif resp.status == 201:
                         data = await resp.json()
                         break
+                    elif resp.status == 204:
+                        data = await resp.json()
+                        break
+                    elif resp.status == 200:
+                        data = await resp.json()
+                        break
+                    else:
+                        json = await resp.json()
+                        raise LoginFailure(json, resp.status)
+
 
         return data
 

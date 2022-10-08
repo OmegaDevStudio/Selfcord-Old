@@ -9,12 +9,11 @@ with open("./config.json", "r") as f:
 
 token = config.get("token")
 
-async def main():
-    await bot.run(token)
+bot.run(token)
 
 
 
-asyncio.run(main())
+
 
 
 

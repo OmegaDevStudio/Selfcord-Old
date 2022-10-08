@@ -7,6 +7,12 @@ class Bot:
         self.token = None
         self.http = http()
 
-    async def run(self, token: str):
+    def run(self, token: str):
         self.token = token
-        await self.http.static_login(token)
+        async def runner():
+            await self.http.static_login(token)
+
+        try:
+            asyncio.run(runner())
+        except KeyboardInterrupt:
+            pass
