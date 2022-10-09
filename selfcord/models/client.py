@@ -4,6 +4,9 @@ from types import SimpleNamespace
 
 class Client:
     def __init__(self, UserPayload: dict) -> None:
+        self.guilds = []
+        self.private_channels = []
+        self.relationships = []
         self._update(UserPayload)
 
     def __str__(self):

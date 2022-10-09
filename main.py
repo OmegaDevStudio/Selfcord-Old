@@ -5,7 +5,7 @@ import sys
 
 sys.dont_write_bytecode = True
 
-bot = Bot(True)
+bot = Bot(show_beat=True)
 
 with open("./config.json", "r") as f:
     config = json.load(f)

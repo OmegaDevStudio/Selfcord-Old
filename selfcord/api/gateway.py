@@ -4,7 +4,7 @@ from aioconsole import aprint
 import json
 import time
 import zlib
-
+from selfcord.api.events import EventHandler
 from selfcord.api.errors import ReconnectWebsocket
 
 
@@ -18,6 +18,7 @@ class gateway:
         self.last_send = time.perf_counter()
         self.latency = float('inf')
         self.alive = False
+        self.handler = EventHandler()
 
     DISPATCH           = 0
     HEARTBEAT          = 1
@@ -50,22 +51,29 @@ class gateway:
             data = item.get("d")
             event = item.get("t")
 
-            if op != self.DISPATCH:
-                if  op == self.RECONNECT:
+
+            if  op == self.RECONNECT:
+                await self.close()
+                raise ReconnectWebsocket("Connection was closed.")
+            elif op == self.INVALIDATE_SESSION:
+                if data is True:
                     await self.close()
                     raise ReconnectWebsocket("Connection was closed.")
-                if op == self.INVALIDATE_SESSION:
-                    if data is True:
-                        await self.close()
-                        raise ReconnectWebsocket("Connection was closed.")
 
-                if op == self.HELLO:
-                    interval = data['heartbeat_interval'] / 1000.0
-                    await self.identify()
-                    asyncio.create_task(self.heartbeat(interval))
+            elif op == self.HELLO:
+                interval = data['heartbeat_interval'] / 1000.0
+                await self.identify()
+                asyncio.create_task(self.heartbeat(interval))
 
-                if op == self.HEARTBEAT_ACK:
-                    await self.heartbeat_ack()
+            elif op == self.HEARTBEAT_ACK:
+                await self.heartbeat_ack()
+            elif op == self.DISPATCH:
+                handle = f"handle_{event.lower()}"
+                if hasattr(self.handler, handle):
+                    asyncio.create_task(getattr(self.handler,handle)(data, self.user))
+
+
+
 
             await aprint(op,  event)
 
@@ -120,7 +128,8 @@ class gateway:
 
 
 
-    async def start(self, token):
+    async def start(self, token, user):
+        self.user = user
         self.token = token
         await self.connect()
         while self.alive:
