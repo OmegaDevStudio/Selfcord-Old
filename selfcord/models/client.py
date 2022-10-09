@@ -6,7 +6,7 @@ class Client:
     def __init__(self, UserPayload: dict) -> None:
         self.guilds = []
         self.private_channels = []
-        self.relationships = []
+        self.friends = []
         self._update(UserPayload)
 
     def __str__(self):

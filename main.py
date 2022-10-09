@@ -1,5 +1,4 @@
-from selfcord.bot import Bot
-import asyncio
+from selfcord import Bot
 import json
 import sys
 

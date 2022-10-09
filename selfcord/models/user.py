@@ -7,11 +7,7 @@ class User:
         self._update(UserPayload)
 
     def __str__(self):
-        return f"""
-{self.name}#{self.discriminator}
-ID: {self.id}
-BOT: {self.bot}
-        """
+        return f"""{self.name}#{self.discriminator}"""
 
 
     def _update(self, data):
