@@ -1,2 +1,2 @@
 # Selfcord
-A discord selfbot API wrapper (wip)
+A discord selfbot API wrapper (WIP)
