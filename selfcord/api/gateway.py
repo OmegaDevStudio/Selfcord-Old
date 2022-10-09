@@ -6,6 +6,7 @@ import time
 import zlib
 from selfcord.api.events import EventHandler
 from selfcord.api.errors import ReconnectWebsocket
+from selfcord.models.client import Client
 
 
 
@@ -18,7 +19,7 @@ class gateway:
         self.last_send = time.perf_counter()
         self.latency = float('inf')
         self.alive = False
-        self.handler = EventHandler()
+
 
     DISPATCH           = 0
     HEARTBEAT          = 1
@@ -69,6 +70,7 @@ class gateway:
                 await self.heartbeat_ack()
             elif op == self.DISPATCH:
                 await aprint(event)
+
                 handle = f"handle_{event.lower()}"
                 if hasattr(self.handler, handle):
                     asyncio.create_task(getattr(self.handler,handle)(data, self.user))
@@ -128,7 +130,9 @@ class gateway:
 
 
 
-    async def start(self, token, user):
+    async def start(self, token: str, user: Client, bot):
+        self.handler = EventHandler(bot)
+        self.bot = bot
         self.user = user
         self.token = token
         await self.connect()
@@ -136,9 +140,11 @@ class gateway:
             try:
                 await self.recv_msg()
             except KeyboardInterrupt:
+                await aprint("Shutting down...")
                 await self.close()
             except Exception as e:
                 await aprint(e)
+                await self.close()
 
 
 

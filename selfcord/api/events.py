@@ -1,6 +1,7 @@
 
 
 from textwrap import wrap
+from time import perf_counter
 from ..models import User, Client, Guild, DMChannel, GroupChannel
 import asyncio
 from aioconsole import aprint
@@ -8,10 +9,12 @@ import inspect
 
 
 class EventHandler:
-    def __init__(self):
+    def __init__(self, bot):
         self._events = {}
+        self.bot = bot
 
     async def handle_ready(self, data, user: Client):
+        t1 = perf_counter()
         self.user = user
         for relationship in data.get("relationships"):
             if relationship.get("type") == 1:
@@ -24,6 +27,8 @@ class EventHandler:
                 self.user.private_channels.append(GroupChannel(channel))
 
         await self.handle_guild_create(data, self.user)
+        await self.bot.emit("ready", perf_counter() - t1)
+
 
     async def handle_guild_create(self, data, user: Client):
         self.user = user
