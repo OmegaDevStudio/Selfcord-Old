@@ -17,7 +17,7 @@ class Bot:
         self.show_beat = show_beat
         self.token = None
         self.http = http()
-        self.gateway = gateway(show_beat)
+        self.gateway = gateway(show_beat, self.http)
         self._events = defaultdict(list)
         self.commands = CommandCollection(self)
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
@@ -26,7 +26,7 @@ class Bot:
     def run(self, token: str):
         self.token = token
         async def runner():
-            data = await self.http.static_login(token)
+            data = self.http.static_login(token)
             self.user: Client = Client(data) # type: ignore
             await self.gateway.start(token, self.user, self)
         try:
@@ -68,33 +68,30 @@ class Bot:
             if not inspect.iscoroutinefunction(coro):
                 raise RuntimeWarning("Faulure")
             else:
-
-                def wrapper(*args, **kwargs):
-                    cmd = Command(name=name, description=description, aliases=aliases)
-                    self.commands.add(cmd)
-                    return cmd
-                return wrapper
+                cmd = Command(name=name, description=description, aliases=aliases, func=coro)
+                self.commands.add(cmd)
+            return cmd
         return decorator
 
     async def process_commands(self, msg):
-        context = Context(self, msg)
-        
+        context = Context(self, msg, self.http)
+        await context.invoke()
 
 
-    async def get_channel(self, channel_id: str):
-        data = await self.http.request("get", f"/channels/{channel_id}")
+    def get_channel(self, channel_id: str):
+        data = self.http.request("get", f"/channels/{channel_id}")
         if data.get("type") == 0:
-            return TextChannel(data)
+            return TextChannel(data, http)
         if data.get("type") == 1:
-            return DMChannel(data)
+            return DMChannel(data, http)
         if data.get("type") == 2:
-            return VoiceChannel(data)
+            return VoiceChannel(data, http)
         if data.get("type") == 3:
-            return GroupChannel(data)
+            return GroupChannel(data, http)
         else:
-            return TextChannel(data)
+            return TextChannel(data, http)
 
-    async def get_guild(self, guild_id: str):
+    def get_guild(self, guild_id: str):
         for guild in self.user.guilds:
             if guild.id == guild_id:
                 return guild

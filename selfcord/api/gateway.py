@@ -11,8 +11,9 @@ from selfcord.models.client import Client
 
 
 class gateway:
-    def __init__(self, show_heartbeat=False):
+    def __init__(self, http, show_heartbeat=False):
         self.show_heartbeat = show_heartbeat
+        self.http = http
         self.zlib = zlib.decompressobj()
         self.zlib_suffix = b"\x00\x00\xff\xff"
         self.last_ack = time.perf_counter()
@@ -71,7 +72,10 @@ class gateway:
             elif op == self.DISPATCH:
                 handle = f"handle_{event.lower()}"
                 if hasattr(self.handler, handle):
-                    asyncio.create_task(getattr(self.handler,handle)(data, self.user))
+                    method = getattr(self.handler,handle)
+
+                    asyncio.create_task(method(data, self.user, self.http))
+
 
 
 
@@ -129,7 +133,7 @@ class gateway:
 
 
     async def start(self, token: str, user: Client, bot):
-        self.handler = EventHandler(bot)
+        self.handler = EventHandler(bot, self.http)
         self.bot = bot
         self.user = user
         self.token = token

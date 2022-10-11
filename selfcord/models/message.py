@@ -5,6 +5,8 @@ import asyncio
 class Message:
     def __init__(self, data, bot) -> None:
         self.bot = bot
+        self.channel = None
+        self.guild = None
         self._update(data)
 
     def __str__(self) -> str:
@@ -25,10 +27,12 @@ class Message:
 
         self.attachments = data.get("attachments")
         guild_id = data.get("guild_id")
-        async def runner():
-            self.channel = await self.bot.get_channel(channel_id)
-            self.guild = await self.bot.get_guild(guild_id)
-        asyncio.create_task(runner())
+
+        self.channel = self.bot.get_channel(channel_id)
+
+        self.guild = self.bot.get_guild(guild_id)
+
+
 
 
 

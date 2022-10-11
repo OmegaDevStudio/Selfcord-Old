@@ -1,3 +1,4 @@
+
 import inspect
 
 
@@ -6,7 +7,9 @@ class Command:
         self.name = kwargs.get("name")
         self.aliases = [self.name] + kwargs.get('aliases', [])
         self.description = kwargs.get('description')
-
+        self.func = kwargs.get("func")
+        self.check = inspect.signature(self.func).return_annotation
+        self.signature = inspect.signature(self.func).parameters.items()
 
 class CommandCollection:
     def __init__(self, bot):
@@ -40,9 +43,11 @@ class CommandCollection:
                 return command
 
 class Context:
-    def __init__(self, bot, message) -> None:
+    def __init__(self, bot, message, http) -> None:
         self.bot = bot
         self.message = message
+        self.http = http
+
 
 
     @property
@@ -75,6 +80,7 @@ class Context:
     def alias(self):
         for command in self.bot.commands:
             for alias in command.aliases:
+
                 if self.content.startswith(self.prefix + alias):
                     return alias
         return None
@@ -85,18 +91,48 @@ class Context:
             if self.content.startswith(prefix):
                 return prefix
 
-    async def send(self, content: str, *, tts: bool=False):
-        await self.channel.send(content, tts)
+    @property
+    def command_content(self):
+        if self.alias == None:
+            return
+        try:
+            cut = len(self.prefix + self.alias)
+            return self.content[cut:]
+        except:
+            return None
+
+    async def get_arguments(self):
+        if self.command != None:
+            signature = self.command.signature
+        if self.command_content != None:
+            splitted = self.command_content.split()
+        args = splitted[1:]
+
+
+        return args
+
+
 
     async def invoke(self):
         if self.command is None:
             return
         if self.message.author.id != self.bot.user.id:
+
             return
-        args, kwargs = 
+        if self.command_content != None:
+
+            args = await self.get_arguments()
+            func = self.command.func
+            args.insert(0, self)
+        await func(*args)
 
 
 
+
+
+
+    async def send(self, content: str, tts: bool=False):
+        self.channel.send(self.http, content=content, tts=tts)
 
 
 

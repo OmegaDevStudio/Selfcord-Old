@@ -1,4 +1,4 @@
-from time import time
+import time
 from .user import User
 from selfcord.api.http import http
 
@@ -6,9 +6,9 @@ from selfcord.api.http import http
 
 
 class TextChannel:
-    def __init__(self, data) -> None:
+    def __init__(self, data, http) -> None:
         self.permissions = []
-        self.http = http()
+        self.http = http
         self._update(data)
 
     def __str__(self) -> str:
@@ -25,17 +25,18 @@ class TextChannel:
         self.default_thread_rate_limit_per_user = data.get("default_thread_rate_limit_per_user")
         self.category_id = data.get("parent_id")
 
-    async def send(self, content=None, *, tts=False):
-        await self.http.request("post", f"/channels/{id}/messages", json={"content": content, "tts": tts, "nonce": time()})
+    def send(self, http, content=None, *, tts=False):
+        self.http = http
+        self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "nonce": time.time()})
 
 
 
 
 
 class VoiceChannel:
-    def __init__(self, data) -> None:
+    def __init__(self, data, http) -> None:
         self.permissions = []
-        self.http = http()
+        self.http = http
         self._update(data)
 
     def __str__(self) -> str:
@@ -52,13 +53,15 @@ class VoiceChannel:
         self.position = data.get("position")
         self.category_id = data.get("parent_id")
 
-    async def send(self, content=None, *, tts=False):
-        await self.http.request("post", f"/channels/{id}/messages", json={"content": content, "tts": tts, "nonce": time()})
+    def send(self, http, content=None, *, tts=False):
+        self.http = http
+        t1 = int(time.time())
+        self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "nonce": t1})
 
 
 
 class Category:
-    def __init__(self, data) -> None:
+    def __init__(self, data, http) -> None:
         self.permissions = []
         self._update(data)
 
@@ -72,8 +75,8 @@ class Category:
         self.flags = data.get("flags")
 
 class DMChannel:
-    def __init__(self, data) -> None:
-        self.http = http()
+    def __init__(self, data, http) -> None:
+        self.http = http
         self._update(data)
 
     def __str__(self) -> str:
@@ -85,16 +88,18 @@ class DMChannel:
         self.id = data.get("id")
         self.flags = data.get("id")
 
-    async def send(self, content=None, *, tts=False):
-        await self.http.request("post", f"/channels/{id}/messages", json={"content": content, "tts": tts, "nonce": time()})
+    def send(self, http, content=None, *, tts=False):
+        self.http = http
+        t1 = int(time.time())
+        self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "nonce": t1})
 
 
 
 
 class GroupChannel:
-    def __init__(self, data) -> None:
+    def __init__(self, data, http) -> None:
         self.recipients = []
-        self.http = http()
+        self.http = http
         self._update(data)
 
     def __str__(self) -> str:
@@ -110,8 +115,10 @@ class GroupChannel:
         self.flags = data.get("flags")
         self.icon = data.get("icon")
 
-    async def send(self, content=None, *, tts=False):
-        await self.http.request("post", f"/channels/{id}/messages", json={"content": content, "tts": tts, "nonce": time()})
+    def send(self, http, content=None, *, tts=False):
+        self.http = http
+        t1 = int(time.time())
+        self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "nonce": t1})
 
 
 
