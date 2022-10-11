@@ -7,6 +7,7 @@ class Client:
         self.guilds = []
         self.private_channels = []
         self.friends = []
+        self.messages = []
         self._update(UserPayload)
 
     def __str__(self):

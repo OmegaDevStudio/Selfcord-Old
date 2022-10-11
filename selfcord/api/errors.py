@@ -15,3 +15,7 @@ class ReconnectWebsocket(DiscordException):
 class RuntimeError(DiscordException):
     def __init__(self, message: str) -> None:
         self.message = message
+
+class Funnu(DiscordException):
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)

@@ -69,8 +69,6 @@ class gateway:
             elif op == self.HEARTBEAT_ACK:
                 await self.heartbeat_ack()
             elif op == self.DISPATCH:
-                await aprint(event)
-
                 handle = f"handle_{event.lower()}"
                 if hasattr(self.handler, handle):
                     asyncio.create_task(getattr(self.handler,handle)(data, self.user))
@@ -91,7 +89,7 @@ class gateway:
 
     async def close(self):
         self.alive= False
-        self.ws.close()
+        await self.ws.close()
 
     async def identify(self):
         payload = {

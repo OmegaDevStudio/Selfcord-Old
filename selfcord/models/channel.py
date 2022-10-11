@@ -1,8 +1,14 @@
+from time import time
 from .user import User
+from selfcord.api.http import http
+
+
+
 
 class TextChannel:
     def __init__(self, data) -> None:
         self.permissions = []
+        self.http = http()
         self._update(data)
 
     def __str__(self) -> str:
@@ -19,10 +25,17 @@ class TextChannel:
         self.default_thread_rate_limit_per_user = data.get("default_thread_rate_limit_per_user")
         self.category_id = data.get("parent_id")
 
+    async def send(self, content=None, *, tts=False):
+        await self.http.request("post", f"/channels/{id}/messages", json={"content": content, "tts": tts, "nonce": time()})
+
+
+
+
 
 class VoiceChannel:
     def __init__(self, data) -> None:
         self.permissions = []
+        self.http = http()
         self._update(data)
 
     def __str__(self) -> str:
@@ -38,6 +51,11 @@ class VoiceChannel:
         self.rate_limit_per_user = data.get("rate_limit_per_user")
         self.position = data.get("position")
         self.category_id = data.get("parent_id")
+
+    async def send(self, content=None, *, tts=False):
+        await self.http.request("post", f"/channels/{id}/messages", json={"content": content, "tts": tts, "nonce": time()})
+
+
 
 class Category:
     def __init__(self, data) -> None:
@@ -55,6 +73,7 @@ class Category:
 
 class DMChannel:
     def __init__(self, data) -> None:
+        self.http = http()
         self._update(data)
 
     def __str__(self) -> str:
@@ -66,10 +85,16 @@ class DMChannel:
         self.id = data.get("id")
         self.flags = data.get("id")
 
+    async def send(self, content=None, *, tts=False):
+        await self.http.request("post", f"/channels/{id}/messages", json={"content": content, "tts": tts, "nonce": time()})
+
+
+
 
 class GroupChannel:
     def __init__(self, data) -> None:
         self.recipients = []
+        self.http = http()
         self._update(data)
 
     def __str__(self) -> str:
@@ -84,5 +109,10 @@ class GroupChannel:
         self.id = data.get("id")
         self.flags = data.get("flags")
         self.icon = data.get("icon")
+
+    async def send(self, content=None, *, tts=False):
+        await self.http.request("post", f"/channels/{id}/messages", json={"content": content, "tts": tts, "nonce": time()})
+
+
 
 
