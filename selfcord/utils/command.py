@@ -16,6 +16,7 @@ class CommandCollection:
         self.bot = bot
         self.commands = {}
 
+    
     def __iter__(self):
         for cmd in self.commands.values():
             yield cmd
@@ -102,13 +103,9 @@ class Context:
             return None
 
     async def get_arguments(self):
-        if self.command != None:
-            signature = self.command.signature
         if self.command_content != None:
             splitted = self.command_content.split()
-        args = splitted[1:]
-
-
+        args = splitted
         return args
 
 
@@ -124,6 +121,7 @@ class Context:
             args = await self.get_arguments()
             func = self.command.func
             args.insert(0, self)
+
         await func(*args)
 
 
@@ -132,7 +130,7 @@ class Context:
 
 
     async def send(self, content: str, tts: bool=False):
-        self.channel.send(self.http, content=content, tts=tts)
+        await self.channel.send( content=content, tts=tts)
 
 
 

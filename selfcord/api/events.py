@@ -34,7 +34,7 @@ class EventHandler:
 
     async def handle_message_create(self, data, user: Client, http):
         self.user = user
-        message = Message(data, self.bot)
+        message = Message(data, self.bot, http)
         self.user.messages.append(message)
         await self.bot.emit("message_create", message)
         if message.author.id == self.bot.user.id:

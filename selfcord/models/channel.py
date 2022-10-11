@@ -25,10 +25,8 @@ class TextChannel:
         self.default_thread_rate_limit_per_user = data.get("default_thread_rate_limit_per_user")
         self.category_id = data.get("parent_id")
 
-    def send(self, http, content=None, *, tts=False):
-        self.http = http
-        self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "nonce": time.time()})
-
+    async def send(self,  content=None, *, tts=False):
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
 
 
 
@@ -53,12 +51,8 @@ class VoiceChannel:
         self.position = data.get("position")
         self.category_id = data.get("parent_id")
 
-    def send(self, http, content=None, *, tts=False):
-        self.http = http
-        t1 = int(time.time())
-        self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "nonce": t1})
-
-
+    async def send(self,  content=None, *, tts=False):
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
 
 class Category:
     def __init__(self, data, http) -> None:
@@ -88,11 +82,8 @@ class DMChannel:
         self.id = data.get("id")
         self.flags = data.get("id")
 
-    def send(self, http, content=None, *, tts=False):
-        self.http = http
-        t1 = int(time.time())
-        self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "nonce": t1})
-
+    async def send(self, content=None, *, tts=False):
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
 
 
 
@@ -115,10 +106,8 @@ class GroupChannel:
         self.flags = data.get("flags")
         self.icon = data.get("icon")
 
-    def send(self, http, content=None, *, tts=False):
-        self.http = http
-        t1 = int(time.time())
-        self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "nonce": t1})
+    async def send(self, content=None, *, tts=False):
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
 
 
 

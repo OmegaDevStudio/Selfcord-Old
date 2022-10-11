@@ -17,7 +17,7 @@ class Bot:
         self.show_beat = show_beat
         self.token = None
         self.http = http()
-        self.gateway = gateway(show_beat, self.http)
+        self.gateway = gateway(self.http, self.show_beat)
         self._events = defaultdict(list)
         self.commands = CommandCollection(self)
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
@@ -26,7 +26,7 @@ class Bot:
     def run(self, token: str):
         self.token = token
         async def runner():
-            data = self.http.static_login(token)
+            data = await self.http.static_login(token)
             self.user: Client = Client(data) # type: ignore
             await self.gateway.start(token, self.user, self)
         try:
@@ -59,7 +59,7 @@ class Bot:
         except Exception as e:
             await aprint(e)
 
-    def command(self, description="", aliases=[]):
+    def cmd(self, description="", aliases=[]):
         if isinstance(aliases, str):
             aliases = [aliases]
 
@@ -73,23 +73,25 @@ class Bot:
             return cmd
         return decorator
 
+
+
+
     async def process_commands(self, msg):
         context = Context(self, msg, self.http)
         await context.invoke()
 
 
     def get_channel(self, channel_id: str):
-        data = self.http.request("get", f"/channels/{channel_id}")
-        if data.get("type") == 0:
-            return TextChannel(data, http)
-        if data.get("type") == 1:
-            return DMChannel(data, http)
-        if data.get("type") == 2:
-            return VoiceChannel(data, http)
-        if data.get("type") == 3:
-            return GroupChannel(data, http)
-        else:
-            return TextChannel(data, http)
+        for channel in self.user.private_channels:
+            if channel_id == channel.id:
+                return channel
+        for guild in self.user.guilds:
+            for channel in guild.channels:
+                if channel_id == channel.id:
+                    return channel
+
+
+
 
     def get_guild(self, guild_id: str):
         for guild in self.user.guilds:
