@@ -19,9 +19,9 @@ async def commands(message):
     if message.content.startswith("discord.gg"):
         await aprint(message.content)
 
-@bot.cmd(description="test", aliases=["ok"])
-async def test(ctx):
-    await ctx.send(f"{ctx.message.author}")
+@bot.cmd(description="ping pong", aliases=["test"])
+async def ping(ctx):
+    await ctx.send(f"pong!")
 
 
 bot.run(token)

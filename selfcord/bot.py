@@ -1,3 +1,4 @@
+from ast import alias
 import asyncio
 from unicodedata import name
 from selfcord.api import gateway, http
@@ -39,6 +40,18 @@ class Bot:
         return self.gateway.latency
 
     # For events
+    async def _help(self):
+        @self.cmd("The help command!", aliases=["test"])
+        async def help(ctx):
+            await ctx.message.delete()
+            msg = f"```diff\n"
+            msg += f"+ {self.user} selfbot\n+ Prefixes:   {self.prefixes}\n\n"
+            msg += f"- Commands\n"
+            for command in self.commands:
+                msg += f"- {command.name}:    {command.description}\n"
+            msg += f"```"
+            await ctx.send(f"{msg}")
+
 
     def on(self, event: str):
         def decorator(coro):
@@ -76,7 +89,6 @@ class Bot:
                 self.commands.add(cmd)
             return cmd
         return decorator
-
 
 
 

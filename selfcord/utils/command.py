@@ -178,11 +178,11 @@ class Context:
 
 
 
-
-
     async def send(self, content: str, tts=False):
         await self.channel.send( content=content, tts=tts)
 
+    async def spam(self, amount: int, content: str):
+        await self.channel.spam(amount, content)
 
 
 

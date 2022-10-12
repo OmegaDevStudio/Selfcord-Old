@@ -135,6 +135,7 @@ class gateway:
     async def start(self, token: str, user: Client, bot):
         self.handler = EventHandler(bot, self.http)
         self.bot = bot
+        await self.bot._help()
         self.user = user
         self.token = token
         await self.connect()
