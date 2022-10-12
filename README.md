@@ -15,7 +15,7 @@ async def ball(time):
     print(f"{bot.user.name}\nTook {time * 1000:2f}ms to start up")
 
 @bot.on("message_create")
-async def commands(message):
+async def invite_checker(message):
     if message.content.startswith("discord.gg"):
         await aprint(message.content)
 

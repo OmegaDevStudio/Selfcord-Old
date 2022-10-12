@@ -1,12 +1,8 @@
 import selfcord
 import json
-import sys
 from aioconsole import aprint
 
 from selfcord.models import message
-
-
-sys.dont_write_bytecode = True
 
 bot = selfcord.Bot(prefixes=["!", "o.", "o!"])
 
@@ -21,6 +17,14 @@ token = config.get("token")
 async def ball(time):
     print(f"{bot.user.name}\nTook {time * 1000:0.2f}ms to start up")
 
+@bot.on("message_create")
+async def invite_checker(message):
+    if message.content.startswith("discord.gg"):
+        await aprint(message.content)
+
+@bot.on("channel_create")
+async def test(channel):
+    await aprint(channel)
 
 @bot.cmd(description="Displays the latency of the gateway")
 async def latency(ctx):

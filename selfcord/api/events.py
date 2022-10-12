@@ -1,5 +1,5 @@
 from time import perf_counter
-from ..models import User, Client, Guild, DMChannel, GroupChannel, Message
+from ..models import User, Client, Guild, TextChannel, VoiceChannel, DMChannel, GroupChannel, Message
 from aioconsole import aprint
 
 
@@ -42,6 +42,35 @@ class EventHandler:
                 if message.content.startswith(prefix):
                     await self.bot.process_commands(message)
 
+    async def handle_channel_create(self, channel, user: Client, http):
+        self.user = user
+        if channel.get("type") == 0:
+            id = channel.get("guild_id")
+            for guild in self.user.guilds:
+                if guild.id == id:
+                    channel = TextChannel(channel, self.http)
+                    guild.channels.append(channel)
+
+        elif channel.get("type") == 1:
+            self.user.private_channels.append(DMChannel(channel, http))
+
+        elif channel.get("type") == 2:
+            id = channel.get("guild_id")
+            for guild in self.user.guilds:
+                if guild.id == id:
+                    channel = VoiceChannel(channel, self.http)
+                    guild.channels.append(channel)
+
+        elif channel.get("type") == 3:
+            self.user.private_channels.append(GroupChannel(channel, http))
+
+        else:
+            id = channel.get("guild_id")
+            for guild in self.user.guilds:
+                channel = TextChannel(channel, self.http)
+                guild.channels.append(channel)
+
+        await self.bot.emit("channel_create", channel)
 
 
 
