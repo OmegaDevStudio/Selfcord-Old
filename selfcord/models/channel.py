@@ -1,7 +1,7 @@
 import time
 from .user import User
 from selfcord.api.http import http
-
+import asyncio
 
 
 
@@ -25,7 +25,10 @@ class TextChannel:
         self.default_thread_rate_limit_per_user = data.get("default_thread_rate_limit_per_user")
         self.category_id = data.get("parent_id")
 
-    async def send(self,  content=None, *, tts=False):
+    async def spam(self, amount: int,  content: str, tts= False):
+        await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(amount))))
+
+    async def send(self,  content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
 
 
@@ -51,7 +54,10 @@ class VoiceChannel:
         self.position = data.get("position")
         self.category_id = data.get("parent_id")
 
-    async def send(self,  content=None, *, tts=False):
+    async def spam(self, amount: int,  content: str, tts= False):
+        await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(amount))))
+
+    async def send(self,  content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
 
 class Category:
@@ -82,7 +88,10 @@ class DMChannel:
         self.id = data.get("id")
         self.flags = data.get("id")
 
-    async def send(self, content=None, *, tts=False):
+    async def spam(self, amount: int,  content: str, tts= False):
+        await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(amount))))
+
+    async def send(self, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
 
 
@@ -106,7 +115,11 @@ class GroupChannel:
         self.flags = data.get("flags")
         self.icon = data.get("icon")
 
-    async def send(self, content=None, *, tts=False):
+    async def spam(self, amount: int,  content: str, tts= False):
+        await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(amount))))
+
+
+    async def send(self, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
 
 

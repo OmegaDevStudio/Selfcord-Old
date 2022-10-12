@@ -34,6 +34,10 @@ class Bot:
         except KeyboardInterrupt:
             pass
 
+    @property
+    def latency(self):
+        return self.gateway.latency
+
     # For events
 
     def on(self, event: str):

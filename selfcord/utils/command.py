@@ -16,7 +16,7 @@ class CommandCollection:
         self.bot = bot
         self.commands = {}
 
-    
+
     def __iter__(self):
         for cmd in self.commands.values():
             yield cmd
@@ -102,11 +102,61 @@ class Context:
         except:
             return None
 
+    def get_converter(self, param):
+        if param.annotation is param.empty:
+            return str
+        if callable(param.annotation):
+            return param.annotation
+        else:
+            raise ValueError('Parameter annotation must be callable')
+
+    def convert(self, param, value):
+        converter = self.get_converter(param)
+        return converter(value)
+
     async def get_arguments(self):
-        if self.command_content != None:
+        args = []
+        kwargs = {}
+
+        if self.command.signature is not None:
+            signature = self.command.signature
+        if self.command_content != "":
             splitted = self.command_content.split()
-        args = splitted
-        return args
+        else:
+            return args, kwargs
+
+
+
+
+
+        for index, (name, param) in enumerate(signature):
+            if index == 0:
+                continue
+
+            if param.kind is param.POSITIONAL_OR_KEYWORD:
+
+                arg = self.convert(param, splitted.pop(0).strip('\'"'))
+
+                args.append(arg)
+            if param.kind is param.VAR_KEYWORD:
+                print(name, param, "var keyword")
+                for arg in splitted:
+                    arg = self.convert(param, arg)
+                    args.append(arg)
+
+
+            if param.kind is param.KEYWORD_ONLY:
+
+                arg = self.convert(param, ' '.join(splitted))
+                kwargs[name] = arg
+
+
+        for key in kwargs.copy():
+            if not kwargs[key]:
+                kwargs.pop(key)
+
+        return args, kwargs
+
 
 
 
@@ -114,22 +164,23 @@ class Context:
         if self.command is None:
             return
         if self.message.author.id != self.bot.user.id:
-
             return
         if self.command_content != None:
 
-            args = await self.get_arguments()
+            args, kwargs = await self.get_arguments()
             func = self.command.func
             args.insert(0, self)
 
-        await func(*args)
+
+        await func(*args, **kwargs)
 
 
 
 
 
 
-    async def send(self, content: str, tts: bool=False):
+
+    async def send(self, content: str, tts=False):
         await self.channel.send( content=content, tts=tts)
 
 
