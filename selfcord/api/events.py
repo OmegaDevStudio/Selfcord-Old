@@ -10,7 +10,8 @@ class EventHandler:
         self.bot = bot
 
     async def handle_ready(self, data, user: Client, http):
-        t1 = perf_counter()
+        """Handles the ready event, what is executed when it appears
+        """
         self.user = user
         for relationship in data.get("relationships"):
             if relationship.get("type") == 1:
@@ -23,26 +24,39 @@ class EventHandler:
                 self.user.private_channels.append(GroupChannel(channel, http))
         for guild in data.get("guilds"):
             await self.handle_guild_create(guild, self.user, http)
-        await self.bot.emit("ready", perf_counter() - t1)
+
+        # Sends data from ready to the event handler in main.py (if it exists)
+        await self.bot.emit("ready", perf_counter() - self.bot.t1)
 
 
     async def handle_guild_create(self, data, user: Client, http):
+        """Handles what happens when a guild is created
+        """
         self.user = user
         guild = Guild(data, http)
         self.user.guilds.append(guild)
+
+        # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit("guild_create", guild)
 
     async def handle_message_create(self, data, user: Client, http):
+        """Handles what happens when a message is created
+        """
         self.user = user
         message = Message(data, self.bot, http)
         self.user.messages.append(message)
+
+        # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit("message_create", message)
         if message.author.id == self.bot.user.id:
             for prefix in self.bot.prefixes:
                 if message.content.startswith(prefix):
+                    # Attempts to invoke the command if has prefix and from the user
                     await self.bot.process_commands(message)
 
     async def handle_channel_create(self, channel, user: Client, http):
+        """Handles what happens when a channel is created
+        """
         self.user = user
         if channel.get("type") == 0:
             id = channel.get("guild_id")
@@ -69,7 +83,8 @@ class EventHandler:
             for guild in self.user.guilds:
                 channel = TextChannel(channel, self.http)
                 guild.channels.append(channel)
-
+                
+        # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit("channel_create", channel)
 
 

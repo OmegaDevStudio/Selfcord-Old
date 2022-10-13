@@ -31,6 +31,10 @@ class TextChannel:
     async def send(self,  content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
 
+    async def reply(self, message, content=None, tts=False):
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
+
+
 
 
 
@@ -59,6 +63,10 @@ class VoiceChannel:
 
     async def send(self,  content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
+
+    async def reply(self, message, content=None, tts=False):
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
+
 
 class Category:
     def __init__(self, data, http) -> None:
@@ -94,6 +102,10 @@ class DMChannel:
     async def send(self, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
 
+    async def reply(self, message, content=None, tts=False):
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
+
+
 
 
 class GroupChannel:
@@ -121,6 +133,10 @@ class GroupChannel:
 
     async def send(self, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
+
+    async def reply(self, message, content=None, tts=False):
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
+
 
 
 

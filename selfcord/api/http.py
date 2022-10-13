@@ -14,12 +14,32 @@ class http:
 
 
     async def static_login(self, token: str):
+        """Used to retrieve basic token information
+
+        Args:
+            token (str): User token
+
+        Returns:
+            Client: A Client object
+        """
         self.token = token
         data = await self.request("get", "/users/@me")
         self.client = Client(data)
         return data
 
     async def request(self, method: str, endpoint: str, *args, **kwargs) -> dict:
+        """Used to send requests
+
+        Args:
+            method (str): HTTP method
+            endpoint (str): Discord api endpoint
+
+        Raises:
+            LoginFailure: If you suck
+
+        Returns:
+            dict: Data, json data
+        """
         url = self.base_url + endpoint
 
         headers = {

@@ -21,7 +21,7 @@ class gateway:
         self.latency = float('inf')
         self.alive = False
 
-
+    # ALL DA OP CODES HERE
     DISPATCH           = 0
     HEARTBEAT          = 1
     IDENTIFY           = 2
@@ -38,6 +38,9 @@ class gateway:
 
 
     async def recv_msg(self):
+        """Receives Message from gateway, encodes as json and does things depending on op code
+
+        """
         item = await self.ws.recv()
         buffer = bytearray()
         buffer.extend(item)
@@ -45,13 +48,11 @@ class gateway:
             return
         if item:
             item = self.zlib.decompress(item)
-            item = json.loads(item)
-            # Get op codes and events
-            # Handle everything op code/event related here, don't return anything
-            # I guess we kinda scrapping everything
-            op = item.get("op")
-            data = item.get("d")
-            event = item.get("t")
+            item = json.loads(item) # Get json message from gateway
+
+            op = item.get("op") # Op code
+            data = item.get("d") # Data
+            event = item.get("t") # The event
 
 
             if  op == self.RECONNECT:
@@ -63,18 +64,24 @@ class gateway:
                     raise ReconnectWebsocket("Connection was closed.")
 
             elif op == self.HELLO:
+                # Begins heartbeat and sends identify if this op is received
                 interval = data['heartbeat_interval'] / 1000.0
                 await self.identify()
                 asyncio.create_task(self.heartbeat(interval))
 
             elif op == self.HEARTBEAT_ACK:
                 await self.heartbeat_ack()
+
             elif op == self.DISPATCH:
+                # If op is 0 it signifies a regular gateway event
+                # These events are discord events like message_create, role_create whatever.
+
                 handle = f"handle_{event.lower()}"
-                if hasattr(self.handler, handle):
+                if hasattr(self.handler, handle): # If the event handler exists, so e.g handle_ready
                     method = getattr(self.handler,handle)
 
-                    asyncio.create_task(method(data, self.user, self.http))
+                    asyncio.create_task(method(data, self.user, self.http)) # A background task is created to run the handler
+                # Handlers are all situated in events.py
 
 
 
@@ -96,6 +103,8 @@ class gateway:
         await self.ws.close()
 
     async def identify(self):
+        """Identify to gateway, uses amazing mobile client spoof
+        """
         payload = {
             'op': 2,
             "d": {
@@ -114,6 +123,11 @@ class gateway:
 
 
     async def heartbeat(self, interval):
+        """Heartbeat for gateway to maintain connection
+
+        Args:
+            interval (int): Interval between sends
+        """
         await aprint(f"Hearbeat loop has began with the interval of {interval} seconds!")
         heartbeatJSON = {
             "op": 1,
@@ -127,15 +141,24 @@ class gateway:
                 await aprint("Sent Beat")
 
     async def heartbeat_ack(self):
+        """Whenever heartbeat ack is sent, logs the time between last send of heartbeat json and receive of the ack
+        """
         self.last_ack = time.perf_counter()
         self.latency = self.last_ack - self.last_send
 
 
 
     async def start(self, token: str, user: Client, bot):
+        """Start discord gateway connection
+
+        Args:
+            token (str): User token
+            user (Client): User client
+            bot (_type_): Bot class
+        """
         self.handler = EventHandler(bot, self.http)
         self.bot = bot
-        await self.bot._help()
+        await self.bot._help() # In built help command very cool
         self.user = user
         self.token = token
         await self.connect()

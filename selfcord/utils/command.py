@@ -3,6 +3,8 @@ import inspect
 
 
 class Command:
+    """Command Object prettymuch
+    """
     def __init__(self, **kwargs):
         self.name = kwargs.get("name")
         self.aliases = [self.name] + kwargs.get('aliases', [])
@@ -50,7 +52,6 @@ class Context:
         self.http = http
 
 
-
     @property
     def author(self):
         return self.message.author
@@ -94,6 +95,11 @@ class Context:
 
     @property
     def command_content(self):
+        """The content minus the prefix and command name, essentially the args
+
+        Returns:
+            str: String of content
+        """
         if self.alias == None:
             return
         try:
@@ -111,10 +117,24 @@ class Context:
             raise ValueError('Parameter annotation must be callable')
 
     def convert(self, param, value):
+        """Attempts to turn x value in y value, using get_converter func for the values
+
+        Args:
+            param (_type_): function parameter
+            value (_type_): value in message
+
+        Returns:
+            Type[str]: The type of parameter
+        """
         converter = self.get_converter(param)
         return converter(value)
 
     async def get_arguments(self):
+        """Get arguments by checking function arguments and comparing to arguments in message.
+
+        Returns:
+            _type_: _description_
+        """
         args = []
         kwargs = {}
 
@@ -161,6 +181,8 @@ class Context:
 
 
     async def invoke(self):
+        """Used to actually run the command
+        """
         if self.command is None:
             return
         if self.message.author.id != self.bot.user.id:
@@ -176,12 +198,31 @@ class Context:
 
 
 
+    async def reply(self, content: str, tts=False):
+        """Helper function to reply to your own message containing the command
 
+        Args:
+            content (str): The message you would like to send
+            tts (bool, optional): Whether message should be tts or not. Defaults to False.
+        """
+        await self.channel.reply(self.message, content, tts)
 
     async def send(self, content: str, tts=False):
+        """Helper function to send message to the current channel
+
+        Args:
+            content (str): The message you would like to send
+            tts (bool, optional): Whether message should be tts or not. Defaults to False.
+        """
         await self.channel.send( content=content, tts=tts)
 
     async def spam(self, amount: int, content: str):
+        """Helper function to spam messages in the current channel (uses asyncio.gather !!!!)
+
+        Args:
+            amount (int): Amount of messages to spam
+            content (str): The message you would like to send
+        """
         await self.channel.spam(amount, content)
 
 

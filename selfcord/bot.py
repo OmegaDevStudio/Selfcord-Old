@@ -1,12 +1,10 @@
-from ast import alias
 import asyncio
-from unicodedata import name
 from selfcord.api import gateway, http
 import inspect
 from selfcord.models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, Guild
 from collections import defaultdict
 from aioconsole import aprint
-
+import time
 from selfcord.utils import Command, CommandCollection, Context
 
 
@@ -18,6 +16,7 @@ class Bot:
         self.show_beat = show_beat
         self.token = None
         self.http = http()
+        self.t1 = time.perf_counter()
         self.gateway = gateway(self.http, self.show_beat)
         self._events = defaultdict(list)
         self.commands = CommandCollection(self)
@@ -25,6 +24,11 @@ class Bot:
 
 
     def run(self, token: str):
+        """Used to start connection to gateway as well as gather user information
+
+        Args:
+            token (str): _description_
+        """
         self.token = token
         async def runner():
             data = await self.http.static_login(token)
@@ -37,10 +41,13 @@ class Bot:
 
     @property
     def latency(self):
+        "Latency of heartbeat ack, gateway latency essentially"
         return self.gateway.latency
 
     # For events
     async def _help(self):
+        """I call this on bot initialisation, it's the inbuilt help command
+        """
         @self.cmd("The help command!", aliases=["test"])
         async def help(ctx):
             await ctx.message.delete()
@@ -54,6 +61,11 @@ class Bot:
 
 
     def on(self, event: str):
+        """Decorator for events
+
+        Args:
+            event (str): The event to check for
+        """
         def decorator(coro):
             if not inspect.iscoroutinefunction(coro):
                 raise RuntimeWarning("Faulure")
@@ -66,6 +78,11 @@ class Bot:
         return decorator
 
     async def emit(self, event, *args, **kwargs):
+        """Used to essentially push values to the decorator
+
+        Args:
+            event (str): The event name
+        """
         on_event = "on_{}".format(event)
         try:
             if hasattr(self, on_event):
@@ -77,6 +94,15 @@ class Bot:
             await aprint(e)
 
     def cmd(self, description="", aliases=[]):
+        """Decorator to add commands for the bot
+
+        Args:
+            description (str, optional): Description of command. Defaults to "".
+            aliases (list, optional): Alternative names for command. Defaults to [].
+
+        Raises:
+            RuntimeWarning: If you suck and don't use a coroutine
+        """
         if isinstance(aliases, str):
             aliases = [aliases]
 
@@ -93,11 +119,24 @@ class Bot:
 
 
     async def process_commands(self, msg):
+        """What is called in order to actually get command input and run commands
+
+        Args:
+            msg (str): The message containing command
+        """
         context = Context(self, msg, self.http)
         await context.invoke()
 
 
     def get_channel(self, channel_id: str):
+        """Function to help retrieve channel from bot cache
+
+        Args:
+            channel_id (str): The channel id to search for
+
+        Returns:
+            Channel: The Channel object
+        """
         for channel in self.user.private_channels:
             if channel_id == channel.id:
                 return channel
@@ -110,6 +149,14 @@ class Bot:
 
 
     def get_guild(self, guild_id: str):
+        """Function to help retrieve guild from bot cache
+
+        Args:
+            guild_id (str): The guild id to search for
+
+        Returns:
+            Guild: The Guild object
+        """
         for guild in self.user.guilds:
             if guild.id == guild_id:
                 return guild
