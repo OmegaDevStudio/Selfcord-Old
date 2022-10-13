@@ -29,9 +29,7 @@ async def invite_checker(message):
     if message.content.startswith("discord.gg"):
         await aprint(message.content)
 
-@bot.on("channel_create")
-async def test(channel):
-    await aprint(channel)
+
 
 @bot.cmd(description="Displays the latency of the gateway", aliases=["ping"])
 async def latency(ctx):
@@ -41,7 +39,6 @@ async def latency(ctx):
 async def spam(ctx, amount: int, *, message: str) :
     await ctx.message.delete()
     await ctx.spam(amount, message)
-
 
 
 bot.run(token)

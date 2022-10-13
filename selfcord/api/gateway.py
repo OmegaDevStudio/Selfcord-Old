@@ -58,6 +58,7 @@ class gateway:
             if  op == self.RECONNECT:
                 await self.close()
                 raise ReconnectWebsocket("Connection was closed.")
+                
             elif op == self.INVALIDATE_SESSION:
                 if data is True:
                     await self.close()

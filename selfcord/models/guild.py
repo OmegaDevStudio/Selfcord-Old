@@ -1,5 +1,6 @@
 from .member import Member
 from .channel import TextChannel, VoiceChannel, Category
+from .role import Role
 class Guild:
     TEXTCHANNEL = 0
     VOICECHANNEL = 2
@@ -50,7 +51,9 @@ class Guild:
             elif type == self.CATEGORY:
                 channel = Category(channel, self.http)
                 self.channels.append(channel)
-
+        for role in data.get("roles"):
+            role = Role(role)
+            self.channels.append(role)
 
 
 

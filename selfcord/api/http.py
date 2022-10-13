@@ -71,7 +71,7 @@ class http:
                         raise LoginFailure(json, resp.status)
                     elif resp.status == 403:
                         json = await resp.json()
-                        raise LoginFailure(json, resp.status)
+                        await aprint(json)
                     elif resp.status == 201:
                         data = await resp.json()
                         break
