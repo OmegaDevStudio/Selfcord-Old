@@ -60,7 +60,7 @@ class Guild:
                     self.channels.append(channel)
 
             if role != None:
-                role = Role(role)
+                role = Role(role, guild_id = self.id)
                 self.roles.append(role)
 
             if emoji != None:

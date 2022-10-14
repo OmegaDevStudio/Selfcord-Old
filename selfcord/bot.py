@@ -1,12 +1,13 @@
 import asyncio
+import json
 from selfcord.api import gateway, http
 import inspect
-from selfcord.models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, Guild
+from selfcord.models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, Guild, User
 from collections import defaultdict
 from aioconsole import aprint
 import time
 from selfcord.utils import Command, CommandCollection, Context
-
+import random
 
 
 
@@ -160,6 +161,16 @@ class Bot:
         for guild in self.user.guilds:
             if guild.id == guild_id:
                 return guild
+
+    async def get_user(self, user_id: str):
+        data = await self.http.request(method="get", endpoint=f"/users/{user_id}")
+        return User(data)
+
+    async def add_friend(self, user_id: str):
+        resp = await self.http.request(method="put", endpoint=f"/users/@me/relationships/{user_id}", headers={"origin": "https://discord.com", "referer":f"https://discord.com/channels/@me/{random.choice(self.user.private_channels).id}"},json={})
+        await aprint(resp)
+
+
 
 
 

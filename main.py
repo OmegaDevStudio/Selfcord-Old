@@ -1,3 +1,4 @@
+from ast import alias
 import selfcord
 import json
 from aioconsole import aprint
@@ -24,11 +25,25 @@ FRIENDS: {len(bot.user.friends)}
 
 STARTUP:  {time:0.2f} seconds""")
 
-@bot.on("message_create")
-async def invite_checker(message):
-    if message.content.startswith("discord.gg"):
-        await aprint(message.content)
+@bot.on("message_delete")
+async def message_logger(message):
+    # DISCLAIMER: If message is not in bots cache only message id, channel id and guild id will be present
+    if message.author is not None:
+        await aprint(f"""DELETED MESSAGE FOUND:
+SERVER: {message.guild.name}
+CHANNEL: {message.channel.name}
+CONTENT:
+{message.author}: {message.content}
+\n""")
 
+@bot.on("error")
+async def error_logger(error):
+    await aprint(f"ERROR: {error}")
+
+@bot.on("message_create")
+async def invite_logger(message):
+    if "discord.gg/" in message.content:
+        await aprint(f"{message.content}")
 
 
 @bot.cmd(description="Displays the latency of the gateway", aliases=["ping"])
@@ -39,7 +54,7 @@ async def latency(ctx):
 async def roles(ctx):
     msg = "```diff\n"
     for role in ctx.guild.roles:
-        msg += f"+{role.name}\n"
+        msg += f"+ {role.name}\n"
     msg += "```"
     await ctx.reply(msg)
 
@@ -49,21 +64,39 @@ async def spam(ctx, amount: int, *, message: str) :
     await ctx.spam(amount, message)
 
 @bot.cmd(description="Checks emojis")
-async def emojicheck(ctx):
+async def emojis(ctx):
     msg = "```diff\n"
     for emoji in ctx.guild.emojis:
         msg += f"+ {emoji.name}\n"
     msg += "```"
     await ctx.reply(msg)
 
-@bot.cmd(description="Role check")
-async def rolecheck(ctx):
+@bot.cmd(description="Check channels", aliases=["allchans"])
+async def channels(ctx):
     msg = "```diff\n"
-    for role in ctx.guild.roles:
-        msg += f"+ {role.name}\n"
-        msg += f"-     {role.permissions}\n"
+    for channel in ctx.guild.channels:
+        msg += f"+ {channel.name}\n"
     msg += "```"
     await ctx.reply(msg)
+
+@bot.cmd(description="User information", aliases=["userinfo"])
+async def whois(ctx, id: str):
+    msg = "```diff\n"
+    user = await bot.get_user(id)
+    msg += f"- Username: {user}\n- ID: {user.id}\n- Bot?: {user.bot}\n```"
+    avatar = user.avatar_url if user.avatar_url!=None else "None"
+    banner = user.banner_url if user.banner_url!=None else "None"
+    msg += f"AVATAR: {avatar}\nBANNER: {banner}"
+    await ctx.reply(msg)
+
+@bot.cmd(description="Adds users as friends", aliases=["addfriend"])
+async def friend(ctx, id: str):
+    await bot.add_friend(id)
+    await ctx.reply("Successfully sent request!")
+
+
+
+
 
 @bot.cmd(description="Spams channels", aliases=["chanspam"])
 async def cc(ctx, amount: int, *, message: str):

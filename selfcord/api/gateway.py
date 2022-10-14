@@ -58,7 +58,7 @@ class gateway:
             if  op == self.RECONNECT:
                 await self.close()
                 raise ReconnectWebsocket("Connection was closed.")
-                
+
             elif op == self.INVALIDATE_SESSION:
                 if data is True:
                     await self.close()
@@ -78,10 +78,18 @@ class gateway:
                 # These events are discord events like message_create, role_create whatever.
 
                 handle = f"handle_{event.lower()}"
+
                 if hasattr(self.handler, handle): # If the event handler exists, so e.g handle_ready
                     method = getattr(self.handler,handle)
 
-                    asyncio.create_task(method(data, self.user, self.http)) # A background task is created to run the handler
+                    # val = await asyncio.gather(asyncio.create_task(method(data, self.user, self.http)), return_exceptions=True) # A background task is created to run the handler
+                    # for item in val:
+                    #     if item == None:
+                    #         break
+                    #     else:
+                    #         await self.bot.emit("error", item)
+
+                    asyncio.create_task(method(data, self.user, self.http))
                 # Handlers are all situated in events.py
 
 
@@ -170,8 +178,7 @@ class gateway:
                 await aprint("Shutting down...")
                 await self.close()
             except Exception as e:
-                await aprint(e)
-                await self.close()
+                await self.bot.emit("error", e)
 
 
 

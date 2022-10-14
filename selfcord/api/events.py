@@ -1,4 +1,8 @@
 from time import perf_counter
+
+from requests import delete
+
+from selfcord.models.role import Role
 from ..models import User, Client, Guild, TextChannel, VoiceChannel, DMChannel, GroupChannel, Message
 from aioconsole import aprint
 
@@ -54,6 +58,39 @@ class EventHandler:
                     # Attempts to invoke the command if has prefix and from the user
                     await self.bot.process_commands(message)
 
+    async def handle_message_delete(self, data, user: Client, http):
+        """Handles what happens when a message is created. Disclaimer: Only guild id, message id and channel id will be present if the message is not in bots cache.
+        """
+        self.user = user
+        id =data.get("id")
+        for message in self.user.messages:
+            if message.id == id:
+                await self.bot.emit("message_delete", message)
+                self.user.messages.remove(message)
+        else:
+            class deleted_message:
+                def __init__(self, data) -> None:
+                    self.tts = data.get("tts")
+                    self.references_message = data.get("referenced_message")
+                    self.mentions = data.get("mentions")
+                    self.author = None
+                    self.id = data.get("id")
+                    self.flags = data.get("flags")
+                    self.embeds = data.get("embeds")
+                    self.content = data.get("content")
+                    self.components = data.get("components")
+                    self.channel_id = data.get("channel_id")
+                    self.attachments = data.get("attachments")
+                    self.guild_id = data.get("guild_id")
+                    self.channel = None
+                    self.guild = None
+
+            message = deleted_message(data)
+            await self.bot.emit("message_delete", message)
+
+
+
+
     async def handle_channel_create(self, channel, user: Client, http):
         """Handles what happens when a channel is created
         """
@@ -81,12 +118,52 @@ class EventHandler:
         else:
             id = channel.get("guild_id")
             for guild in self.user.guilds:
-                channel = TextChannel(channel, self.http)
-                guild.channels.append(channel)
-                
+                if guild.id == id:
+                    channel = TextChannel(channel, self.http)
+                    guild.channels.append(channel)
+
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit("channel_create", channel)
 
+    async def handle_channel_delete(self, data, user: Client, http):
+        """Handles what happens when a channel is deleted
+        """
+        self.user = user
+        id = data.get("id")
+        for channel in self.user.private_channels:
+            if channel.id == id:
+                await self.bot.emit("channel_delete", channel)
+                self.user.private_channels.remove(channel)
+                return
+
+        guild_id = data.get("guild_id")
+        if guild_id != None:
+            for guild in self.user.guilds:
+                if guild_id == guild.id:
+                    for channel in guild.channels:
+                        if channel.id == id:
+                            await self.bot.emit("channel_delete", channel)
+                            guild.channels.remove(channel)
+                            return
+        else:
+            for guild in self.user.guilds:
+                for channel in guild.channels:
+                    if channel.id == id:
+                        await self.bot.emit("channel_delete", channel)
+                        guild.channels.remove(channel)
+                        return
+
+
+    async def handle_guild_role_create(self, role, user: Client, http):
+        """Handles what happens when a role is created
+        """
+        self.user = user
+        id = role.get("guild_id")
+        for guild in self.user.guilds:
+            if id == guild.id:
+                role = Role(role, guild_id=guild.id)
+                guild.roles.append(role)
+        await self.bot.emit("role_create", role)
 
 
 

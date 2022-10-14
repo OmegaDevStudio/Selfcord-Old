@@ -3,8 +3,6 @@ from .user import User
 from selfcord.api.http import http
 import asyncio
 
-
-
 class TextChannel:
     def __init__(self, data, http) -> None:
         self.permissions = []
@@ -20,6 +18,7 @@ class TextChannel:
         self.position = data.get("position")
         self.name = data.get("name")
         self.id = data.get("id")
+        self.guild_id = data.get("guild_id")
         self.last_message_id= data.get("last_message_id")
         self.flags = data.get("flags")
         self.default_thread_rate_limit_per_user = data.get("default_thread_rate_limit_per_user")
@@ -35,9 +34,6 @@ class TextChannel:
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
 
 
-
-
-
 class VoiceChannel:
     def __init__(self, data, http) -> None:
         self.permissions = []
@@ -50,6 +46,7 @@ class VoiceChannel:
     def _update(self, data):
         self.name = data.get("name")
         self.id = data.get("id")
+        self.guild_id = data.get("guild_id")
         self.last_message_id = data.get("last_message_id")
         self.rtc_region = data.get("rtc_region")
         self.flags = data.get("flags")
@@ -67,7 +64,6 @@ class VoiceChannel:
     async def reply(self, message, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
 
-
 class Category:
     def __init__(self, data, http) -> None:
         self.permissions = []
@@ -79,6 +75,7 @@ class Category:
     def _update(self, data):
         self.name = data.get("name")
         self.id = data.get("id")
+        self.guild_id = data.get("guild_id")
         self.position = data.get("position")
         self.flags = data.get("flags")
 
@@ -105,9 +102,6 @@ class DMChannel:
     async def reply(self, message, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
 
-
-
-
 class GroupChannel:
     def __init__(self, data, http) -> None:
         self.recipients = []
@@ -130,7 +124,6 @@ class GroupChannel:
     async def spam(self, amount: int,  content: str, tts= False):
         for i in range(0, amount, 6):
             await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(i))))
-
 
     async def send(self, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
