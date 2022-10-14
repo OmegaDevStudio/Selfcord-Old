@@ -14,9 +14,12 @@ class User:
         self.name = data.get("username")
         self.id = data.get("id")
         self.discriminator = data.get("discriminator")
-        self._avatar = data.get("avatar")
-        self._banner = data.get("banner")
-        self._accent_colour = data.get('accent_color')
-        self._public_flags = data.get('public_flags')
+        self.avatar = data.get("avatar")
+        self.banner = data.get("banner")
+        self.accent_colour = data.get('accent_color')
+        self.public_flags = data.get('public_flags')
         self.bot = data.get('bot')
+        self.avatar_url = f"https://cdn.discordapp.com/avatars/{self.id}/{self.avatar}.png?size=4096"
         self.system = data.get('system')
+
+

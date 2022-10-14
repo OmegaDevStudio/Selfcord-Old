@@ -15,3 +15,6 @@ class Role:
         self.flags = data.get("flags")
         self.color = data.get("color")
         self.hoist = data.get("hoist")
+
+    def __str__(self) -> str:
+        return f"{self.name}"

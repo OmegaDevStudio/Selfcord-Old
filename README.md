@@ -21,7 +21,7 @@ async def invite_checker(message):
 
 @bot.cmd(description="ping pong", aliases=["test"])
 async def ping(ctx):
-    await ctx.send(f"pong!")
+    await ctx.reply(f"pong!")
 
 
 bot.run(token)

@@ -128,7 +128,8 @@ class GroupChannel:
         self.icon = data.get("icon")
 
     async def spam(self, amount: int,  content: str, tts= False):
-        await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(amount))))
+        for i in range(0, amount, 6):
+            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(i))))
 
 
     async def send(self, content=None, tts=False):
@@ -136,8 +137,5 @@ class GroupChannel:
 
     async def reply(self, message, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
-
-
-
 
 

@@ -1,6 +1,8 @@
 from .member import Member
 from .channel import TextChannel, VoiceChannel, Category
 from .role import Role
+from .emoji import Emoji
+from itertools import zip_longest
 class Guild:
     TEXTCHANNEL = 0
     VOICECHANNEL = 2
@@ -37,24 +39,39 @@ class Guild:
         self.explicit_content_filter = data.get('explicit_content_filter')
         self.owner_id = data.get('owner_id')
 
-        for member in data.get('members'):
-            user = Member(member)
-            self.members.append(user)
-        for channel in data.get("channels"):
-            type = channel.get("type")
-            if type == self.TEXTCHANNEL:
-                channel = TextChannel(channel, self.http)
-                self.channels.append(channel)
-            elif type == self.VOICECHANNEL:
-                channel = VoiceChannel(channel, self.http)
-                self.channels.append(channel)
-            elif type == self.CATEGORY:
-                channel = Category(channel, self.http)
-                self.channels.append(channel)
-        for role in data.get("roles"):
-            role = Role(role)
-            self.channels.append(role)
+        for (member, channel, role, emoji) in zip_longest(data.get('members'), data.get("channels"), data.get("roles"), data.get("emojis")):
+            if member != None:
+                user = Member(member)
+                self.members.append(user)
 
+            if channel != None:
+                type = channel.get("type")
+                if type == self.TEXTCHANNEL:
+                    channel = TextChannel(channel, self.http)
+                    self.channels.append(channel)
+                elif type == self.VOICECHANNEL:
+                    channel = VoiceChannel(channel, self.http)
+                    self.channels.append(channel)
+                elif type == self.CATEGORY:
+                    channel = Category(channel, self.http)
+                    self.channels.append(channel)
+                else:
+                    channel = TextChannel(channel, self.http)
+                    self.channels.append(channel)
+
+            if role != None:
+                role = Role(role)
+                self.roles.append(role)
+
+            if emoji != None:
+                emoji = Emoji(emoji)
+                self.emojis.append(emoji)
+
+    async def txt_channel_create(self, name):
+        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 0})
+
+    async def vc_channel_create(self, name):
+        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 2})
 
 
 
