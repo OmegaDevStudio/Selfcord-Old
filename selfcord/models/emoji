@@ -1,0 +1,16 @@
+class emoji:
+    def __init__(self, data: dict) -> None:
+        self._update(data)
+
+    def _update(self, data):
+        emoji = data.get("emoji")
+        self.id = data.get("id")
+        self.name = data.get("name")
+        self.roles = data.get("require_colons")
+        self.user = data.get("user")
+        self.managed = data.get("managed")
+        self.available = data.get("animated")
+        self.animated = data.get("animated")
+
+    def __str__(self) -> str:
+        return f"{self.name}"
