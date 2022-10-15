@@ -79,6 +79,7 @@ class Guild:
         await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/roles", json = {"name": f"{name}"})
 
     async def category_channel_create(self, name):
-        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 4})
+        await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 4})
 
-
+    async def change_guild_name(self, name):
+        await self.http.request(method = "patch", endpoint = f"/guilds/{self.id}", json = {"name": name})
