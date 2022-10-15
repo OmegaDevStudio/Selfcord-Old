@@ -7,22 +7,25 @@ Example usage:
 ```python
 import selfcord
 
-token = "token"
+token = "insert token"
 bot = selfcord.Bot(prefixes=["!"])
 
 @bot.on("ready")
 async def ball(time):
-    print(f"{bot.user.name}\nTook {time * 1000:2f}ms to start up")
+    print(f"Connected To {bot.user.name}")
+
+@bot.cmd(description = "Hi", aliases = ["hello"])
+async def hi(ctx):
+    await ctx.reply("Hi")
+
+@bot.cmd()
+async def delete(ctx):
+    await ctx.message.delete()
 
 @bot.on("message_create")
-async def invite_checker(message):
-    if message.content.startswith("discord.gg"):
-        await aprint(message.content)
-
-@bot.cmd(description="ping pong", aliases=["test"])
-async def ping(ctx):
-    await ctx.reply(f"pong!")
-
+async def reply(message):
+    if message.content == "Hi":
+        await message.channel.send("hi")
 
 bot.run(token)
 ```
