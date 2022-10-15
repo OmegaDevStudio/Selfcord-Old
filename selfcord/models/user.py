@@ -3,6 +3,8 @@
 
 
 class User:
+    """User Object
+    """
     def __init__(self, UserPayload: dict) -> None:
         self._update(UserPayload)
 

@@ -4,6 +4,8 @@ from selfcord.api.http import http
 import asyncio
 
 class TextChannel:
+    """Text Channel Object
+    """
     def __init__(self, data, http) -> None:
         self.permissions = []
         self.http = http
@@ -35,6 +37,8 @@ class TextChannel:
 
 
 class VoiceChannel:
+    """Voice Channel Object
+    """
     def __init__(self, data, http) -> None:
         self.permissions = []
         self.http = http
@@ -65,6 +69,8 @@ class VoiceChannel:
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
 
 class Category:
+    """Category Object
+    """
     def __init__(self, data, http) -> None:
         self.permissions = []
         self._update(data)
@@ -80,6 +86,8 @@ class Category:
         self.flags = data.get("flags")
 
 class DMChannel:
+    """DM Channel Object
+    """
     def __init__(self, data, http) -> None:
         self.http = http
         self._update(data)
@@ -103,6 +111,8 @@ class DMChannel:
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
 
 class GroupChannel:
+    """Group Channel Object
+    """
     def __init__(self, data, http) -> None:
         self.recipients = []
         self.http = http

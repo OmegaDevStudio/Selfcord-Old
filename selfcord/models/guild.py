@@ -4,6 +4,8 @@ from .role import Role
 from .emoji import Emoji
 from itertools import zip_longest
 class Guild:
+    """Guild Object
+    """
     TEXTCHANNEL = 0
     VOICECHANNEL = 2
     CATEGORY = 4
@@ -72,11 +74,11 @@ class Guild:
 
     async def vc_channel_create(self, name):
         await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 2})
-    
+
     async def role_create(self, name):
         await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/roles", json = {"name": f"{name}"})
-        
+
     async def category_channel_create(self, name):
         await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 4})
-    
+
 

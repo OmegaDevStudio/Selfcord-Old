@@ -1,12 +1,14 @@
 
 
 class Emoji:
+    """Emoji Object
+    """
     def __init__(self, data) -> None:
         self._update(data)
 
     def __str__(self) -> str:
         return f"{self.name}"
-    
+
     def _update(self, data):
         self.name = data.get("name")
         self.id = data.get("id")

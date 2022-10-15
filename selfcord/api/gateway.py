@@ -101,13 +101,22 @@ class gateway:
 
 
     async def send_json(self, payload: dict):
+        """Send json to the gateway
+
+        Args:
+            payload (dict): Valid payload to send to the gateway
+        """
         await self.ws.send(json.dumps(payload))
 
     async def connect(self):
+        """Connect to discord gateway
+        """
         self.ws = await websockets.connect("wss://gateway.discord.gg/?encoding=json&v=9&compress=zlib-stream")
         self.alive = True
 
     async def close(self):
+        """Close the connection to discord gateway
+        """
         self.alive= False
         await self.ws.close()
 

@@ -1,6 +1,8 @@
 
 
 class Member:
+    """Member Object
+    """
     def __init__(self, UserPayload: dict) -> None:
         self.roles = []
 

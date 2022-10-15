@@ -8,6 +8,8 @@ from aioconsole import aprint
 
 
 class EventHandler:
+    """Used to handle discord events
+    """
     def __init__(self, bot, http):
         self._events = {}
         self.http = http

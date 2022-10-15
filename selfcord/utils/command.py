@@ -3,7 +3,7 @@ import inspect
 
 
 class Command:
-    """Command Object prettymuch
+    """Command Object pretty much
     """
     def __init__(self, **kwargs):
         self.name = kwargs.get("name")
@@ -14,6 +14,8 @@ class Command:
         self.signature = inspect.signature(self.func).parameters.items()
 
 class CommandCollection:
+    """Commands collection, where commands are stored into
+    """
     def __init__(self, bot):
         self.bot = bot
         self.commands = {}
@@ -46,6 +48,8 @@ class CommandCollection:
                 return command
 
 class Context:
+    """Context related for commands, and invokation
+    """
     def __init__(self, bot, message, http) -> None:
         self.bot = bot
         self.message = message

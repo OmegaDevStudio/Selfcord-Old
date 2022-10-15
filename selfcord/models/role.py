@@ -1,6 +1,8 @@
 from .permission import Permission
 
 class Role:
+    """Role Object
+    """
     def __init__(self, data: dict, **kwargs) -> None:
         self.guild_id = kwargs.get("guild_id")
         self._update(data)

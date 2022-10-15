@@ -94,7 +94,10 @@ async def friend(ctx, id: str):
     await bot.add_friend(id)
     await ctx.reply("Successfully sent request!")
 
-
+@bot.cmd(description="Category create")
+async def category(ctx):
+    for i in range(5):
+        await ctx.guild.category_channel_create("balls")
 
 
 

@@ -3,6 +3,8 @@ from .user import User
 import asyncio
 
 class Message:
+    """Message Object
+    """
     def __init__(self, data, bot, http) -> None:
         self.bot = bot
         self.channel = None
@@ -35,7 +37,7 @@ class Message:
 
     async def delete(self):
         await self.http.request(method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}")
-        
+
 
 
 

@@ -1,5 +1,7 @@
 
 class Permission:
+    """Permission Object
+    """
 
     def __init__(self, data) -> None:
         self.perms = {
