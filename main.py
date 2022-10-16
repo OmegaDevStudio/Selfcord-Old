@@ -28,13 +28,20 @@ STARTUP:  {time:0.2f} seconds""")
 @bot.on("message_delete")
 async def message_logger(message):
     # DISCLAIMER: If message is not in bots cache only message id, channel id and guild id will be present
-    if message.author is not None:
-        await aprint(f"""DELETED MESSAGE FOUND:
+    if message.author != None:
+        if message.guild != None:
+            await aprint(f"""MESSAGE LOGGED:
 SERVER: {message.guild.name}
 CHANNEL: {message.channel.name}
 CONTENT:
 {message.author}: {message.content}
-\n""")
+""")
+        else:
+            await aprint(f"""MESSAGE LOGGED:
+CHANNEL: {message.channel}
+CONTENT:
+{message.author}: {message.content}
+            """)
 
 @bot.on("error")
 async def error_logger(error):
@@ -99,15 +106,21 @@ async def category(ctx):
     for i in range(5):
         await ctx.guild.category_channel_create("balls")
 
+@bot.cmd(description="Edit guild")
+async def editguild(ctx, icon=None):
+    await ctx.message.delete()
+    await ctx.guild.edit(icon_url=icon)
 
+@bot.cmd(description="Edit profile")
+async def editprofile(ctx):
+    await ctx.message.delete()
+    await bot.edit_profile(bio="Writing a discord wrapper...", accent=123456)
 
 @bot.cmd(description="Spams channels", aliases=["chanspam"])
 async def cc(ctx, amount: int, *, message: str):
     await ctx.message.delete()
     for i in range(amount):
         await ctx.guild.txt_channel_create(message)
-
-
 
 
 

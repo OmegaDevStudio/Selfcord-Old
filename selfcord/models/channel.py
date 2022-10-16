@@ -26,6 +26,10 @@ class TextChannel:
         self.default_thread_rate_limit_per_user = data.get("default_thread_rate_limit_per_user")
         self.category_id = data.get("parent_id")
 
+    async def delete(self):
+        await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
+        del self
+
     async def spam(self, amount: int,  content: str, tts= False):
         await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(amount))))
 
@@ -59,6 +63,10 @@ class VoiceChannel:
         self.position = data.get("position")
         self.category_id = data.get("parent_id")
 
+    async def delete(self):
+        await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
+        del self
+
     async def spam(self, amount: int,  content: str, tts= False):
         await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(amount))))
 
@@ -72,6 +80,7 @@ class Category:
     """Category Object
     """
     def __init__(self, data, http) -> None:
+        self.http = http
         self.permissions = []
         self._update(data)
 
@@ -84,6 +93,10 @@ class Category:
         self.guild_id = data.get("guild_id")
         self.position = data.get("position")
         self.flags = data.get("flags")
+
+    async def delete(self):
+        await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
+        del self
 
 class DMChannel:
     """DM Channel Object
@@ -100,6 +113,10 @@ class DMChannel:
         self.last_message_id = data.get("last_message_id")
         self.id = data.get("id")
         self.flags = data.get("id")
+
+    async def delete(self):
+        await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=false")
+        del self
 
     async def spam(self, amount: int,  content: str, tts= False):
         await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(amount))))
@@ -130,6 +147,10 @@ class GroupChannel:
         self.id = data.get("id")
         self.flags = data.get("flags")
         self.icon = data.get("icon")
+
+    async def delete(self):
+        await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=true")
+        del self
 
     async def spam(self, amount: int,  content: str, tts= False):
         for i in range(0, amount, 6):

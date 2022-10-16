@@ -3,6 +3,9 @@ from .channel import TextChannel, VoiceChannel, Category
 from .role import Role
 from .emoji import Emoji
 from itertools import zip_longest
+from aiohttp import ClientSession
+from base64 import b64encode
+import random
 class Guild:
     """Guild Object
     """
@@ -81,5 +84,30 @@ class Guild:
     async def category_channel_create(self, name):
         await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 4})
 
-    async def change_guild_name(self, name):
-        await self.http.request(method = "patch", endpoint = f"/guilds/{self.id}", json = {"name": name})
+    async def edit(self, name: str=None, icon_url: str=None, banner_url: str=None, description: str=None):
+
+        fields = {}
+        if name != None:
+            fields['name'] = name
+
+        if description != None:
+            fields['description'] = description
+
+        if icon_url != None:
+            async with ClientSession() as session:
+                async with session.get(f"{icon_url}") as resp:
+                    image = b64encode(await resp.read())
+
+                    newobj = str(image).split("'", 2)
+                fields['icon'] = f"data:image/png;base64,{newobj[1]}"
+
+        if banner_url != None:
+             async with ClientSession() as session:
+                async with session.get(f"{banner_url}") as resp:
+                    image = b64encode(await resp.read())
+                    newobj = str(image).split("'", 2)
+                fields['banner'] = f"data:image/png;base64,{newobj[1]}"
+
+
+        data = await self.http.request(method = "patch", endpoint = f"/guilds/{self.id}", headers={"origin":"https://discord.com", "referer":f"https://discord.com/channels/{self.id}/{random.choice(self.channels)}"},json=fields)
+

@@ -167,8 +167,15 @@ class Bot:
         return User(data)
 
     async def add_friend(self, user_id: str):
-        resp = await self.http.request(method="put", endpoint=f"/users/@me/relationships/{user_id}", headers={"origin": "https://discord.com", "referer":f"https://discord.com/channels/@me/{random.choice(self.user.private_channels).id}"},json={})
-        await aprint(resp)
+        await self.http.request(method="put", endpoint=f"/users/@me/relationships/{user_id}", headers={"origin": "https://discord.com", "referer":f"https://discord.com/channels/@me/{random.choice(self.user.private_channels).id}"},json={})
+
+    async def edit_profile(self, bio: str=None, accent: int=None):
+        fields = {}
+        if bio != None:
+            fields['bio'] = bio
+        if accent != None:
+            fields['accent'] = accent
+        await self.http.request(method="patch", endpoint=f"/users/@me/profile", json=fields)
 
 
 

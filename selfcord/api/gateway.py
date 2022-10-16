@@ -82,14 +82,14 @@ class gateway:
                 if hasattr(self.handler, handle): # If the event handler exists, so e.g handle_ready
                     method = getattr(self.handler,handle)
 
-                    # val = await asyncio.gather(asyncio.create_task(method(data, self.user, self.http)), return_exceptions=True) # A background task is created to run the handler
-                    # for item in val:
-                    #     if item == None:
-                    #         break
-                    #     else:
-                    #         await self.bot.emit("error", item)
+                    val = await asyncio.gather(asyncio.create_task(method(data, self.user, self.http)), return_exceptions=True) # A background task is created to run the handler
+                    for item in val:
+                        if item == None:
+                            break
+                        else:
+                            await self.bot.emit("error", item)
 
-                    asyncio.create_task(method(data, self.user, self.http))
+                    # asyncio.create_task(method(data, self.user, self.http))
                 # Handlers are all situated in events.py
 
 
