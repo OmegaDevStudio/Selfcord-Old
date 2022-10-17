@@ -18,7 +18,6 @@ token = config.get("token")
 async def ball(time):
     await aprint(f"""
 CONNECTED TO:
-
 USER: {bot.user}
 GUILDS: {len(bot.user.guilds)}
 FRIENDS: {len(bot.user.friends)}
@@ -122,6 +121,11 @@ async def cc(ctx, amount: int, *, message: str):
     for i in range(amount):
         await ctx.guild.txt_channel_create(message)
 
+@bot.cmd(description="Steals a users pfp", aliases=['getpfp'])
+async def stealpfp(ctx, id: str):
+    user = await bot.get_user(id)
+    await bot.change_pfp(user.avatar_url)
+    await ctx.reply("Successfully stole da pfp")
 
 
 bot.run(token)

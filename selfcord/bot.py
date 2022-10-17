@@ -8,7 +8,8 @@ from aioconsole import aprint
 import time
 from selfcord.utils import Command, CommandCollection, Context
 import random
-
+from aiohttp import ClientSession
+from base64 import b64encode
 
 
 
@@ -176,6 +177,18 @@ class Bot:
         if accent != None:
             fields['accent'] = accent
         await self.http.request(method="patch", endpoint=f"/users/@me/profile", json=fields)
+
+    async def change_pfp(self, avatar_url=None):
+        if avatar_url != None:
+            async with ClientSession() as session:
+                async with session.get(f"{avatar_url}") as resp:
+                    image = b64encode(await resp.read())
+                    newobj = str(image).split("'", 2)
+            image = f"data:image/png;base64,{newobj[1]}"
+            await self.http.request(method="patch", endpoint="/users/@me", headers={"origin":"https://discord.com", "referer": "https://discord.com/channels/@me"}, json={'avatar':image})
+        else:
+            raise TypeError("Avatar url not specified")
+
 
 
 

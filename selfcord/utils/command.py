@@ -1,6 +1,6 @@
 
 import inspect
-
+import re
 
 class Command:
     """Command Object pretty much
@@ -146,9 +146,16 @@ class Context:
             signature = self.command.signature
         if self.command_content != "":
             splitted = self.command_content.split()
+
+            for index, item in enumerate(splitted):
+
+                x = re.findall(r"[0-9]{18,19}", item)
+                if len(x) > 0:
+                    val = x[0]
+                    splitted[index] = val
+                break
         else:
             return args, kwargs
-
 
 
 
@@ -192,7 +199,6 @@ class Context:
         if self.message.author.id != self.bot.user.id:
             return
         if self.command_content != None:
-
             args, kwargs = await self.get_arguments()
             func = self.command.func
             args.insert(0, self)

@@ -85,7 +85,6 @@ class Guild:
         await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 4})
 
     async def edit(self, name: str=None, icon_url: str=None, banner_url: str=None, description: str=None):
-
         fields = {}
         if name != None:
             fields['name'] = name
@@ -109,5 +108,5 @@ class Guild:
                 fields['banner'] = f"data:image/png;base64,{newobj[1]}"
 
 
-        data = await self.http.request(method = "patch", endpoint = f"/guilds/{self.id}", headers={"origin":"https://discord.com", "referer":f"https://discord.com/channels/{self.id}/{random.choice(self.channels)}"},json=fields)
+        await self.http.request(method = "patch", endpoint = f"/guilds/{self.id}", headers={"origin":"https://discord.com", "referer":f"https://discord.com/channels/{self.id}/{random.choice(self.channels)}"},json=fields)
 

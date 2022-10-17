@@ -188,7 +188,7 @@ class gateway:
                 await self.close()
             except Exception as e:
                 await self.bot.emit("error", e)
-
+                await self.close()
 
 
 

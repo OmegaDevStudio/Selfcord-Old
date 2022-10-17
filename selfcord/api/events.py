@@ -167,6 +167,20 @@ class EventHandler:
                 guild.roles.append(role)
         await self.bot.emit("role_create", role)
 
+    async def handle_guild_role_delete(self, role, user: Client, http):
+        """Handles what happens when a role is deleted
+        """
+        self.user = user
+        role_id = role.get("id")
+        guild_id = role.get("guild_id")
+        for guild in self.user.guilds:
+            if guild_id == guild.id:
+                for role in guild.roles:
+                    if role_id == role.id:
+                        await self.bot.emit("role_delete", role)
+                        guild.roles.remove(role)
+                        return
+
 
 
 
