@@ -179,6 +179,14 @@ class Bot:
         await self.http.request(method="patch", endpoint=f"/users/@me/profile", json=fields)
 
     async def change_pfp(self, avatar_url=None):
+        """Disclaimer: This may phone lock your account :(
+
+        Args:
+            avatar_url (str): URL of image
+
+        Raises:
+            TypeError: URL not specified
+        """
         if avatar_url != None:
             async with ClientSession() as session:
                 async with session.get(f"{avatar_url}") as resp:

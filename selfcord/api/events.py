@@ -163,7 +163,7 @@ class EventHandler:
         id = role.get("guild_id")
         for guild in self.user.guilds:
             if id == guild.id:
-                role = Role(role, guild_id=guild.id)
+                role = Role(role, self.http, guild_id=guild.id)
                 guild.roles.append(role)
         await self.bot.emit("role_create", role)
 

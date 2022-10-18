@@ -1,6 +1,5 @@
 
-
-
+import datetime
 
 class User:
     """User Object
@@ -10,6 +9,11 @@ class User:
 
     def __str__(self):
         return f"""{self.name}#{self.discriminator}"""
+
+    @property
+    def timestamp(self):
+        return datetime.datetime.utcfromtimestamp(((int(self.id) >> 22) + 1420070400000) / 1000)
+
 
 
     def _update(self, data):
@@ -24,5 +28,6 @@ class User:
         self.avatar_url = f"https://cdn.discordapp.com/avatars/{self.id}/{self.avatar}.png?size=4096" if self.avatar!=None else None
         self.banner_url = f"https://cdn.discordapp.com/banners/{self.id}/{self.banner}.png?size=1024" if self.banner!=None else None
         self.system = data.get('system')
+
 
 

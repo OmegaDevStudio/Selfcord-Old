@@ -89,7 +89,7 @@ async def channels(ctx):
 async def whois(ctx, id: str):
     msg = "```diff\n"
     user = await bot.get_user(id)
-    msg += f"- Username: {user}\n- ID: {user.id}\n- Bot?: {user.bot}\n```"
+    msg += f"- Username: {user}\n- ID: {user.id}\n- Bot?: {user.bot}\n- Created At: {user.timestamp}```"
     avatar = user.avatar_url if user.avatar_url!=None else "None"
     banner = user.banner_url if user.banner_url!=None else "None"
     msg += f"AVATAR: {avatar}\nBANNER: {banner}"

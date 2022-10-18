@@ -3,8 +3,9 @@ from .permission import Permission
 class Role:
     """Role Object
     """
-    def __init__(self, data: dict, **kwargs) -> None:
+    def __init__(self, data: dict, http, **kwargs) -> None:
         self.guild_id = kwargs.get("guild_id")
+        self.http = http
         self._update(data)
 
     def _update(self, data):
