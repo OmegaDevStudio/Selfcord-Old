@@ -19,8 +19,5 @@ class webhook:
     async def send(self, content):
         await self.http.request(method = "post", endpoint = f"/webhooks/{self.id}/{self.token}", json = {"content": content})
 
-    async def create(self, name):
-        await self.http.request(method = "post", endpoint = f"/channels/{self.channel_id}/webhooks", json = {"name": name})
-
     async def delete(self):
         await self.http.request(method = "delete", endpoint = f"/webhooks/{self.id}/{self.token}")
