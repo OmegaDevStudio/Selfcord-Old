@@ -1,7 +1,5 @@
 
 
-from types import SimpleNamespace
-
 class Client:
     """Client Object
     """

@@ -1,6 +1,6 @@
 import time
 from .user import User
-from selfcord.api.http import http
+from .webhook import Webhook
 import asyncio
 
 class TextChannel:
@@ -8,6 +8,7 @@ class TextChannel:
     """
     def __init__(self, data, http) -> None:
         self.permissions = []
+        self.webhooks = []
         self.http = http
         self._update(data)
 
@@ -39,12 +40,26 @@ class TextChannel:
     async def reply(self, message, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
 
+    async def create_webhook(self, name: str=None, avatar_url: str=None):
+        fields = {}
+        if name != None:
+            fields['name'] = name
+        else:
+            raise TypeError("Name is required...")
+        if avatar_url != None:
+            data = await self.http.encode_image(avatar_url)
+            fields['avatar'] = data
+        data = await self.http.request(method="post", endpoint=f"/channels/{self.id}/webhooks", json=fields)
+        self.webhooks.append(Webhook(data, self.http))
+
+
 
 class VoiceChannel:
     """Voice Channel Object
     """
     def __init__(self, data, http) -> None:
         self.permissions = []
+        self.webhooks = []
         self.http = http
         self._update(data)
 
@@ -75,6 +90,18 @@ class VoiceChannel:
 
     async def reply(self, message, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
+
+    async def create_webhook(self, name: str=None, avatar_url: str=None):
+        fields = {}
+        if name != None:
+            fields['name'] = name
+        else:
+            raise TypeError("Name is required...")
+        if avatar_url != None:
+            data = await self.http.encode_image(avatar_url)
+            fields['avatar'] = data
+        data = await self.http.request(method="post", endpoint=f"/channels/{self.id}/webhooks", json=fields)
+        self.webhooks.append(Webhook(data, self.http))
 
 class Category:
     """Category Object
@@ -161,5 +188,8 @@ class GroupChannel:
 
     async def reply(self, message, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
+
+
+
 
 

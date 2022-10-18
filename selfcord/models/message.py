@@ -1,4 +1,3 @@
-from selfcord.models import channel
 from .user import User
 import asyncio
 

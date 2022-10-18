@@ -93,19 +93,12 @@ class Guild:
             fields['description'] = description
 
         if icon_url != None:
-            async with ClientSession() as session:
-                async with session.get(f"{icon_url}") as resp:
-                    image = b64encode(await resp.read())
-
-                    newobj = str(image).split("'", 2)
-                fields['icon'] = f"data:image/png;base64,{newobj[1]}"
+            data = await self.http.encode_image(icon_url)
+            fields['icon'] = data
 
         if banner_url != None:
-             async with ClientSession() as session:
-                async with session.get(f"{banner_url}") as resp:
-                    image = b64encode(await resp.read())
-                    newobj = str(image).split("'", 2)
-                fields['banner'] = f"data:image/png;base64,{newobj[1]}"
+            data = await self.http.encode_image(banner_url)
+            fields['banner'] = data
 
 
         await self.http.request(method = "patch", endpoint = f"/guilds/{self.id}", headers={"origin":"https://discord.com", "referer":f"https://discord.com/channels/{self.id}/{random.choice(self.channels)}"},json=fields)

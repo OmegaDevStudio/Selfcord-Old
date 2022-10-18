@@ -1,7 +1,7 @@
 from aiohttp import ClientSession
 from aioconsole import aprint
 import asyncio
-
+from base64 import b64encode
 from selfcord.api.errors import LoginFailure
 
 
@@ -89,4 +89,11 @@ class http:
                         json = await resp.json()
                         raise LoginFailure(json, resp.status)
         return data
+
+    async def encode_image(self, url):
+        async with ClientSession() as session:
+            async with session.get(f"{url}") as resp:
+                image = b64encode(await resp.read())
+                newobj = str(image).split("'", 2)
+        return f"data:image/png;base64,{newobj[1]}"
 

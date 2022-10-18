@@ -1,9 +1,8 @@
-from ast import alias
 import selfcord
 import json
 from aioconsole import aprint
 
-from selfcord.models import message
+
 
 bot = selfcord.Bot(prefixes=["!", "o.", "o!"])
 
@@ -28,8 +27,9 @@ STARTUP:  {time:0.2f} seconds""")
 async def message_logger(message):
     # DISCLAIMER: If message is not in bots cache only message id, channel id and guild id will be present
     if message.author != None:
-        if message.guild != None:
-            await aprint(f"""MESSAGE LOGGED:
+        if message.author.id != bot.user.id:
+            if message.guild != None:
+                await aprint(f"""MESSAGE LOGGED:
 SERVER: {message.guild.name}
 CHANNEL: {message.channel.name}
 CONTENT:

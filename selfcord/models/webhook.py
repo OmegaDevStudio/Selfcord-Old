@@ -1,7 +1,6 @@
-class webhook:
-    def __init__(self, data: dict, **kwargs) -> None:
-        self.guild_id = kwargs.get("guild_id")
-        self.channel_id = kwargs.get("channel_id")
+class Webhook:
+    def __init__(self, data: dict, http) -> None:
+        self.http = http
         self._update(data)
 
     def _update(self, data):

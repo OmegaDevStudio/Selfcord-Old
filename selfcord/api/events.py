@@ -1,8 +1,5 @@
 from time import perf_counter
-
-from requests import delete
-
-from selfcord.models.role import Role
+from ..models.role import Role
 from ..models import User, Client, Guild, TextChannel, VoiceChannel, DMChannel, GroupChannel, Message
 from aioconsole import aprint
 

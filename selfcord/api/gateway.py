@@ -4,8 +4,8 @@ from aioconsole import aprint
 import json
 import time
 import zlib
-from selfcord.api.events import EventHandler
-from selfcord.api.errors import ReconnectWebsocket
+from .events import EventHandler
+from .errors import ReconnectWebsocket
 from selfcord.models.client import Client
 
 

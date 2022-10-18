@@ -1,12 +1,12 @@
 import asyncio
 import json
-from selfcord.api import gateway, http
+from .api import gateway, http
 import inspect
-from selfcord.models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, Guild, User
+from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, Guild, User
 from collections import defaultdict
 from aioconsole import aprint
 import time
-from selfcord.utils import Command, CommandCollection, Context
+from .utils import Command, CommandCollection, Context
 import random
 from aiohttp import ClientSession
 from base64 import b64encode
@@ -188,11 +188,7 @@ class Bot:
             TypeError: URL not specified
         """
         if avatar_url != None:
-            async with ClientSession() as session:
-                async with session.get(f"{avatar_url}") as resp:
-                    image = b64encode(await resp.read())
-                    newobj = str(image).split("'", 2)
-            image = f"data:image/png;base64,{newobj[1]}"
+            image = await self.http.encode_image(avatar_url)
             await self.http.request(method="patch", endpoint="/users/@me", headers={"origin":"https://discord.com", "referer": "https://discord.com/channels/@me"}, json={'avatar':image})
         else:
             raise TypeError("Avatar url not specified")
