@@ -41,5 +41,29 @@ async def spam(ctx, amount: int, *, message: str):
 bot.run(token)
 ```
 
+```python
+import selfcord
+
+token = "insert token"
+bot = selfcord.Bot(prefixes=["!", "?"])
+
+@bot.on("message_delete")
+async def message_logger(message):
+    # DISCLAIMER: If message is not in bots cache only message id, channel id and guild id will be present
+    if message.author != None:
+        if message.author.id != bot.user.id:
+            if message.guild != None: # If the message is in a guild
+                await aprint(f"""MESSAGE LOGGED:
+SERVER: {message.guild.name}
+CHANNEL: {message.channel.name}
+CONTENT:
+{message.author}: {message.content}
+""")
+        else: # If the message is in a DM or Group chat
+            await aprint(f"""MESSAGE LOGGED:
+CHANNEL: {message.channel}
+CONTENT:
+{message.author}: {message.content}
+            """)
 
 
