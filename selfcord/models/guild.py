@@ -20,12 +20,13 @@ class Guild:
     GUILD_DIRECTORY = 14
     GUILD_FORUM = 15
 
-    def __init__(self, data, http) -> None:
+    def __init__(self, data, bot, http) -> None:
         self.roles = []
         self.emojis = []
         self.members = []
         self.channels = []
         self.http = http
+        self.bot = bot
         self._update(data)
 
     def __str__(self) -> str:
@@ -52,16 +53,16 @@ class Guild:
             if channel != None:
                 type = channel.get("type")
                 if type == self.TEXTCHANNEL:
-                    channel = TextChannel(channel, self.http)
+                    channel = TextChannel(channel, self.bot, self.http)
                     self.channels.append(channel)
                 elif type == self.VOICECHANNEL:
-                    channel = VoiceChannel(channel, self.http)
+                    channel = VoiceChannel(channel, self.bot, self.http)
                     self.channels.append(channel)
                 elif type == self.CATEGORY:
-                    channel = Category(channel, self.http)
+                    channel = Category(channel, self.bot, self.http)
                     self.channels.append(channel)
                 else:
-                    channel = TextChannel(channel, self.http)
+                    channel = TextChannel(channel, self.bot, self.http)
                     self.channels.append(channel)
 
             if role != None:

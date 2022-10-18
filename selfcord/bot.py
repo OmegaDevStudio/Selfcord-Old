@@ -10,6 +10,7 @@ from .utils import Command, CommandCollection, Context
 import random
 from aiohttp import ClientSession
 from base64 import b64encode
+import importlib
 
 
 
@@ -128,6 +129,10 @@ class Bot:
         """
         context = Context(self, msg, self.http)
         await context.invoke()
+
+    async def load_extension(self, name: str):
+        pass
+    
 
 
     def get_channel(self, channel_id: str):

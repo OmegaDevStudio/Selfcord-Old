@@ -235,6 +235,14 @@ class Context:
         """
         await self.channel.spam(amount, content)
 
+    async def purge(self, amount: int=None):
+        """Helper function to purge messages in the current channel, uses asyncio gather.
+
+        Args:
+            amount (int): The amount of messages to purge, defaults to All.
+        """
+        await self.channel.purge(amount)
+
 
 
 

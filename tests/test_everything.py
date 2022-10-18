@@ -28,6 +28,7 @@ async def message_logger(message):
     # DISCLAIMER: If message is not in bots cache only message id, channel id and guild id will be present
     if message.author != None:
         if message.author.id != bot.user.id:
+            print(message.author.id, bot.user.id)
             if message.guild != None:
                 await aprint(f"""MESSAGE LOGGED:
 SERVER: {message.guild.name}
@@ -35,12 +36,12 @@ CHANNEL: {message.channel.name}
 CONTENT:
 {message.author}: {message.content}
 """)
-        else:
-            await aprint(f"""MESSAGE LOGGED:
-CHANNEL: {message.channel}
-CONTENT:
-{message.author}: {message.content}
-            """)
+            else:
+                await aprint(f"""MESSAGE LOGGED:
+    CHANNEL: {message.channel}
+    CONTENT:
+    {message.author}: {message.content}
+                """)
 
 @bot.on("error")
 async def error_logger(error):
@@ -126,6 +127,10 @@ async def stealpfp(ctx, id: str):
     user = await bot.get_user(id)
     await bot.change_pfp(user.avatar_url)
     await ctx.reply("Successfully stole da pfp")
+
+@bot.cmd(description="Purge messages", aliases=['clear'])
+async def purge(ctx, amount: int =None):
+    await ctx.purge(int(amount))
 
 
 bot.run(token)

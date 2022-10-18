@@ -22,9 +22,9 @@ class EventHandler:
 
         for channel in data.get("private_channels"):
             if channel.get("type") == 1:
-                self.user.private_channels.append(DMChannel(channel, http))
+                self.user.private_channels.append(DMChannel(channel,self.bot, http))
             if channel.get("type") == 3:
-                self.user.private_channels.append(GroupChannel(channel, http))
+                self.user.private_channels.append(GroupChannel(channel, self.bot, http))
         for guild in data.get("guilds"):
             await self.handle_guild_create(guild, self.user, http)
 
@@ -36,7 +36,7 @@ class EventHandler:
         """Handles what happens when a guild is created
         """
         self.user = user
-        guild = Guild(data, http)
+        guild = Guild(data, self.bot, http)
         self.user.guilds.append(guild)
 
         # Sends data from ready to the event handler in main.py (if it exists)
@@ -98,27 +98,27 @@ class EventHandler:
             id = channel.get("guild_id")
             for guild in self.user.guilds:
                 if guild.id == id:
-                    channel = TextChannel(channel, self.http)
+                    channel = TextChannel(channel, self.bot, self.http)
                     guild.channels.append(channel)
 
         elif channel.get("type") == 1:
-            self.user.private_channels.append(DMChannel(channel, http))
+            self.user.private_channels.append(DMChannel(channel, self.bot, http))
 
         elif channel.get("type") == 2:
             id = channel.get("guild_id")
             for guild in self.user.guilds:
                 if guild.id == id:
-                    channel = VoiceChannel(channel, self.http)
+                    channel = VoiceChannel(channel, self.bot, self.http)
                     guild.channels.append(channel)
 
         elif channel.get("type") == 3:
-            self.user.private_channels.append(GroupChannel(channel, http))
+            self.user.private_channels.append(GroupChannel(channel, self.bot, http))
 
         else:
             id = channel.get("guild_id")
             for guild in self.user.guilds:
                 if guild.id == id:
-                    channel = TextChannel(channel, self.http)
+                    channel = TextChannel(channel, self.bot, self.http)
                     guild.channels.append(channel)
 
         # Sends data from ready to the event handler in main.py (if it exists)

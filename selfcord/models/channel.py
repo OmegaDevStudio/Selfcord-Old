@@ -1,15 +1,19 @@
+from .message import Message
 import time
 from .user import User
 from .webhook import Webhook
 import asyncio
 
+from selfcord.models import message
+
 class TextChannel:
     """Text Channel Object
     """
-    def __init__(self, data, http) -> None:
+    def __init__(self, data, bot, http) -> None:
         self.permissions = []
         self.webhooks = []
         self.http = http
+        self.bot = bot
         self._update(data)
 
     def __str__(self) -> str:
@@ -31,8 +35,38 @@ class TextChannel:
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
         del self
 
+    async def history(self):
+        messages = []
+        data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100")
+        for msg in data:
+            messages.append(Message(msg, self.bot, self.http))
+        while True:
+            data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
+            if len(data) > 0:
+                for msg in data:
+                    messages.append(Message(msg, self.bot, self.http))
+            else:
+                break
+
+        return messages
+
+    async def purge(self, amount: int=None):
+        messages = await self.history()
+        msgs = []
+        for msg in messages:
+            if str(msg.author.id) == str(self.bot.user.id):
+                msgs.append(msg)
+
+        if amount != None:
+            for i in range(0, len(msgs[:amount]), 3):
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i+3]))
+        else:
+            for i in range(0, len(msgs), 3):
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
+
     async def spam(self, amount: int,  content: str, tts= False):
-        await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(amount))))
+        for i in range(0, amount, 5):
+            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(i))))
 
     async def send(self,  content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
@@ -57,10 +91,11 @@ class TextChannel:
 class VoiceChannel:
     """Voice Channel Object
     """
-    def __init__(self, data, http) -> None:
+    def __init__(self, data, bot, http) -> None:
         self.permissions = []
         self.webhooks = []
         self.http = http
+        self.bot = bot
         self._update(data)
 
     def __str__(self) -> str:
@@ -82,8 +117,38 @@ class VoiceChannel:
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
         del self
 
+    async def history(self):
+        messages = []
+        data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100")
+        for msg in data:
+            messages.append(Message(msg, self.bot, self.http))
+        while True:
+            data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
+            if len(data) > 0:
+                for msg in data:
+                    messages.append(Message(msg, self.bot, self.http))
+            else:
+                break
+
+        return messages
+
+    async def purge(self, amount: int=None):
+        messages = await self.history()
+        msgs = []
+        for msg in messages:
+            if str(msg.author.id) == str(self.bot.user.id):
+                msgs.append(msg)
+
+        if amount != None:
+            for i in range(0, len(msgs[:amount]), 3):
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i+3]))
+        else:
+            for i in range(0, len(msgs), 3):
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
+
     async def spam(self, amount: int,  content: str, tts= False):
-        await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(amount))))
+        for i in range(0, amount, 5):
+            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(i))))
 
     async def send(self,  content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
@@ -103,10 +168,13 @@ class VoiceChannel:
         data = await self.http.request(method="post", endpoint=f"/channels/{self.id}/webhooks", json=fields)
         self.webhooks.append(Webhook(data, self.http))
 
+
+
 class Category:
     """Category Object
     """
-    def __init__(self, data, http) -> None:
+    def __init__(self, data, bot, http) -> None:
+        self.bot = bot
         self.http = http
         self.permissions = []
         self._update(data)
@@ -128,8 +196,9 @@ class Category:
 class DMChannel:
     """DM Channel Object
     """
-    def __init__(self, data, http) -> None:
+    def __init__(self, data, bot, http) -> None:
         self.http = http
+        self.bot = bot
         self._update(data)
 
     def __str__(self) -> str:
@@ -145,8 +214,38 @@ class DMChannel:
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=false")
         del self
 
+    async def history(self):
+        messages = []
+        data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100")
+        for msg in data:
+            messages.append(Message(msg, self.bot, self.http))
+        while True:
+            data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
+            if len(data) > 0:
+                for msg in data:
+                    messages.append(Message(msg, self.bot, self.http))
+            else:
+                break
+
+        return messages
+
+    async def purge(self, amount: int=None):
+        messages = await self.history()
+        msgs = []
+        for msg in messages:
+            if str(msg.author.id) == str(self.bot.user.id):
+                msgs.append(msg)
+
+        if amount != None:
+            for i in range(0, len(msgs[:amount]), 3):
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i+3]))
+        else:
+            for i in range(0, len(msgs), 3):
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
+
     async def spam(self, amount: int,  content: str, tts= False):
-        await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(amount))))
+        for i in range(0, amount, 5):
+            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(i))))
 
     async def send(self, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
@@ -157,9 +256,10 @@ class DMChannel:
 class GroupChannel:
     """Group Channel Object
     """
-    def __init__(self, data, http) -> None:
+    def __init__(self, data, bot, http) -> None:
         self.recipients = []
         self.http = http
+        self.bot = bot
         self._update(data)
 
     def __str__(self) -> str:
@@ -179,8 +279,37 @@ class GroupChannel:
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=true")
         del self
 
+    async def history(self):
+        messages = []
+        data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100")
+        for msg in data:
+            messages.append(Message(msg, self.bot, self.http))
+        while True:
+            data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
+            if len(data) > 0:
+                for msg in data:
+                    messages.append(Message(msg, self.bot, self.http))
+            else:
+                break
+
+        return messages
+
+    async def purge(self, amount: int=None):
+        messages = await self.history()
+        msgs = []
+        for msg in messages:
+            if str(msg.author.id) == str(self.bot.user.id):
+                msgs.append(msg)
+
+        if amount != None:
+            for i in range(0, len(msgs[:amount]), 3):
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i+3]))
+        else:
+            for i in range(0, len(msgs), 3):
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
+
     async def spam(self, amount: int,  content: str, tts= False):
-        for i in range(0, amount, 6):
+        for i in range(0, amount, 5):
             await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(i))))
 
     async def send(self, content=None, tts=False):
