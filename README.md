@@ -11,7 +11,7 @@ pip install git+https://github.com/Shell1010/Selfcord.git
 
 ## Examples
 
-Example usage:
+### Base Example
 
 ```python
 import selfcord
@@ -40,12 +40,17 @@ async def spam(ctx, amount: int, *, message: str):
 
 bot.run(token)
 ```
-
+### Message logger
 ```python
 import selfcord
 
 token = "insert token"
 bot = selfcord.Bot(prefixes=["!", "?"])
+
+@bot.on("ready")
+async def ball(time):
+    print(f"Connected To {bot.user}\n Startup took {time:0.2f} seconds")
+
 
 @bot.on("message_delete")
 async def message_logger(message):
@@ -66,4 +71,24 @@ CONTENT:
 {message.author}: {message.content}
             """)
 
+@bot.cmd(description="Does pong!")
+async def ping(ctx):
+    await ctx.reply("pong!")
 
+bot.run(token)
+```
+### Purge command
+```python
+import selfcord
+
+token = "insert token"
+bot = selfcord.Bot(prefixes=["!", "?"])
+
+@bot.on("ready")
+async def ball(time):
+    print(f"Connected To {bot.user}\n Startup took {time:0.2f} seconds")
+
+@bot.cmd(description="Purges the channel", aliases=["wipe", "clear"])
+async def purge(ctx, amount: int=None):
+    await ctx.purge(amount)
+```
