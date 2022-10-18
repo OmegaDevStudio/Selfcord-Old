@@ -91,4 +91,6 @@ async def ball(time):
 @bot.cmd(description="Purges the channel", aliases=["wipe", "clear"])
 async def purge(ctx, amount: int=None):
     await ctx.purge(amount)
+
+bot.run(token)
 ```
