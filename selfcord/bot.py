@@ -216,6 +216,9 @@ class Bot:
             await self.http.request(method="patch", endpoint="/users/@me", headers={"origin":"https://discord.com", "referer": "https://discord.com/channels/@me"}, json={'avatar':image})
         else:
             raise TypeError("Avatar url not specified")
+            
+    async def  create_guild(self):
+        await self.http.request(method = "post", endpoint = "/guilds")
 
 
 
