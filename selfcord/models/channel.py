@@ -65,8 +65,9 @@ class TextChannel:
                 await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
 
     async def spam(self, amount: int,  content: str, tts= False):
-        for i in range(0, amount, 5):
-            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(i))))
+        amount: list[int] = [i+1 for i in range(amount)]
+        for i in range(0, len(amount), 3):
+            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i+3]))
 
     async def send(self,  content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
@@ -147,8 +148,9 @@ class VoiceChannel:
                 await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
 
     async def spam(self, amount: int,  content: str, tts= False):
-        for i in range(0, amount, 5):
-            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(i))))
+        amount: list[int] = [i+1 for i in range(amount)]
+        for i in range(0, len(amount), 3):
+            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i+3]))
 
     async def send(self,  content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
@@ -244,8 +246,9 @@ class DMChannel:
                 await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
 
     async def spam(self, amount: int,  content: str, tts= False):
-        for i in range(0, amount, 5):
-            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(i))))
+        amount: list[int] = [i+1 for i in range(amount)]
+        for i in range(0, len(amount), 3):
+            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i+3]))
 
     async def send(self, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
@@ -309,9 +312,10 @@ class GroupChannel:
                 await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
 
     async def spam(self, amount: int,  content: str, tts= False):
-        for i in range(0, amount, 5):
-            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for i in range(int(i))))
-
+        amount: list[int] = [i+1 for i in range(amount)]
+        for i in range(0, len(amount), 3):
+            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i+3]))
+            
     async def send(self, content=None, tts=False):
         await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
 

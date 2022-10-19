@@ -8,6 +8,7 @@ class Client:
         self.private_channels = []
         self.friends = []
         self.messages = []
+        self.deleted_messages = []
         self._update(UserPayload)
 
     def __str__(self):

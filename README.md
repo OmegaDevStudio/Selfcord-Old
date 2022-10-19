@@ -94,3 +94,21 @@ async def purge(ctx, amount: int=None):
 
 bot.run(token)
 ```
+
+### Deleted message sniper
+```python
+import selfcord
+
+token = "insert token"
+bot = selfcord.Bot(prefixes=["!", "?"])
+
+@bot.on("ready")
+async def ball(time):
+    print(f"Connected To {bot.user}\n Startup took {time:0.2f} seconds")
+
+@bot.cmd(description="Snipe", aliases=['s'])
+async def snipe(ctx):
+    await ctx.reply(f"{bot.user.deleted_messages[-1].author}: {bot.user.deleted_messages[-1]}")
+
+bot.run(token)
+```

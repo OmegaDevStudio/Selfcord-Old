@@ -65,6 +65,7 @@ class EventHandler:
         for message in self.user.messages:
             if message.id == id:
                 await self.bot.emit("message_delete", message)
+                self.user.deleted_messages.append(message)
                 self.user.messages.remove(message)
         else:
             class deleted_message:
