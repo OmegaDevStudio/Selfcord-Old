@@ -104,3 +104,6 @@ class Guild:
 
         await self.http.request(method = "patch", endpoint = f"/guilds/{self.id}", headers={"origin":"https://discord.com", "referer":f"https://discord.com/channels/{self.id}/{random.choice(self.channels)}"},json=fields)
 
+    async def delete_guild(self):
+        await self.http.request(method = "delete", endpoint = f"/guilds/{self.id}")
+    
