@@ -176,7 +176,7 @@ class gateway:
         """
         self.handler = EventHandler(bot, self.http)
         self.bot = bot
-        await self.bot._help() # In built help command very cool
+        await self.bot.inbuilt_commands() # In built commands very cool
         self.user = user
         self.token = token
         await self.connect()

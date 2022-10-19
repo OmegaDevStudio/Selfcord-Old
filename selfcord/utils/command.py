@@ -145,7 +145,7 @@ class Context:
         if self.command.signature is not None:
             signature = self.command.signature
         if self.command_content != "":
-            splitted = self.command_content.split()
+            splitted = self.command_content.split(" ")[1:]
 
             for index, item in enumerate(splitted):
 
@@ -166,7 +166,7 @@ class Context:
 
             if param.kind is param.POSITIONAL_OR_KEYWORD:
 
-                arg = self.convert(param, splitted.pop(0).strip('\'"'))
+                arg = self.convert(param, splitted.pop(0))
 
                 args.append(arg)
             if param.kind is param.VAR_KEYWORD:

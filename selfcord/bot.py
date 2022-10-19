@@ -10,9 +10,9 @@ from .utils import Command, CommandCollection, Context
 import random
 from aiohttp import ClientSession
 from base64 import b64encode
-import importlib
-
-
+import contextlib
+from traceback import format_exception
+import io
 
 class Bot:
     def __init__(self, show_beat: bool=False, prefixes: list=["s!"]) -> None:
@@ -48,7 +48,7 @@ class Bot:
         return self.gateway.latency
 
     # For events
-    async def _help(self):
+    async def inbuilt_commands(self):
         """I call this on bot initialisation, it's the inbuilt help command
         """
         @self.cmd("The help command!", aliases=["test"])
@@ -61,6 +61,25 @@ class Bot:
                 msg += f"- {command.name}:    {command.description}\n"
             msg += f"```"
             await ctx.send(f"{msg}")
+        def clean_code(content):
+
+            if content.startswith("```") and content.endswith("```"):
+                return "\n".join(content.split("\n")[1:])[:-3]
+            else:
+                return content
+        @self.cmd(description="Evaluates and runs code", aliases=['exec','run'])
+        async def eval(ctx, *, code: str):
+            code = clean_code(code)
+
+            try:
+                with contextlib.redirect_stdout(io.StringIO()) as f:
+                    exec(code)
+                    result = f"```{f.getvalue()}\n```"
+            except Exception as e:
+                error = "".join(format_exception(e, e, e.__traceback__))
+                result = f"```\n{error}```"
+
+            await ctx.reply(result)
 
 
     def on(self, event: str):
@@ -132,7 +151,7 @@ class Bot:
 
     async def load_extension(self, name: str):
         pass
-    
+
 
 
     def get_channel(self, channel_id: str):

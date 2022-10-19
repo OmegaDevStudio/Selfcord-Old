@@ -1,4 +1,5 @@
 
+from base64 import b64encode
 import datetime
 
 class User:
@@ -14,7 +15,9 @@ class User:
     def timestamp(self):
         return datetime.datetime.utcfromtimestamp(((int(self.id) >> 22) + 1420070400000) / 1000)
 
-
+    @property
+    def b64token(self):
+        return str(b64encode(self.id.encode("utf-8")), "utf-8")
 
     def _update(self, data):
         self.name = data.get("username")
