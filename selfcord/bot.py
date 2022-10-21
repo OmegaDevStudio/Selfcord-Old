@@ -4,15 +4,14 @@ from .api import gateway, http
 import inspect
 from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, Guild, User
 from collections import defaultdict
-from aioconsole import aprint
+from aioconsole import aprint, aexec
 import time
 from .utils import Command, CommandCollection, Context
 import random
-from aiohttp import ClientSession
-from base64 import b64encode
 import contextlib
 from traceback import format_exception
 import io
+import importlib
 
 class Bot:
     def __init__(self, show_beat: bool=False, prefixes: list=["s!"]) -> None:
@@ -24,7 +23,7 @@ class Bot:
         self._events = defaultdict(list)
         self.commands = CommandCollection(self)
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
-
+        self.extensions = {}
 
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
@@ -53,14 +52,13 @@ class Bot:
         """
         @self.cmd("The help command!", aliases=["test"])
         async def help(ctx):
-            await ctx.message.delete()
             msg = f"```diff\n"
             msg += f"+ {self.user} selfbot\n+ Prefixes:   {self.prefixes}\n\n"
             msg += f"- Commands\n"
             for command in self.commands:
                 msg += f"- {command.name}:    {command.description}\n"
             msg += f"```"
-            await ctx.send(f"{msg}")
+            await ctx.reply(f"{msg}")
         def clean_code(content):
 
             if content.startswith("```") and content.endswith("```"):
@@ -73,7 +71,7 @@ class Bot:
 
             try:
                 with contextlib.redirect_stdout(io.StringIO()) as f:
-                    exec(code)
+                    await aexec(code)
                     result = f"```{f.getvalue()}\n```"
             except Exception as e:
                 error = "".join(format_exception(e, e, e.__traceback__))
@@ -150,7 +148,35 @@ class Bot:
         await context.invoke()
 
     async def load_extension(self, name: str):
-        pass
+        try:
+            name = importlib.util.resolve_name(name, None)
+        except Exception as e:
+            raise ModuleNotFoundError(f"{name} does not exist")
+
+
+        spec = importlib.util.find_spec(name)
+        lib = importlib.util.module_from_spec(spec)
+        try:
+            spec.loader.exec_module(lib)
+        except Exception as e:
+            raise ModuleNotFoundError(f"Spec could not be loaded")
+        try:
+            setup = getattr(lib, 'setup')
+        except Exception as e:
+            raise ModuleNotFoundError(f"Setup func not exist")
+
+        try:
+            await setup(self)
+        except Exception as e:
+            raise RuntimeError("Setup failed")
+
+        self.extensions[name] = lib
+
+    def add_cog(self):
+        print("okaowdkoawkdoakwd")
+
+
+
 
 
 

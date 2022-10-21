@@ -5,3 +5,4 @@ build
 dist
 selfcord.egg-info
 main.py
+exts
