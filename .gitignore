@@ -4,5 +4,6 @@ __pycache__
 build
 dist
 selfcord.egg-info
+Selford.egg-info
 main.py
 exts
