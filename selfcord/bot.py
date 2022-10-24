@@ -136,6 +136,23 @@ class Bot:
             return cmd
         return decorator
 
+    def add_cmd(self, coro, description="", aliases=[]):
+        """Function to add commands manually without decorator
+
+        Args:
+            coro (coroutine): The function to add
+            description (str, optional): Description of command. Defaults to "".
+            aliases (list, optional): Alternative names for command. Defaults to [].
+        """
+        if isinstance(aliases, str):
+            aliases = [aliases]
+        name = coro.__name__
+        if not inspect.iscoroutinefunction(coro):
+            raise RuntimeWarning("Faulure")
+        else:
+            cmd = Command(name=name, description=description, aliases=aliases, func=coro)
+            self.commands.add(cmd)
+
 
 
     async def process_commands(self, msg):
@@ -150,12 +167,15 @@ class Bot:
     async def load_extension(self, name: str):
         try:
             name = importlib.util.resolve_name(name, None)
+            print(name)
         except Exception as e:
             raise ModuleNotFoundError(f"{name} does not exist")
 
 
         spec = importlib.util.find_spec(name)
+        print(spec)
         lib = importlib.util.module_from_spec(spec)
+        print(lib)
         try:
             spec.loader.exec_module(lib)
         except Exception as e:
