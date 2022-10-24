@@ -66,7 +66,8 @@ class CommandCollection:
         self.bot = bot
         self.commands = {}
 
-
+    def __len__(self):
+        return len(self.commands)
     def __iter__(self):
         for cmd in self.commands.values():
             yield cmd
