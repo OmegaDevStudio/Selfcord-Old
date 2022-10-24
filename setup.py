@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 if __name__ == "__main__":
     setup(
-        name="Selfcord",
+        name="selfcord",
         packages=find_packages(include=['selfcord', 'selfcord.api', 'selfcord.utils', 'selfcord.models']),
         version="0.0.2",
         description="A Discord API wrapper designed for selfbots!",

@@ -206,8 +206,6 @@ class Context:
             return args, kwargs
 
 
-
-
         for index, (name, param) in enumerate(signature):
             if index == 0:
                 continue

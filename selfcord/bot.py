@@ -24,6 +24,7 @@ class Bot:
         self.commands = CommandCollection(self)
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
         self.extensions = {}
+        self.user = None
 
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
@@ -34,7 +35,7 @@ class Bot:
         self.token = token
         async def runner():
             data = await self.http.static_login(token)
-            self.user: Client = Client(data) # type: ignore
+            self.user = Client(data)
             await self.gateway.start(token, self.user, self)
         try:
             asyncio.run(runner())
