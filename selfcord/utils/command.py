@@ -195,11 +195,12 @@ class Context:
             splitted = self.command_content.split(" ")[1:]
 
             for index, item in enumerate(splitted):
-
-                x = re.findall(r"[0-9]{18,19}", item)
-                if len(x) > 0:
-                    val = x[0]
-                    splitted[index] = val
+                user_regex = re.findall(r"<@[0-9]{18,19}>", item)
+                if len(user_regex) > 0:
+                    x = re.findall(r"[0-9]{18,19}", item)
+                    if len(x) > 0:
+                        val = x[0]
+                        splitted[index] = val
                 break
         else:
             return args, kwargs

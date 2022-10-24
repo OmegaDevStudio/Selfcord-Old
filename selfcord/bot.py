@@ -111,7 +111,7 @@ class Bot:
                 for callback in self._events[event]:
                     asyncio.create_task(callback(*args, **kwargs))
         except Exception as e:
-            await aprint(e)
+            raise RuntimeError("Failure to emit")
 
     def cmd(self, description="", aliases=[]):
         """Decorator to add commands for the bot
@@ -129,7 +129,7 @@ class Bot:
         def decorator(coro):
             name = coro.__name__
             if not inspect.iscoroutinefunction(coro):
-                raise RuntimeWarning("Faulure")
+                raise RuntimeWarning("Not an async function!")
             else:
                 cmd = Command(name=name, description=description, aliases=aliases, func=coro)
                 self.commands.add(cmd)
@@ -148,7 +148,7 @@ class Bot:
             aliases = [aliases]
         name = coro.__name__
         if not inspect.iscoroutinefunction(coro):
-            raise RuntimeWarning("Faulure")
+            raise RuntimeWarning("Not an async function!")
         else:
             cmd = Command(name=name, description=description, aliases=aliases, func=coro)
             self.commands.add(cmd)
@@ -170,22 +170,21 @@ class Bot:
         except Exception as e:
             raise ModuleNotFoundError(f"{name} does not exist")
 
-
         spec = importlib.util.find_spec(name)
-        print(spec)
+
         lib = importlib.util.module_from_spec(spec)
-        print(lib)
+
         try:
             spec.loader.exec_module(lib)
         except Exception as e:
             raise ModuleNotFoundError(f"Spec could not be loaded")
         try:
-            setup = getattr(lib, 'setup')
+            setup = getattr(lib, 'loader')
         except Exception as e:
-            raise ModuleNotFoundError(f"Setup func not exist")
+            raise ModuleNotFoundError(f"Loader func not exist")
 
         try:
-            await setup(self)
+            setup(self)
         except Exception as e:
             raise RuntimeError("Setup failed")
 
