@@ -8,4 +8,5 @@ from .message import Message
 from .emoji import Emoji
 from .permission import Permission
 from .role import Role
-
+from .webhook import Webhook
+from .member import Member

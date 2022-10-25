@@ -216,7 +216,7 @@ class Context:
 
                 args.append(arg)
             if param.kind is param.VAR_KEYWORD:
-                print(name, param, "var keyword")
+                
                 for arg in splitted:
                     arg = self.convert(param, arg)
                     args.append(arg)
