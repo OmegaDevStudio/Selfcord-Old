@@ -6,9 +6,11 @@ import asyncio
 
 from selfcord.models import message
 
+
 class TextChannel:
     """Text Channel Object
     """
+
     def __init__(self, data, bot, http) -> None:
         self.permissions = []
         self.webhooks = []
@@ -26,7 +28,7 @@ class TextChannel:
         self.name = data.get("name")
         self.id = data.get("id")
         self.guild_id = data.get("guild_id")
-        self.last_message_id= data.get("last_message_id")
+        self.last_message_id = data.get("last_message_id")
         self.flags = data.get("flags")
         self.default_thread_rate_limit_per_user = data.get("default_thread_rate_limit_per_user")
         self.category_id = data.get("parent_id")
@@ -35,13 +37,30 @@ class TextChannel:
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
         del self
 
+    async def edit(self, name: str = None, parent_id: int = None, position: int = None, topic: str = None):
+        payload = {}
+        if name is not None:
+            payload['name'] = name
+        if parent_id is not None:
+            payload['parent_id'] = parent_id
+        if position is not None:
+            payload['position'] = position
+        if topic is not None and topic != "":
+            payload['topic'] = topic
+
+        try:
+            await self.http.request(method="patch", endpoint=f"/channels/{self.id}", json=payload)
+        except Exception as e:
+            return str(e)
+
     async def history(self):
         messages = []
         data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100")
         for msg in data:
             messages.append(Message(msg, self.bot, self.http))
         while True:
-            data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
+            data = await self.http.request(method="get",
+                                           endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
             if len(data) > 0:
                 for msg in data:
                     messages.append(Message(msg, self.bot, self.http))
@@ -50,7 +69,7 @@ class TextChannel:
 
         return messages
 
-    async def purge(self, amount: int=None):
+    async def purge(self, amount: int = None):
         messages = await self.history()
         msgs = []
         for msg in messages:
@@ -59,23 +78,29 @@ class TextChannel:
 
         if amount != None:
             for i in range(0, len(msgs[:amount]), 3):
-                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i+3]))
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i + 3]))
         else:
             for i in range(0, len(msgs), 3):
-                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 3]))
 
-    async def spam(self, amount: int,  content: str, tts= False):
-        amount: list[int] = [i+1 for i in range(amount)]
+    async def spam(self, amount: int, content: str, tts=False):
+        amount: list[int] = [i + 1 for i in range(amount)]
         for i in range(0, len(amount), 3):
-            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i+3]))
+            await asyncio.gather(
+                *(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i + 3]))
 
-    async def send(self,  content=None, tts=False):
-        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
+    async def send(self, content=None, tts=False):
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                json={"content": content, "tts": tts})
 
     async def reply(self, message, content=None, tts=False):
-        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                json={"content": content, "tts": tts,
+                                      "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"},
+                                      "allowed_mentions": {"parse": ["users", "roles", "everyone"],
+                                                           "replied_user": False}})
 
-    async def create_webhook(self, name: str=None, avatar_url: str=None):
+    async def create_webhook(self, name: str = None, avatar_url: str = None):
         fields = {}
         if name != None:
             fields['name'] = name
@@ -88,10 +113,10 @@ class TextChannel:
         self.webhooks.append(Webhook(data, self.http))
 
 
-
 class VoiceChannel:
     """Voice Channel Object
     """
+
     def __init__(self, data, bot, http) -> None:
         self.permissions = []
         self.webhooks = []
@@ -124,7 +149,8 @@ class VoiceChannel:
         for msg in data:
             messages.append(Message(msg, self.bot, self.http))
         while True:
-            data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
+            data = await self.http.request(method="get",
+                                           endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
             if len(data) > 0:
                 for msg in data:
                     messages.append(Message(msg, self.bot, self.http))
@@ -133,7 +159,7 @@ class VoiceChannel:
 
         return messages
 
-    async def purge(self, amount: int=None):
+    async def purge(self, amount: int = None):
         messages = await self.history()
         msgs = []
         for msg in messages:
@@ -142,23 +168,29 @@ class VoiceChannel:
 
         if amount != None:
             for i in range(0, len(msgs[:amount]), 3):
-                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i+3]))
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i + 3]))
         else:
             for i in range(0, len(msgs), 3):
-                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 3]))
 
-    async def spam(self, amount: int,  content: str, tts= False):
-        amount: list[int] = [i+1 for i in range(amount)]
+    async def spam(self, amount: int, content: str, tts=False):
+        amount: list[int] = [i + 1 for i in range(amount)]
         for i in range(0, len(amount), 3):
-            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i+3]))
+            await asyncio.gather(
+                *(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i + 3]))
 
-    async def send(self,  content=None, tts=False):
-        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
+    async def send(self, content=None, tts=False):
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                json={"content": content, "tts": tts})
 
     async def reply(self, message, content=None, tts=False):
-        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                json={"content": content, "tts": tts,
+                                      "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"},
+                                      "allowed_mentions": {"parse": ["users", "roles", "everyone"],
+                                                           "replied_user": False}})
 
-    async def create_webhook(self, name: str=None, avatar_url: str=None):
+    async def create_webhook(self, name: str = None, avatar_url: str = None):
         fields = {}
         if name != None:
             fields['name'] = name
@@ -171,10 +203,10 @@ class VoiceChannel:
         self.webhooks.append(Webhook(data, self.http))
 
 
-
 class Category:
     """Category Object
     """
+
     def __init__(self, data, bot, http) -> None:
         self.bot = bot
         self.http = http
@@ -195,9 +227,11 @@ class Category:
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
         del self
 
+
 class DMChannel:
     """DM Channel Object
     """
+
     def __init__(self, data, bot, http) -> None:
         self.http = http
         self.bot = bot
@@ -222,7 +256,8 @@ class DMChannel:
         for msg in data:
             messages.append(Message(msg, self.bot, self.http))
         while True:
-            data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
+            data = await self.http.request(method="get",
+                                           endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
             if len(data) > 0:
                 for msg in data:
                     messages.append(Message(msg, self.bot, self.http))
@@ -231,7 +266,7 @@ class DMChannel:
 
         return messages
 
-    async def purge(self, amount: int=None):
+    async def purge(self, amount: int = None):
         messages = await self.history()
         msgs = []
         for msg in messages:
@@ -240,25 +275,33 @@ class DMChannel:
 
         if amount != None:
             for i in range(0, len(msgs[:amount]), 3):
-                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i+3]))
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i + 3]))
         else:
             for i in range(0, len(msgs), 3):
-                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 3]))
 
-    async def spam(self, amount: int,  content: str, tts= False):
-        amount: list[int] = [i+1 for i in range(amount)]
+    async def spam(self, amount: int, content: str, tts=False):
+        amount: list[int] = [i + 1 for i in range(amount)]
         for i in range(0, len(amount), 3):
-            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i+3]))
+            await asyncio.gather(
+                *(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i + 3]))
 
     async def send(self, content=None, tts=False):
-        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                json={"content": content, "tts": tts})
 
     async def reply(self, message, content=None, tts=False):
-        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                json={"content": content, "tts": tts,
+                                      "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"},
+                                      "allowed_mentions": {"parse": ["users", "roles", "everyone"],
+                                                           "replied_user": False}})
+
 
 class GroupChannel:
     """Group Channel Object
     """
+
     def __init__(self, data, bot, http) -> None:
         self.recipients = []
         self.http = http
@@ -288,7 +331,8 @@ class GroupChannel:
         for msg in data:
             messages.append(Message(msg, self.bot, self.http))
         while True:
-            data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
+            data = await self.http.request(method="get",
+                                           endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}")
             if len(data) > 0:
                 for msg in data:
                     messages.append(Message(msg, self.bot, self.http))
@@ -297,7 +341,7 @@ class GroupChannel:
 
         return messages
 
-    async def purge(self, amount: int=None):
+    async def purge(self, amount: int = None):
         messages = await self.history()
         msgs = []
         for msg in messages:
@@ -306,23 +350,24 @@ class GroupChannel:
 
         if amount != None:
             for i in range(0, len(msgs[:amount]), 3):
-                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i+3]))
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i + 3]))
         else:
             for i in range(0, len(msgs), 3):
-                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i+3]))
+                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 3]))
 
-    async def spam(self, amount: int,  content: str, tts= False):
-        amount: list[int] = [i+1 for i in range(amount)]
+    async def spam(self, amount: int, content: str, tts=False):
+        amount: list[int] = [i + 1 for i in range(amount)]
         for i in range(0, len(amount), 3):
-            await asyncio.gather(*(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i+3]))
-            
+            await asyncio.gather(
+                *(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i + 3]))
+
     async def send(self, content=None, tts=False):
-        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts})
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                json={"content": content, "tts": tts})
 
     async def reply(self, message, content=None, tts=False):
-        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", json={"content": content, "tts": tts, "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"}, "allowed_mentions": {"parse": ["users", "roles", "everyone"], "replied_user": False}})
-
-
-
-
-
+        await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                json={"content": content, "tts": tts,
+                                      "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"},
+                                      "allowed_mentions": {"parse": ["users", "roles", "everyone"],
+                                                           "replied_user": False}})
