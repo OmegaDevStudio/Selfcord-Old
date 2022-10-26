@@ -2,16 +2,16 @@ from aiohttp import ClientSession
 from aioconsole import aprint
 import asyncio
 from base64 import b64encode
-
 import aiohttp
 from selfcord.api.errors import LoginFailure
-
-
+import random
 from ..models import User, Client
 
 class http:
     def __init__(self) -> None:
         self.token = None
+        xproperties = ["eyJvcyI6IldpbmRvd3MiLCJicm93c2VyIjoiRmlyZWZveCIsImRldmljZSI6IiIsInN5c3RlbV9sb2NhbGUiOiJmciIsImJyb3dzZXJfdXNlcl9hZ2VudCI6Ik1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQ7IHJ2OjEwMi4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94LzEwMi4wIiwiYnJvd3Nlcl92ZXJzaW9uIjoiMTAyLjAiLCJvc192ZXJzaW9uIjoiMTAiLCJyZWZlcnJlciI6IiIsInJlZmVycmluZ19kb21haW4iOiIiLCJyZWZlcnJlcl9jdXJyZW50IjoiIiwicmVmZXJyaW5nX2RvbWFpbl9jdXJyZW50IjoiIiwicmVsZWFzZV9jaGFubmVsIjoic3RhYmxlIiwiY2xpZW50X2J1aWxkX251bWJlciI6MTU0MTg2LCJjbGllbnRfZXZlbnRfc291cmNlIjpudWxsfQ==", "eyJvcyI6IkxpbnV4IiwiYnJvd3NlciI6IkRpc2NvcmQgQ2xpZW50IiwicmVsZWFzZV9jaGFubmVsIjoiY2FuYXJ5IiwiY2xpZW50X3ZlcnNpb24iOiIwLjAuMTQwIiwib3NfdmVyc2lvbiI6IjUuMTkuMC0zLXJ0MTAtTUFOSkFSTyIsIm9zX2FyY2giOiJ4NjQiLCJzeXN0ZW1fbG9jYWxlIjoiZW4tR0IiLCJ3aW5kb3dfbWFuYWdlciI6IktERSx1bmtub3duIiwiZGlzdHJvIjoiXCJNYW5qYXJvIExpbnV4XCIiLCJjbGllbnRfYnVpbGRfbnVtYmVyIjoxNTQyMTYsImNsaWVudF9ldmVudF9zb3VyY2UiOm51bGx9", "eyJvcyI6IkxpbnV4IiwiYnJvd3NlciI6IkNocm9tZSIsImRldmljZSI6IiIsInN5c3RlbV9sb2NhbGUiOiJlbi1HQiIsImJyb3dzZXJfdXNlcl9hZ2VudCI6Ik1vemlsbGEvNS4wIChYMTE7IExpbnV4IHg4Nl82NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEwNi4wLjAuMCBTYWZhcmkvNTM3LjM2IiwiYnJvd3Nlcl92ZXJzaW9uIjoiMTA2LjAuMC4wIiwib3NfdmVyc2lvbiI6IiIsInJlZmVycmVyIjoiaHR0cHM6Ly93d3cucm9ibG94LmNvbS8iLCJyZWZlcnJpbmdfZG9tYWluIjoid3d3LnJvYmxveC5jb20iLCJyZWZlcnJlcl9jdXJyZW50IjoiIiwicmVmZXJyaW5nX2RvbWFpbl9jdXJyZW50IjoiIiwicmVsZWFzZV9jaGFubmVsIjoic3RhYmxlIiwiY2xpZW50X2J1aWxkX251bWJlciI6MTU0MTg2LCJjbGllbnRfZXZlbnRfc291cmNlIjpudWxsfQ=="]
+        self.xproperties = random.choice(xproperties)
         self.cookies = {}
         self.base_url = "https://discord.com/api/v9"
 
@@ -83,12 +83,13 @@ class http:
             "authorization": self.token,
             "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.139 Chrome/91.0.4472.164 Electron/13.6.6 Safari/537.36",
             'Content-Type': 'application/json',
-            'X-Super-Properties': 'eyJvcyI6IldpbmRvd3MiLCJicm93c2VyIjoiRmlyZWZveCIsImRldmljZSI6IiIsInN5c3RlbV9sb2NhbGUiOiJmciIsImJyb3dzZXJfdXNlcl9hZ2VudCI6Ik1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQ7IHJ2OjEwMi4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94LzEwMi4wIiwiYnJvd3Nlcl92ZXJzaW9uIjoiMTAyLjAiLCJvc192ZXJzaW9uIjoiMTAiLCJyZWZlcnJlciI6IiIsInJlZmVycmluZ19kb21haW4iOiIiLCJyZWZlcnJlcl9jdXJyZW50IjoiIiwicmVmZXJyaW5nX2RvbWFpbl9jdXJyZW50IjoiIiwicmVsZWFzZV9jaGFubmVsIjoic3RhYmxlIiwiY2xpZW50X2J1aWxkX251bWJlciI6MTM2MjQwLCJjbGllbnRfZXZlbnRfc291cmNlIjpudWxsfQ==',
-            'X-Discord-Locale': 'en-US',
-            'X-Debug-Options': 'bugReporterEnabled',
+            'X-Super-Properties': self.xproperties,
+            'X-Discord-Locale': 'en-GB',
             'Sec-Fetch-Dest': 'empty',
             'Sec-Fetch-Mode': 'cors',
             'Sec-Fetch-Site': 'same-origin',
+            'origin': "https://discord.com",
+            "x-debug-options": "logGatewayEvents,logOverlayEvents,logAnalyticsEvents,bugReporterEnabled",
             'TE': 'trailers',
         }
         async with ClientSession(headers=headers) as session:
@@ -123,25 +124,27 @@ class http:
                     else:
                         json = await resp.json()
                         raise LoginFailure(json, resp.status)
-        if resp.headers['set-cookie'] != None:
-            dcf = resp.headers['set-cookie'].split("__dcfduid=")[0].split(";")[0]
-            sdc = resp.headers['set-cookie'].split("__sdcfduid=")[0].split(";")[0]
-            cfr = resp.headers['set-cookie'].split("__cfruid=")[0].split(";")[0]
-            bm = resp.headers['set-cookie'].split("__cf_bm=")[0].split(";")[0]
-            if dcf != "":
-                self.cookies['dcf'] = dcf
-            if sdc != "":
-                self.cookies['sdc'] = sdc
-            if cfr != "":
-                self.cookies['cfr'] = cfr
-            if bm != "":
-                self.cookies['bm'] = bm
-            self.cookie = ""
-            for value in self.remove_dupes(self.cookies).values():
-                if value != "":
-                    self.cookie += f"{value}; "
+        try:
+            if resp.headers['set-cookie'] != None:
+                dcf = resp.headers['set-cookie'].split("__dcfduid=")[0].split(";")[0]
+                sdc = resp.headers['set-cookie'].split("__sdcfduid=")[0].split(";")[0]
+                cfr = resp.headers['set-cookie'].split("__cfruid=")[0].split(";")[0]
+                bm = resp.headers['set-cookie'].split("__cf_bm=")[0].split(";")[0]
+                if dcf != "":
+                    self.cookies['dcf'] = dcf
+                if sdc != "":
+                    self.cookies['sdc'] = sdc
+                if cfr != "":
+                    self.cookies['cfr'] = cfr
+                if bm != "":
+                    self.cookies['bm'] = bm
+                self.cookie = ""
+                for value in self.remove_dupes(self.cookies).values():
+                    if value != "":
+                        self.cookie += f"{value}; "
+        except:
+            pass
 
-        
         return data
 
     async def encode_image(self, url):

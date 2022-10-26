@@ -6,7 +6,7 @@ from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, 
 from collections import defaultdict
 from aioconsole import aprint, aexec
 import time
-from .utils import Command, CommandCollection, Context
+from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension
 import random
 import contextlib
 from traceback import format_exception
@@ -23,7 +23,7 @@ class Bot:
         self._events = defaultdict(list)
         self.commands = CommandCollection(self)
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
-        self.extensions = {}
+        self.extensions = ExtensionCollection(self)
         self.user = None
 
     def run(self, token: str):
@@ -167,7 +167,6 @@ class Bot:
     async def load_extension(self, name: str):
         try:
             name = importlib.util.resolve_name(name, None)
-            print(name)
         except Exception as e:
             raise ModuleNotFoundError(f"{name} does not exist")
 
@@ -180,18 +179,14 @@ class Bot:
         except Exception as e:
             raise ModuleNotFoundError(f"Spec could not be loaded")
         try:
-            setup = getattr(lib, 'loader')
+            ext = getattr(lib, 'Ext')
         except Exception as e:
-            raise ModuleNotFoundError(f"Loader func not exist")
+            raise ModuleNotFoundError(f"Extension does not exist")
 
-        try:
-            setup(self)
-        except Exception as e:
-            raise RuntimeError("Setup failed")
 
-        self.extensions[name] = lib
+        self.extensions.add(ext)
 
-    def add_cog(self):
+    def add_ext(self):
         print("okaowdkoawkdoakwd")
 
 
@@ -261,6 +256,8 @@ class Bot:
             await self.http.request(method="patch", endpoint="/users/@me", headers={"origin":"https://discord.com", "referer": "https://discord.com/channels/@me"}, json={'avatar':image})
         else:
             raise TypeError("Avatar url not specified")
+
+
 
 
 
