@@ -13,8 +13,9 @@ from traceback import format_exception
 import io
 import importlib
 
+
 class Bot:
-    def __init__(self, show_beat: bool=False, prefixes: list=["s!"]) -> None:
+    def __init__(self, show_beat: bool = False, prefixes: list = ["s!"]) -> None:
         self.show_beat = show_beat
         self.token = None
         self.http = http()
@@ -33,10 +34,12 @@ class Bot:
             token (str): _description_
         """
         self.token = token
+
         async def runner():
             data = await self.http.static_login(token)
             self.user = Client(data)
             await self.gateway.start(token, self.user, self)
+
         try:
             asyncio.run(runner())
         except KeyboardInterrupt:
@@ -51,6 +54,7 @@ class Bot:
     async def inbuilt_commands(self):
         """I call this on bot initialisation, it's the inbuilt help command
         """
+
         @self.cmd("The help command!", aliases=["test"])
         async def help(ctx):
             msg = f"```diff\n"
@@ -60,13 +64,15 @@ class Bot:
                 msg += f"- {command.name}:    {command.description}\n"
             msg += f"```"
             await ctx.reply(f"{msg}")
+
         def clean_code(content):
 
             if content.startswith("```") and content.endswith("```"):
                 return "\n".join(content.split("\n")[1:])[:-3]
             else:
                 return content
-        @self.cmd(description="Evaluates and runs code", aliases=['exec','run'])
+
+        @self.cmd(description="Evaluates and runs code", aliases=['exec', 'run'])
         async def eval(ctx, *, code: str):
             code = clean_code(code)
 
@@ -80,22 +86,25 @@ class Bot:
 
             await ctx.reply(result)
 
-
     def on(self, event: str):
         """Decorator for events
 
         Args:
             event (str): The event to check for
         """
+
         def decorator(coro):
             if not inspect.iscoroutinefunction(coro):
                 raise RuntimeWarning("Faulure")
             else:
                 self._events[event].append(coro)
+
                 def wrapper(*args, **kwargs):
                     result = self._events[event].append(coro)
                     return result
+
                 return wrapper
+
         return decorator
 
     async def emit(self, event, *args, **kwargs):
@@ -135,6 +144,7 @@ class Bot:
                 cmd = Command(name=name, description=description, aliases=aliases, func=coro)
                 self.commands.add(cmd)
             return cmd
+
         return decorator
 
     def add_cmd(self, coro, description="", aliases=[]):
@@ -153,7 +163,6 @@ class Bot:
         else:
             cmd = Command(name=name, description=description, aliases=aliases, func=coro)
             self.commands.add(cmd)
-
 
     async def process_commands(self, msg):
         """What is called in order to actually get command input and run commands
@@ -194,11 +203,6 @@ class Bot:
     def add_cog(self):
         print("okaowdkoawkdoakwd")
 
-
-
-
-
-
     def get_channel(self, channel_id: str):
         """Function to help retrieve channel from bot cache
 
@@ -215,9 +219,6 @@ class Bot:
             for channel in guild.channels:
                 if channel_id == channel.id:
                     return channel
-
-
-
 
     def get_guild(self, guild_id: str):
         """Function to help retrieve guild from bot cache
@@ -237,9 +238,12 @@ class Bot:
         return User(data)
 
     async def add_friend(self, user_id: str):
-        await self.http.request(method="put", endpoint=f"/users/@me/relationships/{user_id}", headers={"origin": "https://discord.com", "referer":f"https://discord.com/channels/@me/{random.choice(self.user.private_channels).id}"},json={})
+        await self.http.request(method="put", endpoint=f"/users/@me/relationships/{user_id}",
+                                headers={"origin": "https://discord.com",
+                                         "referer": f"https://discord.com/channels/@me/{random.choice(self.user.private_channels).id}"},
+                                json={})
 
-    async def edit_profile(self, bio: str=None, accent: int=None):
+    async def edit_profile(self, bio: str = None, accent: int = None):
         fields = {}
         if bio != None:
             fields['bio'] = bio
@@ -258,14 +262,28 @@ class Bot:
         """
         if avatar_url != None:
             image = await self.http.encode_image(avatar_url)
-            await self.http.request(method="patch", endpoint="/users/@me", headers={"origin":"https://discord.com", "referer": "https://discord.com/channels/@me"}, json={'avatar':image})
+            await self.http.request(method="patch", endpoint="/users/@me", headers={"origin": "https://discord.com",
+                                                                                    "referer": "https://discord.com/channels/@me"},
+                                    json={'avatar': image})
         else:
             raise TypeError("Avatar url not specified")
 
+    async def create_dm(self, recipient_id: int):
+        """
+        Function to create new DM Channel with other user. Can be used with bots too.
 
+        Args:
+            recipient_id (snowflake): ID of recipient - Has to be user or bot ID
 
+        Raises:
+            TypeError: Recipient ID not specified
 
-
-
-
-
+        Returns:
+            DMChannel object
+        """
+        if recipient_id is not None:
+            data = await self.http.request(method="post", endpoint="/users/@me/channels",
+                                           json={"recipient_id": recipient_id})
+            return DMChannel(data, bot=self, http=self.http)
+        else:
+            raise TypeError("Recipient ID not specified")
