@@ -12,7 +12,7 @@ class User:
         return f"""{self.name}#{self.discriminator}"""
 
     @property
-    def timestamp(self):
+    def created_at(self):
         return datetime.datetime.utcfromtimestamp(((int(self.id) >> 22) + 1420070400000) / 1000)
 
     @property
