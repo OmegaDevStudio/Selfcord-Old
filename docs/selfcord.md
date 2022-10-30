@@ -386,7 +386,7 @@ Selfcord is a Discord API Wrapper with the design intended to be specifically fo
     * [Submodules](selfcord.utils.md#submodules)
 
 
-    * [selfcord.utils.command module](selfcord.utils.md#module-selfcord.utils.command)
+    * [selfcord.utils.command module](selfcord.utils.md#selfcord-utils-command-module)
 
 
         * [`Command`](selfcord.utils.md#selfcord.utils.command.Command)

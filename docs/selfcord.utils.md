@@ -4,6 +4,8 @@
 
 ## selfcord.utils.command module
 
+Utility related modules here, currently holds command related class.
+
 
 ### _class_ selfcord.utils.command.Command(\*\*kwargs)
 Bases: `object`
