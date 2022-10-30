@@ -6,7 +6,7 @@ from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, 
 from collections import defaultdict
 from aioconsole import aprint, aexec
 import time
-from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension
+from .utils import Command, CommandCollection, Context
 import random
 import contextlib
 from traceback import format_exception
@@ -24,7 +24,7 @@ class Bot:
         self._events = defaultdict(list)
         self.commands = CommandCollection(self)
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
-        self.extensions = ExtensionCollection(self)
+        self.extensions = {}
         self.user = None
 
     def run(self, token: str):
