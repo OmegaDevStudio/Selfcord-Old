@@ -70,7 +70,7 @@ class Guild:
                 self.roles.append(role)
 
             if emoji != None:
-                emoji = Emoji(emoji)
+                emoji = Emoji(emoji, self.bot, self.http)
                 self.emojis.append(emoji)
 
     async def txt_channel_create(self, name, parent_id=None):
@@ -84,6 +84,11 @@ class Guild:
 
     async def category_channel_create(self, name):
         await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 4})
+
+    async def emoji_create(self, name: str, image_url: str):
+        image = await self.http.encode_image(image_url)
+        await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/emojis", json= {"name": f"{name}", "image": image})
+
 
     async def edit(self, name: str=None, icon_url: str=None, banner_url: str=None, description: str=None):
         fields = {}

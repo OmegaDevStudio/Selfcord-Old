@@ -18,6 +18,7 @@ class Role:
         self.managed = data.get("managed") if role==None else role.get("managed")
         self.icon = data.get("icon") if role==None else role.get("icon")
         self.flags = data.get("flags") if role==None else role.get("flags")
+
         self.color = data.get("color") if role==None else role.get("color")
         self.hoist = data.get("hoist") if role==None else role.get("hoist")
         if self.guild_id is None:
@@ -27,3 +28,7 @@ class Role:
 
     def __str__(self) -> str:
         return f"{self.name}"
+
+    async def delete(self):
+        self.http.request(method="delete", endpoint=f"/guilds/{self.guild_id}/roles/{self.id}")
+        del self

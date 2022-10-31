@@ -62,7 +62,11 @@ class Bot:
             msg += f"- Commands\n"
             for command in self.commands:
                 msg += f"- {command.name}:    {command.description}\n"
+                print(len(msg))
+                if len(msg) > 1980:
+                    msg += f"```"
             msg += f"```"
+
             await ctx.reply(f"{msg}")
 
         def clean_code(content):
@@ -72,7 +76,7 @@ class Bot:
             else:
                 return content
 
-        @self.cmd(description="Evaluates and runs code", aliases=['exec', 'run'])
+        @self.cmd(description="Evaluates and runs code", aliases=['exec'])
         async def eval(ctx, *, code: str):
             code = clean_code(code)
 

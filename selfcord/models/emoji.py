@@ -3,7 +3,9 @@
 class Emoji:
     """Emoji Object
     """
-    def __init__(self, data) -> None:
+    def __init__(self, data, bot, http) -> None:
+        self.bot = bot
+        self.http = http
         self._update(data)
 
     def __str__(self) -> str:
@@ -16,4 +18,9 @@ class Emoji:
         self.managed = data.get("managed")
         self.available = data.get("available")
         self.animated = data.get("animated")
+        self.guild_id =
 
+
+    async def delete(self):
+        await self.http.request(method="delete", endpoint=f"/guilds/{self.guild_id}/emojis/{self.id}")
+        del self
