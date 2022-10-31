@@ -18,7 +18,7 @@ class Emoji:
         self.managed = data.get("managed")
         self.available = data.get("available")
         self.animated = data.get("animated")
-        self.guild_id =
+        self.guild_id = data.get("guild_id")
 
 
     async def delete(self):
