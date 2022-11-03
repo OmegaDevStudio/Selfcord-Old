@@ -8,6 +8,9 @@ Selford.egg-info
 main.py
 exts
 .idea
+docs
+=======
 test.txt
 source
 docs-sphinx
+

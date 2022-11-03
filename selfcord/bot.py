@@ -47,12 +47,13 @@ class Bot:
 
     @property
     def latency(self):
-        "Latency of heartbeat ack, gateway latency essentially"
+        """Latency of heartbeat ack, gateway latency essentially"""
         return self.gateway.latency
 
     # For events
     async def inbuilt_commands(self):
-        """I call this on bot initialisation, it's the inbuilt help command
+        """
+        I call this on bot initialisation, it's the inbuilt help command
         """
 
         @self.cmd("The help command!", aliases=["test"])
@@ -150,12 +151,16 @@ class Bot:
         return decorator
 
     def add_cmd(self, coro, description="", aliases=[]):
-        """Function to add commands manually without decorator
+        """
+        Function to add commands manually without decorator
 
         Args:
             coro (coroutine): The function to add
             description (str, optional): Description of command. Defaults to "".
             aliases (list, optional): Alternative names for command. Defaults to [].
+
+        Raises:
+            RuntimeWarning: If you suck and don't use a coroutine
         """
         if isinstance(aliases, str):
             aliases = [aliases]
@@ -167,7 +172,8 @@ class Bot:
             self.commands.add(cmd)
 
     async def process_commands(self, msg):
-        """What is called in order to actually get command input and run commands
+        """
+        What is called in order to actually get command input and run commands
 
         Args:
             msg (str): The message containing command
@@ -176,6 +182,15 @@ class Bot:
         await context.invoke()
 
     async def load_extension(self, name: str):
+        """
+        Load various extensions/plugins/cogs if any.
+
+        Args:
+            name (str): Name of the extension to load
+
+        Raises:
+            ModuleNotFoundError: If you suck and don't know the name of what you want to load
+        """
         try:
             name = importlib.util.resolve_name(name, None)
         except Exception as e:
@@ -198,10 +213,15 @@ class Bot:
         self.extensions.add(ext)
 
     def add_ext(self):
+        """
+        To be built later.
+        Note: Need contributors.
+        """
         print("okaowdkoawkdoakwd")
 
     def get_channel(self, channel_id: str):
-        """Function to help retrieve channel from bot cache
+        """
+        Function to help retrieve channel from bot cache
 
         Args:
             channel_id (str): The channel id to search for
@@ -218,7 +238,8 @@ class Bot:
                     return channel
 
     def get_guild(self, guild_id: str):
-        """Function to help retrieve guild from bot cache
+        """
+        Function to help retrieve guild from bot cache
 
         Args:
             guild_id (str): The guild id to search for
@@ -231,16 +252,37 @@ class Bot:
                 return guild
 
     async def get_user(self, user_id: str):
+        """
+        Function to retrieve user data. Probably need to be friends with them to retrieve the details.
+
+        Args:
+            user_id (Str): ID of the other user.
+
+        Returns:
+            User: The User object
+        """
         data = await self.http.request(method="get", endpoint=f"/users/{user_id}")
         return User(data)
 
     async def add_friend(self, user_id: str):
+        """
+        Function to add random user as a friend.
+
+        Args:
+            user_id (str): ID of the possible random user.
+
+        Returns:
+            No return value.
+        """
         await self.http.request(method="put", endpoint=f"/users/@me/relationships/{user_id}",
                                 headers={"origin": "https://discord.com",
                                          "referer": f"https://discord.com/channels/@me/{random.choice(self.user.private_channels).id}"},
                                 json={})
 
     async def edit_profile(self, bio: str = None, accent: int = None):
+        """
+        
+        """
         fields = {}
         if bio != None:
             fields['bio'] = bio
