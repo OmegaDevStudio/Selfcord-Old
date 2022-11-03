@@ -66,11 +66,9 @@ class Bot:
                 if len(msg) > 1980:
                     msg += f"```"
             msg += f"```"
-
             await ctx.reply(f"{msg}")
 
         def clean_code(content):
-
             if content.startswith("```") and content.endswith("```"):
                 return "\n".join(content.split("\n")[1:])[:-3]
             else:
