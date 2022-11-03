@@ -50,7 +50,7 @@ class EventHandler:
         self.user.messages.append(message)
 
         # Sends data from ready to the event handler in main.py (if it exists)
-        await self.bot.emit("message_create", message)
+        await self.bot.emit("message", message)
         if message.author.id == self.bot.user.id:
             for prefix in self.bot.prefixes:
                 if message.content.startswith(prefix):

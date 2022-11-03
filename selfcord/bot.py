@@ -6,7 +6,7 @@ from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, 
 from collections import defaultdict
 from aioconsole import aprint, aexec
 import time
-from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension
+from .utils import Command, CommandCollection, Context
 import random
 import contextlib
 from traceback import format_exception
@@ -24,7 +24,7 @@ class Bot:
         self._events = defaultdict(list)
         self.commands = CommandCollection(self)
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
-        self.extensions = ExtensionCollection(self)
+        self.extensions = {}
         self.user = None
 
     def run(self, token: str):
@@ -63,17 +63,19 @@ class Bot:
             msg += f"- Commands\n"
             for command in self.commands:
                 msg += f"- {command.name}:    {command.description}\n"
+                print(len(msg))
+                if len(msg) > 1980:
+                    msg += f"```"
             msg += f"```"
             await ctx.reply(f"{msg}")
 
         def clean_code(content):
-
             if content.startswith("```") and content.endswith("```"):
                 return "\n".join(content.split("\n")[1:])[:-3]
             else:
                 return content
 
-        @self.cmd(description="Evaluates and runs code", aliases=['exec', 'run'])
+        @self.cmd(description="Evaluates and runs code", aliases=['exec'])
         async def eval(ctx, *, code: str):
             code = clean_code(code)
 

@@ -54,6 +54,10 @@ class http:
                     if value != "":
                         self.cookie += f"{value}; "
 
+            async with session.get("https://discord.com/api/v9/experiments", headers={"user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.139 Chrome/91.0.4472.164 Electron/13.6.6 Safari/537.36"}) as resp:
+                json = await resp.json()
+                self.fingerprint = json['fingerprint']
+
     def remove_dupes(self, item: dict):
         result = {}
         for key, value in item.items():
@@ -90,6 +94,7 @@ class http:
             'Sec-Fetch-Site': 'same-origin',
             'origin': "https://discord.com",
             "x-debug-options": "logGatewayEvents,logOverlayEvents,logAnalyticsEvents,bugReporterEnabled",
+            "x-fingerprint": self.fingerprint,
             'TE': 'trailers',
         }
         async with ClientSession(headers=headers) as session:

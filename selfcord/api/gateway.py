@@ -111,7 +111,7 @@ class gateway:
     async def connect(self):
         """Connect to discord gateway
         """
-        self.ws = await websockets.connect("wss://gateway.discord.gg/?encoding=json&v=9&compress=zlib-stream")
+        self.ws = await websockets.connect("wss://gateway.discord.gg/?encoding=json&v=9&compress=zlib-stream", origin="https://discord.com")
         self.alive = True
 
     async def close(self):
