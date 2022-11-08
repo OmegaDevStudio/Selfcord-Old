@@ -40,6 +40,7 @@ class Guild:
         self.splash = data.get('splash')
         self.mfa_level = data.get('mfa_level')
         self.features = data.get('features')
+        self.member_count = data.get("member_count")
         self.unavailable = data.get('unavailable')
         self.verification_level = data.get('verification_level')
         self.explicit_content_filter = data.get('explicit_content_filter')
@@ -89,6 +90,8 @@ class Guild:
         image = await self.http.encode_image(image_url)
         await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/emojis", json= {"name": f"{name}", "image": image})
 
+    async def get_members(self, channel_id: str):
+        await self.bot.gateway.lazy_chunk(self.id, channel_id, self.member_count)
 
     async def edit(self, name: str=None, icon_url: str=None, banner_url: str=None, description: str=None):
         fields = {}

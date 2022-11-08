@@ -125,6 +125,24 @@ class EventHandler:
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit("channel_create", channel)
 
+    async def handle_guild_member_list_update(self, data, user: Client, http):
+        """Handles what happens when member chunk payload is sent via gateway
+        """
+        self.user = user
+        members = []
+        try:
+            for item in data["ops"][0]["items"]:
+                try:
+                    members.append(User(item['member']['user']))
+                except:
+                    continue
+            
+            await self.bot.emit("member_chunk", members)
+        except:
+            pass
+
+
+
     async def handle_channel_delete(self, data, user: Client, http):
         """Handles what happens when a channel is deleted
         """

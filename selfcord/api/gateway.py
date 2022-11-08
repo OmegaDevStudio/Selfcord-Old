@@ -93,8 +93,37 @@ class gateway:
                 # Handlers are all situated in events.py
 
 
+    def roundup(self, n):
+        import math
+        return int(math.ceil(n / 100.0)) * 100
 
+    async def lazy_chunk(self, guild_id: str, channel_id: str, amount: int):
+        """Sends lazy guild request to gather current online members
 
+        Args:
+            guild_id (str): The guild id specified
+            channel_id (str): The channel id specified
+        """
+        ranges = []
+        for i in range(0, amount, 100):
+            if i+99 > amount:
+                ranges.append([i, self.roundup(i + (amount - i)) - 1])
+            else:
+                ranges.append([i, i+99])
+
+        for i in range(0, len(ranges), 1):
+
+            payload = {
+                "op": 14,
+                "d": {
+                    "guild_id": guild_id,
+                    "typing": True,
+                    "channels": {channel_id:ranges[:i+1]}
+                }
+            }
+            await aprint(ranges[:i+1])
+            await asyncio.sleep(1.5)
+            await self.send_json(payload)
 
 
 

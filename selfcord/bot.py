@@ -6,7 +6,7 @@ from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, 
 from collections import defaultdict
 from aioconsole import aprint, aexec
 import time
-from .utils import Command, CommandCollection, Context
+from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension
 import random
 import contextlib
 from traceback import format_exception
@@ -23,6 +23,7 @@ class Bot:
         self.gateway = gateway(self.http, self.show_beat)
         self._events = defaultdict(list)
         self.commands = CommandCollection(self)
+        self.extensions = ExtensionCollection(self)
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
         self.extensions = {}
         self.user = None
@@ -62,7 +63,7 @@ class Bot:
             msg += f"- Commands\n"
             for command in self.commands:
                 msg += f"- {command.name}:    {command.description}\n"
-                print(len(msg))
+
                 if len(msg) > 1980:
                     msg += f"```"
             msg += f"```"
@@ -173,7 +174,8 @@ class Bot:
             msg (str): The message containing command
         """
         context = Context(self, msg, self.http)
-        await context.invoke()
+
+        asyncio.create_task(context.invoke())
 
     async def load_extension(self, name: str):
         try:
@@ -195,7 +197,7 @@ class Bot:
             raise ModuleNotFoundError(f"Extension does not exist")
 
 
-        self.extensions.add(ext)
+        self.extensions.add(Extension(name=ext.name, description=ext.description, ext=ext))
 
     def add_ext(self):
         print("okaowdkoawkdoakwd")
