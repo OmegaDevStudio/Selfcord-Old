@@ -79,6 +79,7 @@ class gateway:
 
                 handle = f"handle_{event.lower()}"
 
+
                 if hasattr(self.handler, handle): # If the event handler exists, so e.g handle_ready
                     method = getattr(self.handler,handle)
 
@@ -131,7 +132,6 @@ class gateway:
                     "channels": {channel_id:item}
                 }
             }
-            await aprint(item)
             await self.send_json(payload)
 
 

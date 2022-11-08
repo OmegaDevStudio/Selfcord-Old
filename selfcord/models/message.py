@@ -18,7 +18,7 @@ class Message:
         self.tts = data.get("tts")
         self.references_message = data.get("referenced_message")
         self.mentions = data.get("mentions")
-        self.author = User(data.get("author"))
+        self.author = User(data.get("author"), self.bot, self.http)
         self.id = data.get("id")
         self.flags = data.get("flags")
         self.embeds = data.get("embeds")

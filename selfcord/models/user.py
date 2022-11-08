@@ -5,7 +5,9 @@ import datetime
 class User:
     """User Object
     """
-    def __init__(self, UserPayload: dict) -> None:
+    def __init__(self, UserPayload: dict, bot, http) -> None:
+        self.bot = bot
+        self.http = http
         self._update(UserPayload)
 
     def __str__(self):
@@ -33,4 +35,7 @@ class User:
         self.system = data.get('system')
 
 
+    async def create_dm(self):
+        await self.http.request(method="post", endpoint="/users/@me/channels", json={"recipients": [self.id]})
 
+    

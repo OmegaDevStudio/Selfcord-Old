@@ -1,4 +1,4 @@
-from .member import Member
+from .user import User
 from .channel import TextChannel, VoiceChannel, Category
 from .role import Role
 from .emoji import Emoji
@@ -48,7 +48,7 @@ class Guild:
 
         for (member, channel, role, emoji) in zip_longest(data.get('members'), data.get("channels"), data.get("roles"), data.get("emojis")):
             if member != None:
-                user = Member(member)
+                user = User(member, self.bot, self.http)
                 self.members.append(user)
 
             if channel != None:

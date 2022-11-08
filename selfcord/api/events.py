@@ -18,7 +18,7 @@ class EventHandler:
         self.user = user
         for relationship in data.get("relationships"):
             if relationship.get("type") == 1:
-                self.user.friends.append(User(relationship["user"]))
+                self.user.friends.append(User(relationship["user"], self.bot, http))
 
         for channel in data.get("private_channels"):
             if channel.get("type") == 1:
@@ -133,10 +133,10 @@ class EventHandler:
         try:
             for item in data["ops"][0]["items"]:
                 try:
-                    members.append(User(item['member']['user']))
+                    members.append(User(item['member']['user'], self.bot, http))
                 except:
                     continue
-            
+
             await self.bot.emit("member_chunk", members)
         except:
             pass

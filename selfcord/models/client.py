@@ -4,6 +4,7 @@ class Client:
     """Client Object
     """
     def __init__(self, UserPayload: dict) -> None:
+
         self.guilds = []
         self.private_channels = []
         self.friends = []

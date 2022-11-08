@@ -333,7 +333,7 @@ class DMChannel:
         return f"{self.recipient}"
 
     def _update(self, data):
-        self.recipient = User(data.get("recipients")[0])
+        self.recipient = User(data.get("recipients")[0], self.bot, self.http)
         self.last_message_id = data.get("last_message_id")
         self.id = data.get("id")
         self.flags = data.get("id")
@@ -405,7 +405,7 @@ class GroupChannel:
 
     def _update(self, data):
         for user in data.get("recipients"):
-            self.recipients.append(User(user))
+            self.recipients.append(User(user, self.bot, self.http))
         self.name = data.get("name")
         self.owner_id = data.get("owner_id")
         self.last_message_id = data.get("last_message_id")
