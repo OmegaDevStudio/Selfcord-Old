@@ -97,6 +97,17 @@ class gateway:
         import math
         return int(math.ceil(n / 100.0)) * 100
 
+    def chunks(self, lst, n):
+
+        for i in range(0, len(lst), 1):
+            if len(lst[:i+1]) > 3:
+                for i in range(i, len(lst), n):
+                    yield lst[i:i + n]
+                break
+            yield lst[:i+1]
+
+
+
     async def lazy_chunk(self, guild_id: str, channel_id: str, amount: int):
         """Sends lazy guild request to gather current online members
 
@@ -111,18 +122,16 @@ class gateway:
             else:
                 ranges.append([i, i+99])
 
-        for i in range(0, len(ranges), 1):
-
+        for item in self.chunks(ranges, 3):
             payload = {
                 "op": 14,
                 "d": {
                     "guild_id": guild_id,
                     "typing": True,
-                    "channels": {channel_id:ranges[:i+1]}
+                    "channels": {channel_id:item}
                 }
             }
-            await aprint(ranges[:i+1])
-            await asyncio.sleep(1.5)
+            await aprint(item)
             await self.send_json(payload)
 
 
