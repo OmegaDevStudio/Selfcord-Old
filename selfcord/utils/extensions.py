@@ -11,7 +11,7 @@ class Extension:
         self.commands: CommandCollection | None = kwargs.get("commands")
 
 class Extender:
-    def __init__(self) -> None:
+    def __init__(self, bot) -> None:
         self.commands = CommandCollection(bot)
     class Extension:
         def __init_subclass__(cls, name=None, description="") -> None:
