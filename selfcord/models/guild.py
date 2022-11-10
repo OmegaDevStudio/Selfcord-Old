@@ -75,7 +75,13 @@ class Guild:
                 self.emojis.append(emoji)
 
     async def txt_channel_create(self, name, parent_id=None):
-        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "parent_id": f"{parent_id}", "permission_overwrites": [], "type": 0})
+        payload = {"name": name}
+        payload.update({"permission_overwrites": []})
+        payload.update({"type": 0})
+        if parent_id:
+            payload.update({"parent_id": parent_id})
+
+        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json=payload)
 
     async def vc_channel_create(self, name):
         await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 2})
