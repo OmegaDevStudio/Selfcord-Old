@@ -11,7 +11,7 @@ from selfcord.models.client import Client
 
 
 class gateway:
-   ''' OP CODES '''
+    ''' OP CODES '''
     DISPATCH           = 0
     HEARTBEAT          = 1
     IDENTIFY           = 2

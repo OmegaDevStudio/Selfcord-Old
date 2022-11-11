@@ -38,16 +38,17 @@ class http:
                 sdc = resp.headers['set-cookie'].split('__sdcfduid=')[0].split(';')[0]
                 cfr = resp.headers['set-cookie'].split('__cfruid=')[0].split(';')[0]
 
-                self.cookies.get('dcf') = '' else dcf self.cookies['dcf'] = dcf
-                self.cookies.get('sdc') = '' else dcf self.cookies['dcf'] = sdc
-                self.cookies.get('cfr') = '' else dcf self.cookies['dcf'] = cfr
+                self.cookies['dcf'] = self.cookies.get('dcf') if dcf != "" else ""
+                self.cookies['sdc'] = self.cookies.get('sdc') if sdc != "" else ""
+                self.cookies['cfr'] = self.cookies.get('cfr') if cfr != "" else ""
                 self.cookie = set(self.cookies)
 
             async with session.get('https://discord.com/api/v9/experiments', headers={'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.139 Chrome/91.0.4472.164 Electron/13.6.6 Safari/537.36'}) as resp:
                 json = await resp.json()
                 self.fingerprint = json['fingerprint']
 
-    def remove_dupes(self, dictionary: dict) -> : return set(dictionary)
+    def remove_dupes(self, dictionary: dict):
+        return set(dictionary)
 
     async def request(self, method: str, endpoint: str, *args, **kwargs) -> dict:
         '''Used to send requests
@@ -79,7 +80,7 @@ class http:
             'x-fingerprint': self.fingerprint,
             'TE': 'trailers',
         }
-        
+
         async with ClientSession(headers = headers) as session:
             request = getattr(session, method)
             while True:
@@ -125,9 +126,10 @@ class http:
                 cfr = resp.headers['set-cookie'].split('__cfruid=')[0].split(';')[0]
                 bm = resp.headers['set-cookie'].split('__cf_bm=')[0].split(';')[0]
 
-                self.cookies.get('dcf') = '' else dcf self.cookies['dcf'] = dcf
-                self.cookies.get('sdc') = '' else dcf self.cookies['dcf'] = sdc
-                self.cookies.get('bm')  = '' else dcf self.cookies['dcf'] = bm
+                self.cookies['dcf'] = self.cookies.get('dcf') if dcf != "" else ""
+                self.cookies['sdc'] = self.cookies.get('sdc') if sdc != "" else ""
+                self.cookies['cfr'] = self.cookies.get('cfr') if cfr != "" else ""
+                self.cookies['bm'] = self.cookies.get('bm') if bm != "" else ""
                 self.cookie = set(self.cookies)
         except: pass
 
