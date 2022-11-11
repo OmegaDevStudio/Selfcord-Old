@@ -283,7 +283,7 @@ class Bot:
 
     async def edit_profile(self, bio: str = None, accent: int = None):
         """
-        
+
         """
         fields = {}
         if bio != None:
@@ -329,7 +329,14 @@ class Bot:
         else:
             raise TypeError("Recipient ID not specified")
 
-
+    async def change_hypesquad(self, house: str):
+        if house.lower() == "bravery":
+            await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 1})
+        if house.lower() == "brilliance":
+            await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 2})
+        if house.lower() == "balance":
+            await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 3})
+       
 
 
 
