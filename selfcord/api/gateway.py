@@ -8,6 +8,73 @@ from .events import EventHandler
 from .errors import ReconnectWebsocket
 from selfcord.models.client import Client
 
+class Activity:
+
+    @staticmethod
+    def Game(name, details: str="", buttons: dict={}):
+        type = 0
+        button_urls = buttons.values()
+        buttons = buttons.keys()
+
+        payload = {
+            "name": name,
+            "type": type,
+            "buttons": [item for item in buttons] if buttons != None else [],
+            "metadata": {
+                "button_urls": [item for item in button_urls] if button_urls != None else [],
+            },
+            "created_at": int(time.time())
+        }
+        return payload
+
+    @staticmethod
+    def Stream(name, details: str="", url: str="https://www.youtube.com/watch?v=CyIrJVp-sH8",buttons: dict={}):
+        type = 1
+        button_urls = buttons.values()
+        buttons = buttons.keys()
+        payload = {
+            "name": name,
+            "type": type,
+            "buttons": [item for item in buttons] if buttons != None else [],
+            "metadata": {
+                "button_urls": [item for item in button_urls]
+            },
+            "url": url,
+            "created_at": int(time.time())
+        }
+        return payload
+
+    @staticmethod
+    def Listen(name, details: str="", buttons: dict={}):
+        type = 2
+        button_urls = buttons.values()
+        buttons = buttons.keys()
+        payload = {
+            "name": name,
+            "type": type,
+            "buttons": [item for item in buttons] if buttons != None else [],
+            "metadata": {
+                "button_urls": [item for item in button_urls] if button_urls != None else [],
+            },
+            "created_at": int(time.time())
+        }
+        return payload
+
+    @staticmethod
+    def Watch(name, details: str="", buttons: dict={}):
+        type = 3
+        button_urls = buttons.values()
+        buttons = buttons.keys()
+        payload = {
+            "name": name,
+            "type": type,
+            "buttons": [item for item in buttons] if buttons != None else [],
+            "metadata": {
+                "button_urls": [item for item in button_urls] if button_urls != None else [],
+            },
+            "created_at": int(time.time())
+        }
+        return payload
 
 
 class gateway:
@@ -102,6 +169,26 @@ class gateway:
                 break
 
             yield lst[:i+1]
+
+    async def change_presence(self, status: str, afk: bool=False, activity: dict= Activity.Game("Selfcord", "Greatest wrapper" )):
+        """Change the clients current presence
+
+        Args:
+            status (str): online, offline or dnd
+            afk (bool): Whether client is set as AFK
+            activity (Activity): Activity object
+        """
+        payload = {
+            "op": 3,
+            "d" : {
+                "since": time.time(),
+                "activities": [activity],
+                "status": status.lower(),
+                "afk": afk
+            },
+        }
+        await aprint(payload)
+        await self.send_json(payload)
 
 
 

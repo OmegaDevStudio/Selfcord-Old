@@ -1,6 +1,6 @@
 import asyncio
 import json
-from .api import gateway, http
+from .api import gateway, http, Activity
 import inspect
 from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, Guild, User
 from collections import defaultdict
@@ -221,6 +221,8 @@ class Bot:
         """
         print("okaowdkoawkdoakwd")
 
+
+
     def get_channel(self, channel_id: str):
         """
         Function to help retrieve channel from bot cache
@@ -336,8 +338,9 @@ class Bot:
             await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 2})
         if house.lower() == "balance":
             await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 3})
-       
 
+    async def change_presence(self, status: str, afk: bool=False, activity: dict=Activity.Game("test", "testing")):
+        await self.gateway.change_presence(status, afk, activity=activity)
 
 
 
