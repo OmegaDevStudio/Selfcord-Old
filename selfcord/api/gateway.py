@@ -13,68 +13,117 @@ class Activity:
     @staticmethod
     def Game(name, details: str="", buttons: dict={}):
         type = 0
-        button_urls = buttons.values()
-        buttons = buttons.keys()
+        button_urls = [button for button in buttons.values()]
+        buttons: list = [button for button in buttons.keys()]
 
-        payload = {
-            "name": name,
-            "type": type,
-            "buttons": [item for item in buttons] if buttons != None else [],
-            "metadata": {
-                "button_urls": [item for item in button_urls] if button_urls != None else [],
-            },
-            "created_at": int(time.time())
-        }
+        if len(button_urls) == 0 or len(buttons) == 0:
+            payload = {
+                "name": name,
+                "details": details,
+                "type": type,
+                "created_at": int(time.time()),
+            }
+        else:
+            payload = {
+                "name": name,
+                "details": details,
+                "type": type,
+                "buttons": buttons,
+                "metadata": {
+                    "button_urls": button_urls,
+                },
+                "created_at": int(time.time())
+            }
+
+
         return payload
 
     @staticmethod
     def Stream(name, details: str="", url: str="https://www.youtube.com/watch?v=CyIrJVp-sH8",buttons: dict={}):
         type = 1
-        button_urls = buttons.values()
-        buttons = buttons.keys()
-        payload = {
-            "name": name,
-            "type": type,
-            "buttons": [item for item in buttons] if buttons != None else [],
-            "metadata": {
-                "button_urls": [item for item in button_urls]
-            },
-            "url": url,
-            "created_at": int(time.time())
-        }
+        button_urls = [button for button in buttons.values()]
+        buttons: list = [button for button in buttons.keys()]
+
+        if len(button_urls) == 0 or len(buttons) == 0:
+            payload = {
+                "name": name,
+                "details": details,
+                "type": type,
+                "created_at": int(time.time()),
+                "url": url
+            }
+        else:
+            payload = {
+                "name": name,
+                "details": details,
+                "type": type,
+                "buttons": buttons,
+                "url": url,
+                "metadata": {
+                    "button_urls": button_urls,
+                },
+                "created_at": int(time.time())
+            }
+
         return payload
 
     @staticmethod
     def Listen(name, details: str="", buttons: dict={}):
         type = 2
-        button_urls = buttons.values()
-        buttons = buttons.keys()
-        payload = {
-            "name": name,
-            "type": type,
-            "buttons": [item for item in buttons] if buttons != None else [],
-            "metadata": {
-                "button_urls": [item for item in button_urls] if button_urls != None else [],
-            },
-            "created_at": int(time.time())
-        }
+        button_urls = [button for button in buttons.values()]
+        buttons: list = [button for button in buttons.keys()]
+
+        if len(button_urls) == 0 or len(buttons) == 0:
+            payload = {
+                "name": name,
+                "details": details,
+                "type": type,
+                "created_at": int(time.time()),
+            }
+        else:
+            payload = {
+                "name": name,
+                "details": details,
+                "type": type,
+                "buttons": buttons,
+                "metadata": {
+                    "button_urls": button_urls,
+                },
+                "created_at": int(time.time())
+            }
+
+
         return payload
 
     @staticmethod
     def Watch(name, details: str="", buttons: dict={}):
         type = 3
-        button_urls = buttons.values()
-        buttons = buttons.keys()
-        payload = {
-            "name": name,
-            "type": type,
-            "buttons": [item for item in buttons] if buttons != None else [],
-            "metadata": {
-                "button_urls": [item for item in button_urls] if button_urls != None else [],
-            },
-            "created_at": int(time.time())
-        }
+
+        button_urls = [button for button in buttons.values()]
+        buttons: list = [button for button in buttons.keys()]
+
+        if len(button_urls) == 0 or len(buttons) == 0:
+            payload = {
+                "name": name,
+                "details": details,
+                "type": type,
+                "created_at": int(time.time()),
+            }
+        else:
+            payload = {
+                "name": name,
+                "details": details,
+                "type": type,
+                "buttons": buttons,
+                "metadata": {
+                    "button_urls": button_urls,
+                },
+                "created_at": int(time.time())
+            }
+
+
         return payload
+
 
 
 class gateway:
@@ -187,7 +236,7 @@ class gateway:
                 "afk": afk
             },
         }
-        await aprint(payload)
+
         await self.send_json(payload)
 
 
