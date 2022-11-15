@@ -1,3 +1,11 @@
+Metadata-Version: 2.1
+Name: selfcord.py
+Version: 0.0.4
+Summary: A Discord API wrapper designed for selfbots!
+Author: Shell of OMEGA
+License: MIT
+Description-Content-Type: text/markdown
+
 # Selfcord
 A discord selfbot API wrapper (WIP)
 
@@ -5,7 +13,7 @@ A discord selfbot API wrapper (WIP)
 
 Run this in the command line.
 ```
-pip install selfcord.py
+pip install git+https://github.com/Shell1010/Selfcord.git
 ```
 
 ## Wiki
