@@ -23,7 +23,7 @@ bot = selfcord.Bot(prefixes=["!", "?"])
 
 @bot.on("ready")
 async def ball(time):
-    print(f"Connected To {bot.user}\n Startup took {time:0.2f} seconds")
+    print(f"Connected To {bot.user}\nStartup took {time:0.2f} seconds")
 
 @bot.on("message_delete")
 async def message_logger(message):
@@ -55,7 +55,7 @@ bot = selfcord.Bot(prefixes=["!", "?"])
 
 @bot.on("ready")
 async def ball(time):
-    print(f"Connected To {bot.user}\n Startup took {time:0.2f} seconds")
+    print(f"Connected To {bot.user}\nStartup took {time:0.2f} seconds")
 
 @bot.cmd(description="Purges the channel", aliases=["wipe", "clear"])
 async def purge(ctx, amount: int=None):
@@ -73,7 +73,7 @@ bot = selfcord.Bot(prefixes=["!", "?"])
 
 @bot.on("ready")
 async def ball(time):
-    print(f"Connected To {bot.user}\n Startup took {time:0.2f} seconds")
+    print(f"Connected To {bot.user}\nStartup took {time:0.2f} seconds")
 
 @bot.cmd(description="Snipe", aliases=['s'])
 async def snipe(ctx):
