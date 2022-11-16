@@ -34,7 +34,6 @@ class Message:
         await self.http.request(method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}")
 
     async def react(self, id: str, emoji: str):
-        raw_reaction = urllib.parse.quote(emoji)
-        reaction = raw_reaction.split("emoji=")[1]
+        reaction = urllib.parse.quote(emoji)
         if '%F0%9F%' == reaction[0:7]:
             await self.http.request(method="put", endpoint=f"/channels/{self.channel_id}/messages/{id}/reactions/{reaction}/%40me?location=Message&burst=false")
