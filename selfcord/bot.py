@@ -284,8 +284,7 @@ class Bot:
                                 json={})
 
     async def edit_profile(self, bio: str = None, accent: int = None):
-        """
-
+        """ Edits user profile
         """
         fields = {}
         if bio != None:

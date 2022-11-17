@@ -1,5 +1,6 @@
 from .user import User
 import asyncio
+import urllib
 
 class Message:
     """Message Object
@@ -16,7 +17,7 @@ class Message:
 
     def _update(self, data):
         self.tts = data.get("tts")
-        self.references_message = data.get("referenced_message")
+        self.referenced_message = data.get("referenced_message")
         self.mentions = data.get("mentions")
         self.author = User(data.get("author"), self.bot, self.http)
         self.id = data.get("id")
@@ -38,7 +39,9 @@ class Message:
         await self.http.request(method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}")
 
 
-
+    async def react(self, emoji):
+        raw_reaction = urllib.parse.urlencode({"emoji": emoji}).split("emoji=")[1]
+        await self.http.request(method="put", endpoint=f"/channels/{self.channel_id}/messages/{self.id}/reactions/{raw_reaction}/%40me?location=Message&burst=false", headers={"referer": f"https://discord.com/channels/@me/{self.channel_id}"})
 
 
 
