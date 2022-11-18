@@ -22,8 +22,7 @@ class Command:
 class CommandCollection:
     """Commands collection, where commands are stored into
     """
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self):
         self.commands = {}
 
     def __len__(self):
@@ -37,6 +36,12 @@ class CommandCollection:
             for alias in cmd.aliases:
                 if alias in command.aliases:
                     return True
+
+    def append(self, cmd):
+        if not isinstance(cmd, self):
+            raise ValueError('cmd must be a subclass of CommandCollection')
+        for item in cmd:
+            self.commands[item.name] = item
 
     def add(self, cmd):
         if not isinstance(cmd, Command):

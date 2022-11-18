@@ -22,10 +22,9 @@ class Bot:
         self.t1 = time.perf_counter()
         self.gateway = gateway(self.http, self.show_beat)
         self._events = defaultdict(list)
-        self.commands = CommandCollection(self)
-        self.extensions = ExtensionCollection(self)
+        self.commands = CommandCollection()
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
-        self.extensions = {}
+        self.extensions = ExtensionCollection()
         self.user = None
 
     def run(self, token: str):
@@ -205,21 +204,23 @@ class Bot:
         try:
             spec.loader.exec_module(lib)
         except Exception as e:
-            raise ModuleNotFoundError(f"Spec could not be loaded")
+            raise ModuleNotFoundError(f"Spec could not be loaded {e}")
         try:
             ext = getattr(lib, 'Ext')
         except Exception as e:
-            raise ModuleNotFoundError(f"Extension does not exist")
+            raise ModuleNotFoundError(f"Extension does not exist {e}")
 
 
         self.extensions.add(Extension(name=ext.name, description=ext.description, ext=ext))
 
+
+
     def add_ext(self):
-        """
-        To be built later.
-        Note: Need contributors.
-        """
-        print("okaowdkoawkdoakwd")
+        for ext in self.extensions:
+            print(ext.ext.name)
+            for cmd in ext.ext.commands:
+                print(cmd.name)
+
 
 
 

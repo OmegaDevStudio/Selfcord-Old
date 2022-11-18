@@ -118,6 +118,7 @@ class http:
 
                     else:
                         json = await resp.text()
+
                         raise LoginFailure(json, resp.status)
         try:
             if resp.headers['set-cookie']:

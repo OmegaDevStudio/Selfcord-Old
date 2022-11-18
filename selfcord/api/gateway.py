@@ -357,6 +357,38 @@ class gateway:
                 await self.bot.emit('error', e)
                 await self.close()
 
+    async def ring(self, channel, guild=None):
+        payload = {
+            "op": 4,
+            "d": {
+                "guild_id": guild,
+                "channel_id": channel,
+                "preferred_region": "rotterdam",
+                "self_mute": False,
+                "self_deaf": False,
+                "self_video": True,
+            }
+        }
+        await self.send_json(payload)
+        await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
+
+
+
+
+    async def leave_call(self):
+        payload = {
+            "op": 4,
+            "d": {
+                "guild_id": None,
+                "channel_id": None,
+                "self_mute": False,
+                "self_deaf": False,
+                "self_video": False,
+            }
+        }
+        await self.send_json(payload)
+
+
 
 
 

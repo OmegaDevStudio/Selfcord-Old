@@ -1,5 +1,5 @@
-from .command import CommandCollection
-
+from .command import CommandCollection, Command
+import inspect
 
 class Extension:
     """Extension object pretty much
@@ -10,14 +10,63 @@ class Extension:
         self.ext = kwargs.get("ext")
         self.commands: CommandCollection | None = kwargs.get("commands")
 
+
 class Extender:
-    def __init__(self, bot) -> None:
-        self.commands = CommandCollection(bot)
-    class Extension:
-        def __init_subclass__(cls, name=None, description="") -> None:
-            super().__init_subclass__()
-            cls.name = name
-            cls.description = description
+
+    def __init_subclass__(cls, name=None, description="") -> None:
+        super().__init_subclass__()
+        cls.name = name
+        cls.description = description
+        cls.commands = CommandCollection()
+    @classmethod
+    def cmd(cls, description="", aliases=[]):
+        """Decorator to add commands for the bot
+
+        Args:
+            description (str, optional): Description of command. Defaults to "".
+            aliases (list, optional): Alternative names for command. Defaults to [].
+
+        Raises:
+            RuntimeWarning: If you suck and don't use a coroutine
+        """
+        if isinstance(aliases, str):
+            aliases = [aliases]
+
+        def decorator(coro):
+            name = coro.__name__
+            if not inspect.iscoroutinefunction(coro):
+                raise RuntimeWarning("Not an async function!")
+            else:
+                cmd = Command(name=name, description=description, aliases=aliases, func=coro)
+                cls.commands.add(cmd)
+            return cmd
+
+        return decorator
+
+    @classmethod
+    def add_cmd(cls, coro, description="", aliases=[]):
+        """
+        Function to add commands manually without decorator
+
+        Args:
+            coro (coroutine): The function to add
+            description (str, optional): Description of command. Defaults to "".
+            aliases (list, optional): Alternative names for command. Defaults to [].
+
+        Raises:
+            RuntimeWarning: If you suck and don't use a coroutine
+        """
+        if isinstance(aliases, str):
+            aliases = [aliases]
+        name = coro.__name__
+        if not inspect.iscoroutinefunction(coro):
+            raise RuntimeWarning("Not an async function!")
+        else:
+            cmd = Command(name=name, description=description, aliases=aliases, func=coro)
+            cls.commands.add(cmd)
+
+
+
 
 
 
@@ -25,8 +74,7 @@ class Extender:
 class ExtensionCollection:
     """Extension collection, where extensions are stored into
     """
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self):
         self.extensions = {}
 
     def __iter__(self):

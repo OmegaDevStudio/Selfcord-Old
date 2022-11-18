@@ -272,7 +272,13 @@ class VoiceChannel(Messageable):
             data = await self.http.encode_image(avatar_url)
             fields['avatar'] = data
         data = await self.http.request(method="post", endpoint=f"/channels/{self.id}/webhooks", json=fields)
-        self.webhooks.append(Webhook(data, self.http))
+        self.webhooks.append(Webhook(data, self.bot, self.http))
+
+    async def call(self):
+        await self.bot.gateway.ring(self.id, self.guild_id)
+
+    async def leave(self):
+        await self.bot.gateway.leave_call()
 
 
 class Category:
@@ -323,6 +329,12 @@ class DMChannel(Messageable):
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=false")
         del self
 
+    async def call(self):
+        await self.bot.gateway.ring(self.id)
+
+    async def leave(self):
+        await self.bot.gateway.leave_call()
+
 
 class GroupChannel(Messageable):
     """Group Channel Object
@@ -351,4 +363,10 @@ class GroupChannel(Messageable):
     async def delete(self):
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=true")
         del self
+
+    async def call(self):
+        await self.bot.gateway.ring(self.id)
+
+    async def leave(self):
+        await self.bot.gateway.leave_call()
 
