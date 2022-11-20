@@ -15,7 +15,8 @@ import importlib
 
 
 class Bot:
-    def __init__(self, show_beat: bool = False, prefixes: list = ["s!"]) -> None:
+    def __init__(self, show_beat: bool = False, prefixes: list = ["s!"], inbuilt_help=True) -> None:
+        self.inbuilt_help= inbuilt_help
         self.show_beat = show_beat
         self.token = None
         self.http = http()
@@ -55,19 +56,40 @@ class Bot:
         """
         I call this on bot initialisation, it's the inbuilt help command
         """
+        if self.inbuilt_help:
+            @self.cmd("The help command!", aliases=["test"])
+            async def help(ctx, cat=None):
+                if cat is None:
+                    msg = f"```diff\n"
+                    msg += f"+ {self.user} selfbot\n+ Prefixes:   {self.prefixes}\n\n"
+                    msg += f"- Commands\n"
+                    for ext in self.extensions:
+                        msg += f"- Ext {ext.name}: {ext.description}\n"
+                    for command in self.commands:
+                        msg += f"- {command.name}:    {command.description}\n"
 
-        @self.cmd("The help command!", aliases=["test"])
-        async def help(ctx):
-            msg = f"```diff\n"
-            msg += f"+ {self.user} selfbot\n+ Prefixes:   {self.prefixes}\n\n"
-            msg += f"- Commands\n"
-            for command in self.commands:
-                msg += f"- {command.name}:    {command.description}\n"
-
-                if len(msg) > 1980:
+                        if len(msg) > 1980:
+                            msg += f"```"
                     msg += f"```"
-            msg += f"```"
-            await ctx.reply(f"{msg}")
+                    return await ctx.reply(f"{msg}")
+
+                else:
+                    name = cat.lower()
+                    await aprint(name)
+                    for ext in self.extensions:
+                        if name == ext.name.lower():
+                            msg = f"```diff\n"
+                            msg += f"+ {self.user} selfbot\n+ Prefixes:   {self.prefixes}\n\n"
+                            msg += f"- {ext.name} Commands\n"
+
+                            for command in ext.commands:
+                                msg += f"- {command.name}:    {command.description}\n"
+                            msg += f"```"
+                            return await ctx.reply(f"{msg}")
+
+
+
+
 
         def clean_code(content):
             if content.startswith("```") and content.endswith("```"):
@@ -217,7 +239,6 @@ class Bot:
 
     def add_ext(self, ext):
         ext = ext.ext(self)
-        self.commands.append(ext.commands)
 
 
 
