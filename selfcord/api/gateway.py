@@ -7,19 +7,30 @@ import zlib
 from .events import EventHandler
 from .errors import ReconnectWebsocket
 from selfcord.models.client import Client
+import requests
 
 class Activity:
 
     @staticmethod
-    def Game(name, details: str="", buttons: dict={}):
+    def Game(name, details: str="", state: str="", buttons: dict={}, application_id: str="1037788701318729799", key: str = "dolphine"):
         type = 0
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
+        req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
+        for item in req.json():
+    
+            if item['name'] == key:
+                key = item['id']
 
         if len(button_urls) == 0 or len(buttons) == 0:
             payload = {
                 "name": name,
                 "details": details,
+                "state": state,
+                "application_id": application_id,
+                "assets": {
+                    "large_image": key,
+                },
                 "type": type,
                 "created_at": int(time.time()),
             }
@@ -29,6 +40,11 @@ class Activity:
                 "details": details,
                 "type": type,
                 "buttons": buttons,
+                "state": state,
+                "application_id": application_id,
+                "assets": {
+                    "large_image": key,
+                },
                 "metadata": {
                     "button_urls": button_urls,
                 },
@@ -39,16 +55,26 @@ class Activity:
         return payload
 
     @staticmethod
-    def Stream(name, details: str="", url: str="https://www.youtube.com/watch?v=CyIrJVp-sH8",buttons: dict={}):
+    def Stream(name, details: str="", state: str="", url: str="https://www.youtube.com/watch?v=CyIrJVp-sH8",buttons: dict={}, application_id: str="1037788701318729799", key: str = "dolphine"):
         type = 1
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
+        req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
+        for item in req.json():
+
+            if item['name'] == key:
+                key = item['id']
 
         if len(button_urls) == 0 or len(buttons) == 0:
             payload = {
                 "name": name,
                 "details": details,
                 "type": type,
+                "state": state,
+                "application_id": application_id,
+                "assets": {
+                    "large_image": key,
+                },
                 "created_at": int(time.time()),
                 "url": url
             }
@@ -59,7 +85,11 @@ class Activity:
                 "type": type,
                 "buttons": buttons,
                 "url": url,
-
+                "state": state,
+                "application_id": application_id,
+                "assets": {
+                    "large_image": key,
+                },
                 "metadata": {
                     "button_urls": button_urls,
                 },
@@ -69,15 +99,25 @@ class Activity:
         return payload
 
     @staticmethod
-    def Listen(name, details: str="", buttons: dict={}):
+    def Listen(name, details: str="", state: str="", buttons: dict={}, application_id: str="1037788701318729799", key: str = "dolphine"):
         type = 2
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
+        req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
+        for item in req.json():
+
+            if item['name'] == key:
+                key = item['id']
 
         if len(button_urls) == 0 or len(buttons) == 0:
             payload = {
                 "name": name,
                 "details": details,
+                "state": state,
+                "application_id": application_id,
+                "assets": {
+                    "large_image": key,
+                },
                 "type": type,
                 "created_at": int(time.time()),
             }
@@ -87,6 +127,11 @@ class Activity:
                 "details": details,
                 "type": type,
                 "buttons": buttons,
+                "state": state,
+                "application_id": application_id,
+                "assets": {
+                    "large_image": key,
+                },
                 "metadata": {
                     "button_urls": button_urls,
                 },
@@ -95,18 +140,28 @@ class Activity:
 
 
         return payload
-
     @staticmethod
-    def Watch(name, details: str="", buttons: dict={}):
+    def Watch(name, details: str="", state: str="", buttons: dict={}, application_id: str="1037788701318729799", key: str = "dolphine"):
         type = 3
 
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
 
+        req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
+        for item in req.json():
+
+            if item['name'] == key:
+                key = item['id']
+
         if len(button_urls) == 0 or len(buttons) == 0:
             payload = {
                 "name": name,
                 "details": details,
+                "state": state,
+                "application_id": application_id,
+                "assets": {
+                    "large_image": key,
+                },
                 "type": type,
                 "created_at": int(time.time()),
             }
@@ -116,6 +171,11 @@ class Activity:
                 "details": details,
                 "type": type,
                 "buttons": buttons,
+                "state": state,
+                "application_id": application_id,
+                "assets": {
+                    "large_image": key,
+                },
                 "metadata": {
                     "button_urls": button_urls,
                 },

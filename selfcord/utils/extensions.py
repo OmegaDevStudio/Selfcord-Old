@@ -8,7 +8,7 @@ class Extension:
         self.name: str | None = kwargs.get("name")
         self.description: str | None = kwargs.get('description')
         self.ext = kwargs.get("ext")
-        self.commands = self.ext.
+        self.commands = self.ext.commands
 
 class Extender:
     commands = CommandCollection()
