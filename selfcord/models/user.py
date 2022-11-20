@@ -38,4 +38,4 @@ class User:
     async def create_dm(self):
         await self.http.request(method="post", endpoint="/users/@me/channels", json={"recipients": [self.id]})
 
-    
+

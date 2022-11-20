@@ -38,7 +38,7 @@ class CommandCollection:
                     return True
 
     def append(self, cmd):
-        if not isinstance(cmd, self):
+        if not isinstance(cmd, CommandCollection):
             raise ValueError('cmd must be a subclass of CommandCollection')
         for item in cmd:
             self.commands[item.name] = item

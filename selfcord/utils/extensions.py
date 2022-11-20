@@ -8,16 +8,17 @@ class Extension:
         self.name: str | None = kwargs.get("name")
         self.description: str | None = kwargs.get('description')
         self.ext = kwargs.get("ext")
-        self.commands: CommandCollection | None = kwargs.get("commands")
-
 
 class Extender:
+    commands = CommandCollection()
 
     def __init_subclass__(cls, name=None, description="") -> None:
         super().__init_subclass__()
         cls.name = name
         cls.description = description
-        cls.commands = CommandCollection()
+
+
+
     @classmethod
     def cmd(cls, description="", aliases=[]):
         """Decorator to add commands for the bot
@@ -38,6 +39,7 @@ class Extender:
                 raise RuntimeWarning("Not an async function!")
             else:
                 cmd = Command(name=name, description=description, aliases=aliases, func=coro)
+
                 cls.commands.add(cmd)
             return cmd
 

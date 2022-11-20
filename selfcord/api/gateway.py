@@ -59,6 +59,7 @@ class Activity:
                 "type": type,
                 "buttons": buttons,
                 "url": url,
+
                 "metadata": {
                     "button_urls": button_urls,
                 },

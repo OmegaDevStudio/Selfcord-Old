@@ -65,6 +65,7 @@ class Messageable:
             for i in range(0, len(msgs), 3):
                 await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 3]))
 
+
     async def spam(self, amount: int, content: str, tts=False):
         """
         Send multiple of the same message.

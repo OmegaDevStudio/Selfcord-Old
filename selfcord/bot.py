@@ -212,15 +212,12 @@ class Bot:
 
 
         self.extensions.add(Extension(name=ext.name, description=ext.description, ext=ext))
+        self.add_ext(Extension(name=ext.name, description=ext.description, ext=ext))
 
 
-
-    def add_ext(self):
-        for ext in self.extensions:
-            print(ext.ext.name)
-            for cmd in ext.ext.commands:
-                print(cmd.name)
-
+    def add_ext(self, ext):
+        ext = ext.ext(self)
+        self.commands.append(ext.commands)
 
 
 
@@ -267,7 +264,7 @@ class Bot:
             User: The User object
         """
         data = await self.http.request(method="get", endpoint=f"/users/{user_id}")
-        return User(data)
+        return User(data, self, self.http)
 
     async def add_friend(self, user_id: str):
         """

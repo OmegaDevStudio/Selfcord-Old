@@ -117,7 +117,9 @@ class http:
                         break
 
                     else:
-                        json = await resp.text()
+                        await aprint(resp.status)
+                        json = await resp.json()
+                        
 
                         raise LoginFailure(json, resp.status)
         try:
