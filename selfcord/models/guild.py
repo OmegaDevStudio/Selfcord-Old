@@ -74,6 +74,13 @@ class Guild:
                 emoji = Emoji(emoji, self.bot, self.http)
                 self.emojis.append(emoji)
 
+    async def ban(self, user_id: str):
+        await self.http.request(method="put", endpoint=f"/guilds/{self.id}/bans/{user_id}", json={"delete_message_days":"7"})
+
+    async def kick(self, user_id: str):
+        await self.http.request(method="delete", endpoint=f"/guilds/{self.id}/members/{user_id}")
+
+
     async def txt_channel_create(self, name, parent_id=None):
         payload = {"name": name}
         payload.update({"permission_overwrites": []})
