@@ -49,6 +49,7 @@ class Guild:
         for (member, channel, role, emoji) in zip_longest(data.get('members'), data.get("channels"), data.get("roles"), data.get("emojis")):
             if member != None:
                 user = User(member, self.bot, self.http)
+                
                 self.members.append(user)
 
             if channel != None:

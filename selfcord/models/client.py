@@ -27,7 +27,7 @@ class Client:
         self.phone = data.get("phone")
         self.accent_colour = data.get('accent_color')
         self.public_flags = data.get('public_flags')
-        self.bot = data.get('bot')
+        self.bot_acc = data.get('bot')
         self.system = data.get('system')
 
 

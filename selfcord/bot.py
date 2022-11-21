@@ -66,6 +66,8 @@ class Bot:
                     for ext in self.extensions:
                         msg += f"- Ext {ext.name}: {ext.description}\n"
                     for command in self.commands:
+                        if command.ext != None:
+                            continue
                         msg += f"- {command.name}:    {command.description}\n"
 
                         if len(msg) > 1980:
@@ -75,7 +77,6 @@ class Bot:
 
                 else:
                     name = cat.lower()
-                    await aprint(name)
                     for ext in self.extensions:
                         if name == ext.name.lower():
                             msg = f"```diff\n"
@@ -83,7 +84,10 @@ class Bot:
                             msg += f"- {ext.name} Commands\n"
 
                             for command in ext.commands:
-                                msg += f"- {command.name}:    {command.description}\n"
+                                print(command.__dict__)
+                                if command.ext == ext.ext:
+                                    msg += f"- {command.name}:    {command.description}\n"
+
                             msg += f"```"
                             return await ctx.reply(f"{msg}")
 
@@ -234,11 +238,14 @@ class Bot:
 
 
         self.extensions.add(Extension(name=ext.name, description=ext.description, ext=ext))
-        self.add_ext(Extension(name=ext.name, description=ext.description, ext=ext))
+        # self.add_ext(Extension(name=ext.name, description=ext.description, ext=ext))
 
 
     def add_ext(self, ext):
         ext = ext.ext(self)
+        self.commands.append(ext.commands)
+
+
 
 
 
@@ -282,10 +289,14 @@ class Bot:
             user_id (Str): ID of the other user.
 
         Returns:
+
             User: The User object
         """
+
         data = await self.http.request(method="get", endpoint=f"/users/{user_id}")
-        return User(data, self, self.http)
+
+        user = User(data, bot=self, http=self.http)
+        return user
 
     async def add_friend(self, user_id: str):
         """
