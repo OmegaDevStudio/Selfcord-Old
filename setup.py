@@ -7,7 +7,7 @@ if __name__ == "__main__":
     setup(
         name="selfcord.py",
         packages=find_packages(include=['selfcord', 'selfcord.api', 'selfcord.utils', 'selfcord.models']),
-        version="0.0.6",
+        version="0.0.7",
         description="A Discord API wrapper designed for selfbots!",
         readme="README.md",
         author="Shell of OMEGA",
@@ -16,6 +16,7 @@ if __name__ == "__main__":
         setup_requires=['pytest-runner'],
         tests_require=['pytest'],
         test_suite='tests',
+        keywords=["selfbot", "discord", "discordapi", "discordwrapper"],
         long_description=long_description,
         url="https://github.com/Shell1010/Selfcord",
         long_description_content_type="text/markdown",

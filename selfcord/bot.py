@@ -84,7 +84,6 @@ class Bot:
                             msg += f"- {ext.name} Commands\n"
 
                             for command in ext.commands:
-                                print(command.__dict__)
                                 if command.ext == ext.ext:
                                     msg += f"- {command.name}:    {command.description}\n"
 
