@@ -8,6 +8,7 @@ from .events import EventHandler
 from .errors import ReconnectWebsocket
 from selfcord.models.client import Client
 import requests
+from traceback import format_exception
 
 class Activity:
 
@@ -18,7 +19,7 @@ class Activity:
         buttons: list = [button for button in buttons.keys()]
         req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
         for item in req.json():
-    
+
             if item['name'] == key:
                 key = item['id']
 
@@ -415,7 +416,8 @@ class gateway:
                 await aprint('Shutting down...')
                 await self.close()
             except Exception as e:
-                await self.bot.emit('error', e)
+                error = "".join(format_exception(e, e, e.__traceback__))
+                self.bot.emit("error", error)
                 await self.close()
 
     async def ring(self, channel, guild=None):

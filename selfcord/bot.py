@@ -6,11 +6,12 @@ from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, 
 from collections import defaultdict
 from aioconsole import aprint, aexec
 import time
-from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension
+from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension, Event
 import random
 import contextlib
 from traceback import format_exception
 import io
+from functools import partial
 import importlib
 
 
@@ -27,6 +28,7 @@ class Bot:
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
         self.extensions = ExtensionCollection()
         self.user = None
+
 
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
@@ -66,8 +68,6 @@ class Bot:
                     for ext in self.extensions:
                         msg += f"- Ext {ext.name}: {ext.description}\n"
                     for command in self.commands:
-                        if command.ext != None:
-                            continue
                         msg += f"- {command.name}:    {command.description}\n"
 
                         if len(msg) > 1980:
@@ -84,6 +84,7 @@ class Bot:
                             msg += f"- {ext.name} Commands\n"
 
                             for command in ext.commands:
+
                                 if command.ext == ext.ext:
                                     msg += f"- {command.name}:    {command.description}\n"
 
@@ -125,10 +126,12 @@ class Bot:
             if not inspect.iscoroutinefunction(coro):
                 raise RuntimeWarning("Faulure")
             else:
-                self._events[event].append(coro)
+                self._events[event].append(Event(name=event, coro=coro, ext=None))
 
                 def wrapper(*args, **kwargs):
-                    result = self._events[event].append(coro)
+
+                    result = self._events[event].append(Event(name=event, coro=coro, ext=None))
+
                     return result
 
                 return wrapper
@@ -142,14 +145,19 @@ class Bot:
             event (str): The event name
         """
         on_event = "on_{}".format(event)
-        try:
-            if hasattr(self, on_event):
-                await getattr(self, on_event)(*args, **kwargs)
-            if event in self._events:
-                for callback in self._events[event]:
-                    asyncio.create_task(callback(*args, **kwargs))
-        except Exception as e:
-            raise RuntimeError("Failure to emit")
+        # try:
+        if hasattr(self, on_event):
+            await getattr(self, on_event)(*args, **kwargs)
+        if event in self._events.keys():
+            for Event in self._events[event]:
+                print(Event.coro, Event.name, Event.ext)
+                if Event.coro.__code__.co_varnames[0] == "self":
+                    return asyncio.create_task(Event.coro(Event.ext, *args, **kwargs))
+
+                else:
+                    return asyncio.create_task(Event.coro(*args, **kwargs))
+        # except Exception as e:
+        #     raise RuntimeError("Failure to emit", e)
 
     def cmd(self, description="", aliases=[]):
         """Decorator to add commands for the bot
@@ -234,15 +242,23 @@ class Bot:
             ext = getattr(lib, 'Ext')
         except Exception as e:
             raise ModuleNotFoundError(f"Extension does not exist {e}")
+        ext = Extension(name=ext.name, description=ext.description, ext=ext(self), _events=ext._events)
+
+        try:
+            for name, event in ext._events.items():
+                for Event in event:
+                    print(Event.ext, Event.coro)
+                    # self._events[event].append(Event(name=name, coro=Event.coro, ext=Event.ext))
+
+        except Exception as e:
+            error = "".join(format_exception(e, e, e.__traceback__))
+            print(error)
+
+        self.extensions.add(ext)
 
 
-        self.extensions.add(Extension(name=ext.name, description=ext.description, ext=ext))
-        # self.add_ext(Extension(name=ext.name, description=ext.description, ext=ext))
 
 
-    def add_ext(self, ext):
-        ext = ext.ext(self)
-        self.commands.append(ext.commands)
 
 
 

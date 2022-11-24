@@ -1,7 +1,7 @@
 
 import inspect
 import re
-import random
+from collections import defaultdict
 
 
 class Extension:
@@ -11,10 +11,14 @@ class Extension:
         self.name: str | None = kwargs.get("name")
         self.description: str | None = kwargs.get('description')
         self.ext = kwargs.get("ext")
-        self.commands = self.ext.commands
-        for cmd in self.commands.recents():
+        self._events = kwargs.get("_events")
+        commands = self.ext.commands
+        self.commands = CommandCollection()
+        for cmd in commands.recents():
             setattr(cmd, "ext", self.ext)
+            self.commands.add(cmd)
         self.commands.copy()
+
 
 
 
@@ -112,9 +116,16 @@ class CommandCollection:
         for command in self.commands:
             if alias in command.aliases:
                 return command
+class Event:
+    def __init__(self, name, coro, ext) -> None:
+        self.name = name
+        self.coro = coro
+        self.ext = ext
+
 
 class Extender:
     commands = CommandCollection()
+    _events = defaultdict(list)
     def __init_subclass__(cls, name=None, description="") -> None:
         super().__init_subclass__()
         cls.name = name
@@ -149,6 +160,28 @@ class Extender:
         return decorator
 
     @classmethod
+    def on(cls, event: str):
+        """Decorator for events
+
+        Args:
+            event (str): The event to check for
+        """
+
+        def decorator(coro):
+            if not inspect.iscoroutinefunction(coro):
+                raise RuntimeWarning("Faulure")
+            else:
+                cls._events[event].append(Event(name=event, coro=coro, ext=cls))
+
+                def wrapper(*args, **kwargs):
+                    result = cls._events[event].append(Event(name=event, coro=coro, ext=cls))
+                    return result
+
+                return wrapper
+        return decorator
+
+
+    @classmethod
     def add_cmd(cls, coro, description="", aliases=[]):
         """
         Function to add commands manually without decorator
@@ -167,6 +200,7 @@ class Extender:
         if not inspect.iscoroutinefunction(coro):
             raise RuntimeWarning("Not an async function!")
         else:
+
 
             cmd = Command(name=name, description=description, aliases=aliases, func=coro, ext=cls)
             cls.commands.add(cmd)
@@ -201,12 +235,16 @@ class Context:
             return None
         for command in self.bot.commands:
             for alias in command.aliases:
-                if self.content.startswith(self.prefix + alias):
+                if self.content.lower().startswith(self.prefix + alias):
                     return command
         for extension in self.bot.extensions:
+
             for command in extension.commands:
+
                 for alias in command.aliases:
+
                     if self.content.startswith(self.prefix + alias):
+
                         self.extension = extension.ext
                         return command
         return None
@@ -293,15 +331,20 @@ class Context:
             return args, kwargs
 
 
+
+
         for index, (name, param) in enumerate(signature):
-            if index == 0:
+            if name == "ctx" or name == "self":
                 continue
 
+
             if param.kind is param.POSITIONAL_OR_KEYWORD:
+                try:
 
-                arg = self.convert(param, splitted.pop(0))
-
-                args.append(arg)
+                    arg = self.convert(param, splitted.pop(0))
+                    args.append(arg)
+                except:
+                    pass
             if param.kind is param.VAR_KEYWORD:
 
                 for arg in splitted:
@@ -335,6 +378,7 @@ class Context:
             args, kwargs = await self.get_arguments()
             func = self.command.func
             if func.__code__.co_varnames[0] == "self":
+
                 args.insert(0, self.extension)
                 args.insert(1, self)
             else:

@@ -89,9 +89,12 @@ class http:
                         try:
                             json = await resp.json()
                             await asyncio.sleep(json['retry_after'])
+                            await asyncio.sleep(0.3)
                             continue
                         except Exception as e:
-                            await aprint(f'Error: {e}')
+                            from traceback import format_exception
+                            error = "".join(format_exception(e, e, e.__traceback__))
+                            print(error)
                             text = await resp.text()
                             await aprint(text)
                             break
@@ -119,7 +122,7 @@ class http:
                     else:
                         await aprint(resp.status)
                         json = await resp.json()
-                        
+
 
                         raise LoginFailure(json, resp.status)
         try:

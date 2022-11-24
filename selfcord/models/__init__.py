@@ -1,6 +1,6 @@
 """Data objects from discord, used throughout selfcord
 """
-from .user import User
+from .user import User, Profile, Connected_Account
 from .client import Client
 from .guild import Guild
 from .channel import TextChannel, Category, VoiceChannel, DMChannel, GroupChannel

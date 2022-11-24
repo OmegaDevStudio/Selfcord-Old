@@ -217,7 +217,9 @@ class TextChannel(Messageable):
         try:
             await self.http.request(method="patch", endpoint=f"/channels/{self.id}", json=payload)
         except Exception as e:
-            return str(e)
+            from traceback import format_exception
+            error = "".join(format_exception(e, e, e.__traceback__))
+            return error
 
     async def create_webhook(self, name: str = None, avatar_url: str = None):
         fields = {}
@@ -273,7 +275,9 @@ class VoiceChannel(Messageable):
             data = await self.http.encode_image(avatar_url)
             fields['avatar'] = data
         data = await self.http.request(method="post", endpoint=f"/channels/{self.id}/webhooks", json=fields)
-        self.webhooks.append(Webhook(data, self.bot, self.http))
+        webhook = Webhook(data, self.bot, self.http)
+        self.webhooks.append(webhook)
+        return webhook
 
     async def call(self):
         await self.bot.gateway.ring(self.id, self.guild_id)

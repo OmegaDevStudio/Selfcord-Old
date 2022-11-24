@@ -30,5 +30,5 @@ class Role:
         return f"{self.name}"
 
     async def delete(self):
-        self.http.request(method="delete", endpoint=f"/guilds/{self.guild_id}/roles/{self.id}")
+        await self.http.request(method="delete", endpoint=f"/guilds/{self.guild_id}/roles/{self.id}")
         del self
