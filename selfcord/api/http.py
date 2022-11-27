@@ -148,7 +148,8 @@ class http:
         async with ClientSession() as session:
             async with session.get(f'{url}') as resp:
                 image = b64encode(await resp.read())
-                newobj = str(image).split('"', 2)
+                
+                newobj = str(image).split("'", 2)
 
         return f'data:image/png;base64,{newobj[1]}'
 
