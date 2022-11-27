@@ -106,6 +106,8 @@ class http:
                     elif resp.status == 403:
                         json = await resp.json()
                         await aprint(json)
+                        break
+
 
                     elif resp.status == 201:
                         data = await resp.json()
@@ -122,8 +124,6 @@ class http:
                     else:
                         await aprint(resp.status)
                         json = await resp.json()
-
-
                         raise LoginFailure(json, resp.status)
         try:
             if resp.headers['set-cookie']:
@@ -139,7 +139,10 @@ class http:
                 self.cookie = set(self.cookies)
         except: pass
 
-        return data
+        try:
+            return data
+        except:
+            return None
 
     async def encode_image(self, url):
         async with ClientSession() as session:
