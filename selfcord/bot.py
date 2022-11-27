@@ -150,7 +150,7 @@ class Bot:
             await getattr(self, on_event)(*args, **kwargs)
         if event in self._events.keys():
             for Event in self._events[event]:
-                print(Event.coro, Event.name, Event.ext)
+                # print(Event.coro, Event.name, Event.ext)
                 if Event.coro.__code__.co_varnames[0] == "self":
                     return asyncio.create_task(Event.coro(Event.ext, *args, **kwargs))
 
@@ -247,8 +247,8 @@ class Bot:
         try:
             for name, event in ext._events.items():
                 for Event in event:
-                    print(Event.ext, Event.coro)
-                    # self._events[event].append(Event(name=name, coro=Event.coro, ext=Event.ext))
+                    # print(Event.ext, Event.coro)
+                    self._events[event].append(Event(name=name, coro=Event.coro, ext=Event.ext))
 
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
