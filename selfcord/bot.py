@@ -1,31 +1,34 @@
 import asyncio
 import json
-from .api import gateway, http
+from .api import gateway, http, Activity
 import inspect
 from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, Guild, User
 from collections import defaultdict
 from aioconsole import aprint, aexec
 import time
-from .utils import Command, CommandCollection, Context
+from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension, Event
 import random
 import contextlib
 from traceback import format_exception
 import io
+from functools import partial
 import importlib
 
 
 class Bot:
-    def __init__(self, show_beat: bool = False, prefixes: list = ["s!"]) -> None:
+    def __init__(self, show_beat: bool = False, prefixes: list = ["s!"], inbuilt_help=True) -> None:
+        self.inbuilt_help= inbuilt_help
         self.show_beat = show_beat
         self.token = None
         self.http = http()
         self.t1 = time.perf_counter()
         self.gateway = gateway(self.http, self.show_beat)
         self._events = defaultdict(list)
-        self.commands = CommandCollection(self)
+        self.commands = CommandCollection()
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
-        self.extensions = {}
+        self.extensions = ExtensionCollection()
         self.user = None
+
 
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
@@ -55,19 +58,42 @@ class Bot:
         """
         I call this on bot initialisation, it's the inbuilt help command
         """
+        if self.inbuilt_help:
+            @self.cmd("The help command!", aliases=["test"])
+            async def help(ctx, cat=None):
+                if cat is None:
+                    msg = f"```diff\n"
+                    msg += f"+ {self.user} selfbot\n+ Prefixes:   {self.prefixes}\n\n"
+                    msg += f"- Commands\n"
+                    for ext in self.extensions:
+                        msg += f"- Ext {ext.name}: {ext.description}\n"
+                    for command in self.commands:
+                        msg += f"- {command.name}:    {command.description}\n"
 
-        @self.cmd("The help command!", aliases=["test"])
-        async def help(ctx):
-            msg = f"```diff\n"
-            msg += f"+ {self.user} selfbot\n+ Prefixes:   {self.prefixes}\n\n"
-            msg += f"- Commands\n"
-            for command in self.commands:
-                msg += f"- {command.name}:    {command.description}\n"
-                print(len(msg))
-                if len(msg) > 1980:
+                        if len(msg) > 1980:
+                            msg += f"```"
                     msg += f"```"
-            msg += f"```"
-            await ctx.reply(f"{msg}")
+                    return await ctx.reply(f"{msg}")
+
+                else:
+                    name = cat.lower()
+                    for ext in self.extensions:
+                        if name == ext.name.lower():
+                            msg = f"```diff\n"
+                            msg += f"+ {self.user} selfbot\n+ Prefixes:   {self.prefixes}\n\n"
+                            msg += f"- {ext.name} Commands\n"
+
+                            for command in ext.commands:
+
+                                if command.ext == ext.ext:
+                                    msg += f"- {command.name}:    {command.description}\n"
+
+                            msg += f"```"
+                            return await ctx.reply(f"{msg}")
+
+
+
+
 
         def clean_code(content):
             if content.startswith("```") and content.endswith("```"):
@@ -100,10 +126,12 @@ class Bot:
             if not inspect.iscoroutinefunction(coro):
                 raise RuntimeWarning("Faulure")
             else:
-                self._events[event].append(coro)
+                self._events[event].append(Event(name=event, coro=coro, ext=None))
 
                 def wrapper(*args, **kwargs):
-                    result = self._events[event].append(coro)
+
+                    result = self._events[event].append(Event(name=event, coro=coro, ext=None))
+
                     return result
 
                 return wrapper
@@ -117,14 +145,19 @@ class Bot:
             event (str): The event name
         """
         on_event = "on_{}".format(event)
-        try:
-            if hasattr(self, on_event):
-                await getattr(self, on_event)(*args, **kwargs)
-            if event in self._events:
-                for callback in self._events[event]:
-                    asyncio.create_task(callback(*args, **kwargs))
-        except Exception as e:
-            raise RuntimeError("Failure to emit")
+        # try:
+        if hasattr(self, on_event):
+            await getattr(self, on_event)(*args, **kwargs)
+        if event in self._events.keys():
+            for Event in self._events[event]:
+                # print(Event.coro, Event.name, Event.ext)
+                if Event.coro.__code__.co_varnames[0] == "self":
+                    return asyncio.create_task(Event.coro(Event.ext, *args, **kwargs))
+
+                else:
+                    return asyncio.create_task(Event.coro(*args, **kwargs))
+        # except Exception as e:
+        #     raise RuntimeError("Failure to emit", e)
 
     def cmd(self, description="", aliases=[]):
         """Decorator to add commands for the bot
@@ -179,7 +212,8 @@ class Bot:
             msg (str): The message containing command
         """
         context = Context(self, msg, self.http)
-        await context.invoke()
+
+        asyncio.create_task(context.invoke())
 
     async def load_extension(self, name: str):
         """
@@ -203,21 +237,32 @@ class Bot:
         try:
             spec.loader.exec_module(lib)
         except Exception as e:
-            raise ModuleNotFoundError(f"Spec could not be loaded")
+            raise ModuleNotFoundError(f"Spec could not be loaded {e}")
         try:
             ext = getattr(lib, 'Ext')
         except Exception as e:
-            raise ModuleNotFoundError(f"Extension does not exist")
+            raise ModuleNotFoundError(f"Extension does not exist {e}")
+        ext = Extension(name=ext.name, description=ext.description, ext=ext(self), _events=ext._events)
 
+        try:
+            for name, event in ext._events.items():
+                for Event in event:
+                    # print(Event.ext, Event.coro)
+                    self._events[event].append(Event(name=name, coro=Event.coro, ext=Event.ext))
+
+        except Exception as e:
+            error = "".join(format_exception(e, e, e.__traceback__))
+            print(error)
 
         self.extensions.add(ext)
 
-    def add_ext(self):
-        """
-        To be built later.
-        Note: Need contributors.
-        """
-        print("okaowdkoawkdoakwd")
+
+
+
+
+
+
+
 
     def get_channel(self, channel_id: str):
         """
@@ -259,10 +304,14 @@ class Bot:
             user_id (Str): ID of the other user.
 
         Returns:
+
             User: The User object
         """
+
         data = await self.http.request(method="get", endpoint=f"/users/{user_id}")
-        return User(data)
+
+        user = User(data, bot=self, http=self.http)
+        return user
 
     async def add_friend(self, user_id: str):
         """
@@ -280,8 +329,7 @@ class Bot:
                                 json={})
 
     async def edit_profile(self, bio: str = None, accent: int = None):
-        """
-        
+        """ Edits user profile
         """
         fields = {}
         if bio != None:
@@ -327,8 +375,16 @@ class Bot:
         else:
             raise TypeError("Recipient ID not specified")
 
+    async def change_hypesquad(self, house: str):
+        if house.lower() == "bravery":
+            await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 1})
+        if house.lower() == "brilliance":
+            await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 2})
+        if house.lower() == "balance":
+            await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 3})
 
-
+    async def change_presence(self, status: str, afk: bool=False, activity: dict=Activity.Game("test", "testing")):
+        await self.gateway.change_presence(status, afk, activity=activity)
 
 
 

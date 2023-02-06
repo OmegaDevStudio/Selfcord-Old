@@ -1,6 +1,8 @@
 
 import inspect
 import re
+from collections import defaultdict
+
 
 class Extension:
     """Extension object pretty much
@@ -9,12 +11,21 @@ class Extension:
         self.name: str | None = kwargs.get("name")
         self.description: str | None = kwargs.get('description')
         self.ext = kwargs.get("ext")
-        self.commands: CommandCollection | None = kwargs.get("commands")
+        self._events = kwargs.get("_events")
+        commands = self.ext.commands
+        self.commands = CommandCollection()
+        for cmd in commands.recents():
+            setattr(cmd, "ext", self.ext)
+            self.commands.add(cmd)
+        self.commands.copy()
+
+
+
+
 class ExtensionCollection:
     """Extension collection, where extensions are stored into
     """
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self):
         self.extensions = {}
 
     def __iter__(self):
@@ -27,7 +38,7 @@ class ExtensionCollection:
                 return True
 
     def add(self, ext):
-        if not isinstance(ext, Command):
+        if not isinstance(ext, Extension):
             raise ValueError('cmd must be a subclass of Command')
         if self._is_already_registered(ext):
             raise ValueError('A name or alias is already registered')
@@ -41,10 +52,6 @@ class ExtensionCollection:
         for command in self.extensions:
             if command.name in command.aliases:
                 return command
-
-
-
-
 
 
 
@@ -62,9 +69,9 @@ class Command:
 class CommandCollection:
     """Commands collection, where commands are stored into
     """
-    def __init__(self, bot):
-        self.bot = bot
+    def __init__(self, **kwargs):
         self.commands = {}
+        self.recent_commands = {}
 
     def __len__(self):
         return len(self.commands)
@@ -78,12 +85,28 @@ class CommandCollection:
                 if alias in command.aliases:
                     return True
 
+    def append(self, collection):
+        if not isinstance(collection, CommandCollection):
+            raise ValueError('collection must be a subclass of ExtensionCollection')
+        for item in collection:
+            self.commands[item.name] = item
+            self.recent_commands[item.name] = item
+
     def add(self, cmd):
         if not isinstance(cmd, Command):
             raise ValueError('cmd must be a subclass of Command')
         if self._is_already_registered(cmd):
             raise ValueError('A name or alias is already registered')
         self.commands[cmd.name] = cmd
+        self.recent_commands[cmd.name] = cmd
+
+    def recents(self):
+        for cmd in self.recent_commands.values():
+            yield cmd
+
+    def copy(self):
+        self.commands.update(self.recent_commands)
+        self.recent_commands = {}
 
     def get(self, alias, prefix=''):
         try:
@@ -93,7 +116,94 @@ class CommandCollection:
         for command in self.commands:
             if alias in command.aliases:
                 return command
+class Event:
+    def __init__(self, name, coro, ext) -> None:
+        self.name = name
+        self.coro = coro
+        self.ext = ext
 
+
+class Extender:
+    commands = CommandCollection()
+    _events = defaultdict(list)
+    def __init_subclass__(cls, name=None, description="") -> None:
+        super().__init_subclass__()
+        cls.name = name
+        cls.description = description
+
+
+
+
+    @classmethod
+    def cmd(cls, description="", aliases=[]):
+        """Decorator to add commands for the bot
+
+        Args:
+            description (str, optional): Description of command. Defaults to "".
+            aliases (list, optional): Alternative names for command. Defaults to [].
+
+        Raises:
+            RuntimeWarning: If you suck and don't use a coroutine
+        """
+        if isinstance(aliases, str):
+            aliases = [aliases]
+
+        def decorator(coro):
+            name = coro.__name__
+            if not inspect.iscoroutinefunction(coro):
+                raise RuntimeWarning("Not an async function!")
+            else:
+                cmd = Command(name=name, description=description, aliases=aliases, func=coro)
+                cls.commands.add(cmd)
+            return cmd
+
+        return decorator
+
+    @classmethod
+    def on(cls, event: str):
+        """Decorator for events
+
+        Args:
+            event (str): The event to check for
+        """
+
+        def decorator(coro):
+            if not inspect.iscoroutinefunction(coro):
+                raise RuntimeWarning("Faulure")
+            else:
+                cls._events[event].append(Event(name=event, coro=coro, ext=cls))
+
+                def wrapper(*args, **kwargs):
+                    result = cls._events[event].append(Event(name=event, coro=coro, ext=cls))
+                    return result
+
+                return wrapper
+        return decorator
+
+
+    @classmethod
+    def add_cmd(cls, coro, description="", aliases=[]):
+        """
+        Function to add commands manually without decorator
+
+        Args:
+            coro (coroutine): The function to add
+            description (str, optional): Description of command. Defaults to "".
+            aliases (list, optional): Alternative names for command. Defaults to [].
+
+        Raises:
+            RuntimeWarning: If you suck and don't use a coroutine
+        """
+        if isinstance(aliases, str):
+            aliases = [aliases]
+        name = coro.__name__
+        if not inspect.iscoroutinefunction(coro):
+            raise RuntimeWarning("Not an async function!")
+        else:
+
+
+            cmd = Command(name=name, description=description, aliases=aliases, func=coro, ext=cls)
+            cls.commands.add(cmd)
 class Context:
     """Context related for commands, and invokation
     """
@@ -125,17 +235,32 @@ class Context:
             return None
         for command in self.bot.commands:
             for alias in command.aliases:
-                if self.content.startswith(self.prefix + alias):
+                if self.content.lower().startswith(self.prefix + alias):
                     return command
+        for extension in self.bot.extensions:
+
+            for command in extension.commands:
+
+                for alias in command.aliases:
+
+                    if self.content.startswith(self.prefix + alias):
+
+                        self.extension = extension.ext
+                        return command
         return None
 
     @property
     def alias(self):
         for command in self.bot.commands:
             for alias in command.aliases:
-
                 if self.content.startswith(self.prefix + alias):
                     return alias
+        for extension in self.bot.extensions:
+            for command in extension.commands:
+                for alias in command.aliases:
+                    if self.content.startswith(self.prefix + alias):
+                        self.extension = extension.ext
+                        return alias
         return None
 
     @property
@@ -206,17 +331,22 @@ class Context:
             return args, kwargs
 
 
+
+
         for index, (name, param) in enumerate(signature):
-            if index == 0:
+            if name == "ctx" or name == "self":
                 continue
 
+
             if param.kind is param.POSITIONAL_OR_KEYWORD:
+                try:
 
-                arg = self.convert(param, splitted.pop(0))
-
-                args.append(arg)
+                    arg = self.convert(param, splitted.pop(0))
+                    args.append(arg)
+                except:
+                    pass
             if param.kind is param.VAR_KEYWORD:
-                
+
                 for arg in splitted:
                     arg = self.convert(param, arg)
                     args.append(arg)
@@ -247,8 +377,13 @@ class Context:
         if self.command_content != None:
             args, kwargs = await self.get_arguments()
             func = self.command.func
-            args.insert(0, self)
+            if func.__code__.co_varnames[0] == "self":
 
+                args.insert(0, self.extension)
+                args.insert(1, self)
+            else:
+
+                args.insert(0, self)
 
         await func(*args, **kwargs)
 

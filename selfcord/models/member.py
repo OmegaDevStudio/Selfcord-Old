@@ -21,7 +21,7 @@ class Member:
         self._banner = user.get("banner")
         self._accent_colour = user.get('accent_color')
         self._public_flags = user.get('public_flags')
-        self.bot = user.get('bot')
+        self.bot_acc = user.get('bot')
         self.joined_at = data.get('joined_at')
         self.nick = data.get("nick")
         self.system = data.get('system')

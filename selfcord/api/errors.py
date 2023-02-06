@@ -1,5 +1,3 @@
-
-
 class DiscordException(Exception):
     pass
 
@@ -9,13 +7,10 @@ class LoginFailure(DiscordException):
         self.status = status
 
 class ReconnectWebsocket(DiscordException):
-    def __init__(self, message: str) -> None:
-        self.message = message
+    def __init__(self, message: str) -> None: self.message = message
 
 class RuntimeError(DiscordException):
-    def __init__(self, message: str) -> None:
-        self.message = message
+    def __init__(self, message: str) -> None: self.message = message
 
 class Funnu(DiscordException):
-    def __init__(self, *args: object) -> None:
-        super().__init__(*args)
+    def __init__(self, *args: object) -> None: super().__init__(*args)

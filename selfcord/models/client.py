@@ -4,6 +4,7 @@ class Client:
     """Client Object
     """
     def __init__(self, UserPayload: dict) -> None:
+
         self.guilds = []
         self.private_channels = []
         self.friends = []
@@ -26,7 +27,7 @@ class Client:
         self.phone = data.get("phone")
         self.accent_colour = data.get('accent_color')
         self.public_flags = data.get('public_flags')
-        self.bot = data.get('bot')
+        self.bot_acc = data.get('bot')
         self.system = data.get('system')
 
 

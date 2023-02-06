@@ -1,4 +1,4 @@
-from .member import Member
+from .user import User
 from .channel import TextChannel, VoiceChannel, Category
 from .role import Role
 from .emoji import Emoji
@@ -40,6 +40,7 @@ class Guild:
         self.splash = data.get('splash')
         self.mfa_level = data.get('mfa_level')
         self.features = data.get('features')
+        self.member_count = data.get("member_count")
         self.unavailable = data.get('unavailable')
         self.verification_level = data.get('verification_level')
         self.explicit_content_filter = data.get('explicit_content_filter')
@@ -47,7 +48,8 @@ class Guild:
 
         for (member, channel, role, emoji) in zip_longest(data.get('members'), data.get("channels"), data.get("roles"), data.get("emojis")):
             if member != None:
-                user = Member(member)
+                user = User(member, self.bot, self.http)
+                
                 self.members.append(user)
 
             if channel != None:
@@ -73,6 +75,13 @@ class Guild:
                 emoji = Emoji(emoji, self.bot, self.http)
                 self.emojis.append(emoji)
 
+    async def ban(self, user_id: str):
+        await self.http.request(method="put", endpoint=f"/guilds/{self.id}/bans/{user_id}", json={"delete_message_days":"7"})
+
+    async def kick(self, user_id: str):
+        await self.http.request(method="delete", endpoint=f"/guilds/{self.id}/members/{user_id}")
+
+
     async def txt_channel_create(self, name, parent_id=None):
         payload = {"name": name}
         payload.update({"permission_overwrites": []})
@@ -95,6 +104,8 @@ class Guild:
         image = await self.http.encode_image(image_url)
         await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/emojis", json= {"name": f"{name}", "image": image})
 
+    async def get_members(self, channel_id: str):
+        await self.bot.gateway.lazy_chunk(self.id, channel_id, self.member_count)
 
     async def edit(self, name: str=None, icon_url: str=None, banner_url: str=None, description: str=None):
         fields = {}
