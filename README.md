@@ -5,7 +5,7 @@ A discord selfbot API wrapper (WIP)
 
 Run this in the command line.
 ```
-pip install git+https://github.com/Shell1010/Selfcord.git
+pip install selfcord.py
 ```
 
 ## Wiki
@@ -84,4 +84,4 @@ bot.run(token)
 
 ## Help & Support
 
-Please join our [discord server](https://discord.gg/VTm26arz9Z) here.
+Please join our [discord server](https://discord.gg/W5QMKHejQB) here.

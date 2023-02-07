@@ -65,6 +65,15 @@ class Messageable:
             for i in range(0, len(msgs), 3):
                 await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 3]))
 
+#            for i in range(0, len(msgs[:amount]), 2):
+#                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i + 2]))
+#                await asyncio.sleep(0.2)
+#        else:
+#            for i in range(0, len(msgs), 2):
+#                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 2]))
+#                await asyncio.sleep(0.2)
+             
+
 
     async def spam(self, amount: int, content: str, tts=False):
         """
