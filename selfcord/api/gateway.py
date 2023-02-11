@@ -13,7 +13,7 @@ from traceback import format_exception
 class Activity:
 
     @staticmethod
-    def Game(name, details: str="", state: str="", buttons: dict={}, application_id: str="1037788701318729799", key: str = "dolphine"):
+    def Game(name, details: str="", state: str="", buttons: dict={}, application_id: str="1072088555528138782", key: str = "dolphine"):
         type = 0
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
