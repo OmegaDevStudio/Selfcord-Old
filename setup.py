@@ -4,7 +4,7 @@ if __name__ == "__main__":
     setup(
         name="selfcord",
         packages=find_packages(include=['selfcord', 'selfcord.api', 'selfcord.utils', 'selfcord.models']),
-        version="0.0.2",
+        version="0.1.0",
         description="A Discord API wrapper designed for selfbots!",
         author="Shell of OMEGA",
         license="MIT",

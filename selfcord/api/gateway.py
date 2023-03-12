@@ -417,7 +417,7 @@ class gateway:
                 await self.close()
             except Exception as e:
                 error = "".join(format_exception(e, e, e.__traceback__))
-                self.bot.emit("error", error)
+                await self.bot.emit("error", error)
                 await self.close()
 
     async def ring(self, channel, guild=None):
