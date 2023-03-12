@@ -9,8 +9,7 @@ main.py
 exts
 .idea
 docs
-=======
 test.txt
 source
 docs-sphinx
-
+selfcord.py.egg-info

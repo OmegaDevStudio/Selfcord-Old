@@ -247,8 +247,10 @@ class Bot:
         try:
             for name, event in ext._events.items():
                 for Event in event:
-                    # print(Event.ext, Event.coro)
-                    self._events[event].append(Event(name=name, coro=Event.coro, ext=Event.ext))
+                    try:
+                        self._events[event].append(Event(name=name, coro=Event.coro, ext=Event.ext))
+                    except:
+                        continue
 
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
