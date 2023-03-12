@@ -84,4 +84,4 @@ bot.run(token)
 
 ## Help & Support
 
-Please join our [discord server](https://discord.gg/W5QMKHejQB) here.
+Please join our [discord server](https://discord.gg/FCFnnBGzkg) here.
