@@ -5,7 +5,7 @@ A discord selfbot API wrapper (WIP)
 
 Run this in the command line.
 ```
-pip install git+https://github.com/Shell1010/Selfcord.git@main
+pip install git+https://github.com/Shell1010/Selfcord.git
 ```
 
 ## Wiki
