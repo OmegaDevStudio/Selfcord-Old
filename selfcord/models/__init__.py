@@ -1,12 +1,12 @@
 """Data objects from discord, used throughout selfcord
 """
-from .user import User, Profile, Connected_Account
-from .client import Client
-from .guild import Guild
 from .channel import TextChannel, Category, VoiceChannel, DMChannel, GroupChannel
-from .message import Message
+from .client import Client
 from .emoji import Emoji
+from .guild import Guild
+from .member import Member
+from .message import Message, DeletedMessage
 from .permission import Permission
 from .role import Role
+from .user import User, Profile, ConnectedAccount
 from .webhook import Webhook
-from .member import Member

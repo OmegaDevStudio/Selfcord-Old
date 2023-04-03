@@ -1,22 +1,21 @@
+from typing import Dict, Any
 
 
 class Client:
-    """Client Object
-    """
-    def __init__(self, UserPayload: dict) -> None:
+    """The Client Object"""
 
+    def __init__(self, user_payload: Dict[Any, Any]) -> None:
         self.guilds = []
         self.private_channels = []
         self.friends = []
         self.messages = []
         self.deleted_messages = []
-        self._update(UserPayload)
+        self._update(user_payload)
 
-    def __str__(self):
-        return f"""{self.name}#{self.discriminator}"""
+    def __str__(self) -> str:
+        return f"{self.name}#{self.discriminator}"
 
-
-    def _update(self, data):
+    def _update(self, data: Dict[Any, Any]) -> None:
         self.name = data.get("username")
         self.id = data.get("id")
         self.discriminator = data.get("discriminator")
@@ -29,5 +28,3 @@ class Client:
         self.public_flags = data.get('public_flags')
         self.bot_acc = data.get('bot')
         self.system = data.get('system')
-
-

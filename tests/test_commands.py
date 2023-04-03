@@ -1,7 +1,9 @@
 import pytest
+
 import selfcord
 
 bot = selfcord.Bot(prefixes=["!"])
+
 
 @pytest.mark.asyncio
 class Tests:
