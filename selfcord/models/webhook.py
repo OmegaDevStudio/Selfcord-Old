@@ -1,10 +1,15 @@
+from typing import Any, Dict
+
+from ..api.http import Http
+
+
 class Webhook:
-    def __init__(self, data: dict, bot, http) -> None:
+    def __init__(self, data: Dict[Any, Any], bot: Any, http: Http) -> None:
         self.http = http
         self.bot = bot
         self._update(data)
 
-    def _update(self, data):
+    def _update(self, data: Dict[Any, Any]) -> None:
         self.id = data.get("id")
         self.type = data.get("type")
         self.guild_id = data.get("guild_id")
@@ -17,8 +22,26 @@ class Webhook:
         self.source_guild = data.get("source_guild")
         self.source_channel = data.get("source_channel")
 
-    async def send(self, content):
-        await self.http.request(method = "post", endpoint = f"/webhooks/{self.id}/{self.token}", json = {"content": content})
+    async def send(self, content: str) -> None:
+        """
+        Sends a message from the webhook.
 
-    async def delete(self):
-        await self.http.request(method = "delete", endpoint = f"/webhooks/{self.id}/{self.token}")
+        Args:
+            content (str): The message content
+
+        Returns:
+            No return value
+        """
+        await self.http.request(method="post", endpoint=f"/webhooks/{self.id}/{self.token}", json={"content": content})
+
+    async def delete(self) -> None:
+        """
+        Deletes the webhook.
+
+        Args:
+            No arguments required
+
+        Returns:
+            No return value
+        """
+        await self.http.request(method="delete", endpoint=f"/webhooks/{self.id}/{self.token}")

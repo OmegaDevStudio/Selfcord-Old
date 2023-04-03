@@ -1,9 +1,12 @@
+from typing import Dict, Any
+
+from ..api.http import Http
 
 
 class Emoji:
-    """Emoji Object
-    """
-    def __init__(self, data, bot, http) -> None:
+    """Emoji Object"""
+
+    def __init__(self, data: Dict[Any, Any], bot: Any, http: Http) -> None:
         self.bot = bot
         self.http = http
         self._update(data)
@@ -19,7 +22,6 @@ class Emoji:
         self.available = data.get("available")
         self.animated = data.get("animated")
         self.guild_id = data.get("guild_id")
-
 
     async def delete(self):
         await self.http.request(method="delete", endpoint=f"/guilds/{self.guild_id}/emojis/{self.id}")

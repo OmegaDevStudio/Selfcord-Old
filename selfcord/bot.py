@@ -1,34 +1,37 @@
 import asyncio
-import json
-from .api import gateway, http, Activity
-import inspect
-from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, Guild, User
-from collections import defaultdict
-from aioconsole import aprint, aexec
-import time
-from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension, Event
-import random
 import contextlib
-from traceback import format_exception
+import importlib.util
+import inspect
 import io
-from functools import partial
-import importlib
+import random
+import time
+from collections import defaultdict
+from traceback import format_exception
+from typing import List
+
+from aioconsole import aexec
+
+from .api import Gateway, Http, Activity
+from .models import Client, DMChannel, Guild, User
+from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension, Event
 
 
 class Bot:
-    def __init__(self, show_beat: bool = False, prefixes: list = ["s!"], inbuilt_help=True) -> None:
-        self.inbuilt_help= inbuilt_help
+    def __init__(self, show_beat: bool = False, prefixes: List[str] = None, inbuilt_help: bool = True) -> None:
+        if prefixes is None:
+            prefixes = ["s!"]
+
+        self.inbuilt_help = inbuilt_help
         self.show_beat = show_beat
         self.token = None
-        self.http = http()
+        self.http = Http()
         self.t1 = time.perf_counter()
-        self.gateway = gateway(self.http, self.show_beat)
+        self.gateway = Gateway(self.http, self.show_beat)
         self._events = defaultdict(list)
         self.commands = CommandCollection()
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
         self.extensions = ExtensionCollection()
         self.user = None
-
 
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
@@ -91,10 +94,6 @@ class Bot:
                             msg += f"```"
                             return await ctx.reply(f"{msg}")
 
-
-
-
-
         def clean_code(content):
             if content.startswith("```") and content.endswith("```"):
                 return "\n".join(content.split("\n")[1:])[:-3]
@@ -110,7 +109,7 @@ class Bot:
                     await aexec(code)
                     result = f"```{f.getvalue()}\n```"
             except Exception as e:
-                error = "".join(format_exception(e, e, e.__traceback__))
+                error = "".join(format_exception(type(e), e, e.__traceback__))
                 result = f"```\n{error}```"
 
             await ctx.reply(result)
@@ -124,7 +123,7 @@ class Bot:
 
         def decorator(coro):
             if not inspect.iscoroutinefunction(coro):
-                raise RuntimeWarning("Faulure")
+                raise RuntimeWarning("Failure")
             else:
                 self._events[event].append(Event(name=event, coro=coro, ext=None))
 
@@ -149,17 +148,17 @@ class Bot:
         if hasattr(self, on_event):
             await getattr(self, on_event)(*args, **kwargs)
         if event in self._events.keys():
-            for Event in self._events[event]:
+            for evt in self._events[event]:
                 # print(Event.coro, Event.name, Event.ext)
-                if Event.coro.__code__.co_varnames[0] == "self":
-                    return asyncio.create_task(Event.coro(Event.ext, *args, **kwargs))
+                if evt.coro.__code__.co_varnames[0] == "self":
+                    return asyncio.create_task(evt.coro(evt.ext, *args, **kwargs))
 
                 else:
-                    return asyncio.create_task(Event.coro(*args, **kwargs))
+                    return asyncio.create_task(evt.coro(*args, **kwargs))
         # except Exception as e:
         #     raise RuntimeError("Failure to emit", e)
 
-    def cmd(self, description="", aliases=[]):
+    def cmd(self, description="", aliases=None):
         """Decorator to add commands for the bot
 
         Args:
@@ -169,6 +168,9 @@ class Bot:
         Raises:
             RuntimeWarning: If you suck and don't use a coroutine
         """
+        if aliases is None:
+            aliases = []
+
         if isinstance(aliases, str):
             aliases = [aliases]
 
@@ -183,7 +185,7 @@ class Bot:
 
         return decorator
 
-    def add_cmd(self, coro, description="", aliases=[]):
+    def add_cmd(self, coro, description="", aliases=None):
         """
         Function to add commands manually without decorator
 
@@ -195,6 +197,9 @@ class Bot:
         Raises:
             RuntimeWarning: If you suck and don't use a coroutine
         """
+        if aliases is None:
+            aliases = []
+
         if isinstance(aliases, str):
             aliases = [aliases]
         name = coro.__name__
@@ -227,8 +232,10 @@ class Bot:
         """
         try:
             name = importlib.util.resolve_name(name, None)
-        except Exception as e:
+        except ModuleNotFoundError:
             raise ModuleNotFoundError(f"{name} does not exist")
+        except Exception as e:
+            raise e
 
         spec = importlib.util.find_spec(name)
 
@@ -249,22 +256,14 @@ class Bot:
                 for Event in event:
                     try:
                         self._events[event].append(Event(name=name, coro=Event.coro, ext=Event.ext))
-                    except:
+                    except Exception:
                         continue
 
         except Exception as e:
-            error = "".join(format_exception(e, e, e.__traceback__))
+            error = "".join(format_exception(type(e), e, e.__traceback__))
             print(error)
 
         self.extensions.add(ext)
-
-
-
-
-
-
-
-
 
     def get_channel(self, channel_id: str):
         """
@@ -325,18 +324,19 @@ class Bot:
         Returns:
             No return value.
         """
-        await self.http.request(method="put", endpoint=f"/users/@me/relationships/{user_id}",
-                                headers={"origin": "https://discord.com",
-                                         "referer": f"https://discord.com/channels/@me/{random.choice(self.user.private_channels).id}"},
-                                json={})
+        await self.http.request(
+            method="put", endpoint=f"/users/@me/relationships/{user_id}",
+            headers={"origin": "https://discord.com",
+                     "referer": f"https://discord.com/channels/@me/{random.choice(self.user.private_channels).id}"},
+            json={})
 
     async def edit_profile(self, bio: str = None, accent: int = None):
         """ Edits user profile
         """
         fields = {}
-        if bio != None:
+        if bio is not None:
             fields['bio'] = bio
-        if accent != None:
+        if accent is not None:
             fields['accent'] = accent
         await self.http.request(method="patch", endpoint=f"/users/@me/profile", json=fields)
 
@@ -349,7 +349,7 @@ class Bot:
         Raises:
             TypeError: URL not specified
         """
-        if avatar_url != None:
+        if avatar_url is not None:
             image = await self.http.encode_image(avatar_url)
             await self.http.request(method="patch", endpoint="/users/@me", headers={"origin": "https://discord.com",
                                                                                     "referer": "https://discord.com/channels/@me"},
@@ -379,14 +379,13 @@ class Bot:
 
     async def change_hypesquad(self, house: str):
         if house.lower() == "bravery":
-            await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 1})
+            await self.http.request(method="post", endpoint="/hypesquad/online", json={"house_id": 1})
         if house.lower() == "brilliance":
-            await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 2})
+            await self.http.request(method="post", endpoint="/hypesquad/online", json={"house_id": 2})
         if house.lower() == "balance":
-            await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 3})
+            await self.http.request(method="post", endpoint="/hypesquad/online", json={"house_id": 3})
 
-    async def change_presence(self, status: str, afk: bool=False, activity: dict=Activity.Game("test", "testing")):
+    async def change_presence(self, status: str, afk: bool = False, activity=None):
+        if activity is None:
+            activity = await Activity.game("test", "testing")
         await self.gateway.change_presence(status, afk, activity=activity)
-
-
-

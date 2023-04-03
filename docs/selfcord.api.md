@@ -13,7 +13,7 @@ Error class for selfcord related API errors, includes Discord Gateway and Discor
 Bases: `Exception`
 
 
-### _exception_ selfcord.api.errors.Funnu(\*args: object)
+### _exception_ selfcord.api.errors.Funny(\*args: object)
 Bases: `DiscordException`
 
 
@@ -25,7 +25,7 @@ Bases: `DiscordException`
 Bases: `DiscordException`
 
 
-### _exception_ selfcord.api.errors.RuntimeError(message: str)
+### _exception_ selfcord.api.errors.RuntimeDiscordError(message: str)
 Bases: `DiscordException`
 
 ## selfcord.api.events module
@@ -75,7 +75,7 @@ Handles the ready event, what is executed when it appears
 Gateway implementation designed to essentially start a connection to Discord Gateway and maintain connection via Heartbeats. It also sends data to the events class.
 
 
-### _class_ selfcord.api.gateway.gateway(http, show_heartbeat=False)
+### _class_ selfcord.api.gateway.Gateway(http, show_heartbeat=False)
 Bases: `object`
 
 

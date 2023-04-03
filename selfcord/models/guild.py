@@ -1,16 +1,17 @@
-from .user import User
-from .channel import TextChannel, VoiceChannel, Category
-from .role import Role
-from .emoji import Emoji
-from itertools import zip_longest
-from aiohttp import ClientSession
-from base64 import b64encode
 import random
+from itertools import zip_longest
+
+from .channel import TextChannel, VoiceChannel, Category
+from .emoji import Emoji
+from .role import Role
+from .user import User
+
+
 class Guild:
     """Guild Object
     """
-    TEXTCHANNEL = 0
-    VOICECHANNEL = 2
+    TEXT_CHANNEL = 0
+    VOICE_CHANNEL = 2
     CATEGORY = 4
     GUILD_ANNOUNCEMENT = 5
     ANNOUNCEMENT_THREAD = 10
@@ -46,41 +47,42 @@ class Guild:
         self.explicit_content_filter = data.get('explicit_content_filter')
         self.owner_id = data.get('owner_id')
 
-        for (member, channel, role, emoji) in zip_longest(data.get('members'), data.get("channels"), data.get("roles"), data.get("emojis")):
-            if member != None:
+        for (member, channel, role, emoji) in zip_longest(data.get('members'), data.get("channels"), data.get("roles"),
+                                                          data.get("emojis")):
+            if member is not None:
                 user = User(member, self.bot, self.http)
-                
+
                 self.members.append(user)
 
-            if channel != None:
-                type = channel.get("type")
-                if type == self.TEXTCHANNEL:
+            if channel is not None:
+                channel_type = channel.get("type")
+                if channel_type == self.TEXT_CHANNEL:
                     channel = TextChannel(channel, self.bot, self.http)
                     self.channels.append(channel)
-                elif type == self.VOICECHANNEL:
+                elif channel_type == self.VOICE_CHANNEL:
                     channel = VoiceChannel(channel, self.bot, self.http)
                     self.channels.append(channel)
-                elif type == self.CATEGORY:
+                elif channel_type == self.CATEGORY:
                     channel = Category(channel, self.bot, self.http)
                     self.channels.append(channel)
                 else:
                     channel = TextChannel(channel, self.bot, self.http)
                     self.channels.append(channel)
 
-            if role != None:
-                role = Role(role, self.http, guild_id = self.id)
+            if role is not None:
+                role = Role(role, self.http, guild_id=self.id)
                 self.roles.append(role)
 
-            if emoji != None:
+            if emoji is not None:
                 emoji = Emoji(emoji, self.bot, self.http)
                 self.emojis.append(emoji)
 
     async def ban(self, user_id: str):
-        await self.http.request(method="put", endpoint=f"/guilds/{self.id}/bans/{user_id}", json={"delete_message_days":"7"})
+        await self.http.request(method="put", endpoint=f"/guilds/{self.id}/bans/{user_id}",
+                                json={"delete_message_days": "7"})
 
     async def kick(self, user_id: str):
         await self.http.request(method="delete", endpoint=f"/guilds/{self.id}/members/{user_id}")
-
 
     async def txt_channel_create(self, name, parent_id=None):
         payload = {"name": name}
@@ -92,40 +94,47 @@ class Guild:
         await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json=payload)
 
     async def vc_channel_create(self, name):
-        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 2})
+        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels",
+                                json={"name": f"{name}", "permission_overwrites": [], "type": 2})
 
     async def role_create(self, name):
-        await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/roles", json = {"name": f"{name}"})
+        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/roles", json={"name": f"{name}"})
 
     async def category_channel_create(self, name):
-        await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 4})
+        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels",
+                                json={"name": f"{name}", "permission_overwrites": [], "type": 4})
 
     async def emoji_create(self, name: str, image_url: str):
         image = await self.http.encode_image(image_url)
-        await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/emojis", json= {"name": f"{name}", "image": image})
+        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/emojis",
+                                json={"name": f"{name}", "image": image})
 
     async def get_members(self, channel_id: str):
-        await self.bot.gateway.lazy_chunk(self.id, channel_id, self.member_count)
+        await self.bot.Gateway.lazy_chunk(self.id, channel_id, self.member_count)
 
-    async def edit(self, name: str=None, icon_url: str=None, banner_url: str=None, description: str=None):
+    async def edit(self, name: str = None, icon_url: str = None, banner_url: str = None, description: str = None):
         fields = {}
-        if name != None:
+        if name is not None:
             fields['name'] = name
 
-        if description != None:
+        if description is not None:
             fields['description'] = description
 
-        if icon_url != None:
+        if icon_url is not None:
             data = await self.http.encode_image(icon_url)
             fields['icon'] = data
 
-        if banner_url != None:
+        if banner_url is not None:
             data = await self.http.encode_image(banner_url)
             fields['banner'] = data
 
-
-        await self.http.request(method = "patch", endpoint = f"/guilds/{self.id}", headers={"origin":"https://discord.com", "referer":f"https://discord.com/channels/{self.id}/{random.choice(self.channels)}"},json=fields)
+        await self.http.request(method="patch",
+                                endpoint=f"/guilds/{self.id}",
+                                headers={
+                                    "origin": "https://discord.com",
+                                    "referer": f"https://discord.com/channels/{self.id}/{random.choice(self.channels)}"
+                                },
+                                json=fields)
 
     async def delete(self):
-        await self.http.request(method = "delete", endpoint = f"/guilds/{self.id}")
-
+        await self.http.request(method="delete", endpoint=f"/guilds/{self.id}")

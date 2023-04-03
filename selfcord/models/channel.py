@@ -1,23 +1,19 @@
-from .message import Message
-import time
-from .user import User
-from .webhook import Webhook
 import asyncio
+from typing import List, Union, Optional, Any, Dict
 
-from selfcord.models import message
-
-
-
-
+from .user import User
+from .message import Message
+from .webhook import Webhook
+from ..api.http import Http
 
 
 class Messageable:
-    def __init__(self, http, bot) -> None:
+    def __init__(self, http: Http, bot: Any) -> None:
+        self.id = None
         self.http = http
         self.bot = bot
 
-
-    async def history(self):
+    async def history(self) -> Union[List[Message], List]:
         """
         Get channel message history.
 
@@ -58,22 +54,20 @@ class Messageable:
             if str(msg.author.id) == str(self.bot.user.id):
                 msgs.append(msg)
 
-        if amount != None:
+        if amount is not None:
             for i in range(0, len(msgs[:amount]), 3):
                 await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i + 3]))
         else:
             for i in range(0, len(msgs), 3):
                 await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 3]))
 
-#            for i in range(0, len(msgs[:amount]), 2):
-#                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i + 2]))
-#                await asyncio.sleep(0.2)
-#        else:
-#            for i in range(0, len(msgs), 2):
-#                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 2]))
-#                await asyncio.sleep(0.2)
-             
-
+    #            for i in range(0, len(msgs[:amount]), 2):
+    #                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i + 2]))
+    #                await asyncio.sleep(0.2)
+    #        else:
+    #            for i in range(0, len(msgs), 2):
+    #                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 2]))
+    #                await asyncio.sleep(0.2)
 
     async def spam(self, amount: int, content: str, tts=False):
         """
@@ -90,7 +84,7 @@ class Messageable:
         amount: list[int] = [i + 1 for i in range(amount)]
         for i in range(0, len(amount), 3):
             await asyncio.gather(
-                *(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i + 3]))
+                *(asyncio.create_task(self.send(tts=tts, content=content)) for _ in amount[i:i + 3]))
 
     async def send(self, content=None, tts=False):
         """
@@ -101,28 +95,35 @@ class Messageable:
             - tts(bool) :
         """
         if hasattr(self, "guild_id"):
-            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}"},
+            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                    headers={"origin": "https://discord.com",
+                                             "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}"},
                                     json={"content": content, "tts": tts})
         else:
-            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.id}"},
+            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                    headers={"origin": "https://discord.com",
+                                             "referer": f"https://discord.com/channels/{self.id}"},
                                     json={"content": content, "tts": tts})
 
     async def reply(self, message, content=None, tts=False):
         if hasattr(self, "guild_id"):
-            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}"},
+            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                    headers={"origin": "https://discord.com",
+                                             "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}"},
                                     json={"content": content, "tts": tts,
-                                        "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"},
-                                        "allowed_mentions": {"parse": ["users", "roles", "everyone"],
-                                                            "replied_user": False}})
+                                          "message_reference": {"channel_id": f"{self.id}",
+                                                                "message_id": f"{message.id}"},
+                                          "allowed_mentions": {"parse": ["users", "roles", "everyone"],
+                                                               "replied_user": False}})
         else:
-            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.id}"},
+            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages",
+                                    headers={"origin": "https://discord.com",
+                                             "referer": f"https://discord.com/channels/{self.id}"},
                                     json={"content": content, "tts": tts,
-                                        "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"},
-                                        "allowed_mentions": {"parse": ["users", "roles", "everyone"],
-                                                            "replied_user": False}})
-
-
-
+                                          "message_reference": {"channel_id": f"{self.id}",
+                                                                "message_id": f"{message.id}"},
+                                          "allowed_mentions": {"parse": ["users", "roles", "everyone"],
+                                                               "replied_user": False}})
 
 
 class TextChannel(Messageable):
@@ -161,7 +162,7 @@ class TextChannel(Messageable):
         }
     """
 
-    def __init__(self, data, bot, http) -> None:
+    def __init__(self, data: Dict[Any, Any], bot: Any, http: Http) -> None:
         super().__init__(http, bot)
         self.permissions = []
         self.webhooks = []
@@ -172,7 +173,7 @@ class TextChannel(Messageable):
     def __str__(self) -> str:
         return f"{self.name}"
 
-    def _update(self, data):
+    def _update(self, data) -> None:
         self.topic = data.get("topic")
         self.rate_limit_per_user = data.get("rate_limit_per_user")
         self.position = data.get("position")
@@ -184,7 +185,7 @@ class TextChannel(Messageable):
         self.default_thread_rate_limit_per_user = data.get("default_thread_rate_limit_per_user")
         self.category_id = data.get("parent_id")
 
-    async def delete(self):
+    async def delete(self) -> None:
         """
         Deletes the text channel object.
 
@@ -197,7 +198,10 @@ class TextChannel(Messageable):
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
         del self
 
-    async def edit(self, name: str = None, parent_id: int = None, position: int = None, topic: str = None):
+    async def edit(
+        self, name: str = None, parent_id: int = None,
+        position: int = None, topic: str = None
+    ) -> Optional[str]:
         """
         Edits the text channel object details. Requires the `Manage Channels` permission.
         Not all details can be modified.
@@ -227,27 +231,39 @@ class TextChannel(Messageable):
             await self.http.request(method="patch", endpoint=f"/channels/{self.id}", json=payload)
         except Exception as e:
             from traceback import format_exception
-            error = "".join(format_exception(e, e, e.__traceback__))
+            error = "".join(format_exception(type(e), e, e.__traceback__))
             return error
 
-    async def create_webhook(self, name: str = None, avatar_url: str = None):
+    async def create_webhook(self, name: str = None, avatar_url: str = None) -> Webhook:
+        """
+        Creates a webhook for the text channel object.
+
+        Requires the `Manage Webhooks` permission.
+
+        Args:
+            name(str) : Specifies a new name for the webhook. Defaults to None.
+            avatar_url(str) : (Optional) Specifies a new avatar for the webhook.
+
+        Returns:
+            The webhook object.
+        """
         fields = {}
-        if name != None:
+        if name is not None:
             fields['name'] = name
         else:
             raise TypeError("Name is required...")
-        if avatar_url != None:
+        if avatar_url is not None:
             data = await self.http.encode_image(avatar_url)
             fields['avatar'] = data
         data = await self.http.request(method="post", endpoint=f"/channels/{self.id}/webhooks", json=fields)
         self.webhooks.append(Webhook(data, self.bot, http=self.http))
+        return Webhook(data, self.bot, http=self.http)
 
 
 class VoiceChannel(Messageable):
-    """Voice Channel Object
-    """
+    """Voice Channel Object"""
 
-    def __init__(self, data, bot, http) -> None:
+    def __init__(self, data: Dict[Any, Any], bot: Any, http: Http) -> None:
         super().__init__(http, bot)
         self.permissions = []
         self.webhooks = []
@@ -258,7 +274,7 @@ class VoiceChannel(Messageable):
     def __str__(self) -> str:
         return f"{self.name}"
 
-    def _update(self, data):
+    def _update(self, data) -> None:
         self.name = data.get("name")
         self.id = data.get("id")
         self.guild_id = data.get("guild_id")
@@ -270,17 +286,39 @@ class VoiceChannel(Messageable):
         self.position = data.get("position")
         self.category_id = data.get("parent_id")
 
-    async def delete(self):
+    async def delete(self) -> None:
+        """
+        Deletes the voice channel.
+
+        Args:
+            No arguments required
+
+        Returns:
+            No return value
+        """
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
         del self
 
-    async def create_webhook(self, name: str = None, avatar_url: str = None):
+    async def create_webhook(self, name: str = None, avatar_url: str = None) -> Webhook:
+        """
+        Creates a webhook for the voice channel.
+
+        Requires the `Manage Webhooks` permission.
+
+        Args:
+            name(str): Specifies a new name for the webhook. Defaults to None.
+
+            avatar_url(str) : (Optional) Specifies a new avatar for the webhook.
+
+        Returns:
+            The webhook object
+        """
         fields = {}
-        if name != None:
+        if name is not None:
             fields['name'] = name
         else:
             raise TypeError("Name is required...")
-        if avatar_url != None:
+        if avatar_url is not None:
             data = await self.http.encode_image(avatar_url)
             fields['avatar'] = data
         data = await self.http.request(method="post", endpoint=f"/channels/{self.id}/webhooks", json=fields)
@@ -288,18 +326,36 @@ class VoiceChannel(Messageable):
         self.webhooks.append(webhook)
         return webhook
 
-    async def call(self):
-        await self.bot.gateway.ring(self.id, self.guild_id)
+    async def call(self) -> None:
+        """
+        Calls the voice channel.
 
-    async def leave(self):
-        await self.bot.gateway.leave_call()
+        Args:
+            No arguments required
+
+        Returns:
+            No return value
+        """
+        await self.bot.Gateway.ring(self.id, self.guild_id)
+
+    async def leave(self) -> None:
+        """
+        Leaves the voice channel.
+
+        Args:
+            No arguments required
+
+        Returns:
+            No return value
+        """
+        await self.bot.Gateway.leave_call()
 
 
 class Category:
     """Category Object
     """
 
-    def __init__(self, data, bot, http) -> None:
+    def __init__(self, data: Dict[Any, Any], bot: Any, http: Http) -> None:
         self.bot = bot
         self.http = http
         self.permissions = []
@@ -308,14 +364,23 @@ class Category:
     def __str__(self) -> str:
         return f"{self.name}"
 
-    def _update(self, data):
+    def _update(self, data) -> None:
         self.name = data.get("name")
         self.id = data.get("id")
         self.guild_id = data.get("guild_id")
         self.position = data.get("position")
         self.flags = data.get("flags")
 
-    async def delete(self):
+    async def delete(self) -> None:
+        """
+        Deletes the category.
+
+        Args:
+            No arguments required
+
+        Returns:
+            No return value
+        """
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
         del self
 
@@ -324,7 +389,7 @@ class DMChannel(Messageable):
     """DM Channel Object
     """
 
-    def __init__(self, data, bot, http) -> None:
+    def __init__(self, data: Dict[Any, Any], bot: Any, http: Http) -> None:
         super().__init__(http, bot)
         self.http = http
         self.bot = bot
@@ -333,28 +398,60 @@ class DMChannel(Messageable):
     def __str__(self) -> str:
         return f"{self.recipient}"
 
-    def _update(self, data):
+    def _update(self, data) -> None:
         self.recipient = User(data.get("recipients")[0], self.bot, self.http)
         self.last_message_id = data.get("last_message_id")
         self.id = data.get("id")
         self.flags = data.get("id")
 
-    async def delete(self):
-        await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=false")
+    async def delete(self, silent: bool = False) -> None:
+        """
+        Leaves from the DM channel.
+
+        Args:
+            silent(bool): (Optional) If true, you leave from channel without information about leaving. Defaults False.
+
+        Returns:
+            No return value
+        """
+        await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent={'true' if silent else 'false'}")
         del self
 
-    async def call(self):
-        await self.bot.gateway.ring(self.id)
+    async def leave_channel(self) -> None:
+        """
+        Alias of the `delete` method.
+        """
+        await self.delete()
 
-    async def leave(self):
-        await self.bot.gateway.leave_call()
+    async def call(self) -> None:
+        """
+        Calls the DM channel.
+
+        Args:
+            No arguments required
+
+        Returns:
+            No return value
+        """
+        await self.bot.Gateway.ring(self.id)
+
+    async def leave(self) -> None:
+        """
+        Leaves from the call.
+
+        Args:
+            No arguments required
+
+        Returns:
+            No return value
+        """
+        await self.bot.Gateway.leave_call()
 
 
 class GroupChannel(Messageable):
-    """Group Channel Object
-    """
+    """Group Channel Object"""
 
-    def __init__(self, data, bot, http) -> None:
+    def __init__(self, data: Dict[Any, Any], bot: Any, http: Http) -> None:
         super().__init__(http, bot)
         self.recipients = []
         self.http = http
@@ -364,7 +461,7 @@ class GroupChannel(Messageable):
     def __str__(self) -> str:
         return f"{self.name}"
 
-    def _update(self, data):
+    def _update(self, data) -> None:
         for user in data.get("recipients"):
             self.recipients.append(User(user, self.bot, self.http))
         self.name = data.get("name")
@@ -374,13 +471,39 @@ class GroupChannel(Messageable):
         self.flags = data.get("flags")
         self.icon = data.get("icon")
 
-    async def delete(self):
-        await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=true")
+    async def delete(self, silent: bool = False) -> None:
+        """
+        Leaves from the group channel.
+
+        Args:
+            silent(bool): (Optional) If true, you leave from channel without information about leaving. Defaults False.
+
+        Returns:
+            No return value
+        """
+        await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent={'true' if silent else 'false'}")
         del self
 
-    async def call(self):
-        await self.bot.gateway.ring(self.id)
+    async def call(self) -> None:
+        """
+        Calls on the group channel.
+
+        Args:
+            No arguments required
+
+        Returns:
+            No return value
+        """
+        await self.bot.Gateway.ring(self.id)
 
     async def leave(self):
-        await self.bot.gateway.leave_call()
+        """
+        Leaves from the call.
 
+        Args:
+            No arguments required
+
+        Returns:
+            No return value
+        """
+        await self.bot.Gateway.leave_call()

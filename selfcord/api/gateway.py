@@ -1,35 +1,44 @@
 import asyncio
-import websockets
-from aioconsole import aprint
 import json
 import time
 import zlib
-from .events import EventHandler
-from .errors import ReconnectWebsocket
-from selfcord.models.client import Client
-import requests
 from traceback import format_exception
+from typing import Dict, Any, Union, Optional, List, Generator
+
+import aiohttp
+import websockets
+from aioconsole import aprint
+
+from selfcord.models.client import Client
+from .errors import ReconnectWebsocket
+from .events import EventHandler
+from .http import Http
+
 
 class Activity:
     @staticmethod
-    def create_payload(name, details, state, buttons, application_id, key, type_, url=None):
+    async def create_payload(
+        name: str, details: str, state: str, buttons: Dict[Any, Any],
+        application_id: Union[str, int], key: str, type_: int, url: str = None
+    ) -> Optional[Dict[Any, Any]]:
         button_urls = [button for button in buttons.values()]
         buttons = [button for button in buttons.keys()]
 
-        req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
-        for item in req.json():
-            if item.get('name') == key:
-                key = item['id']
-                break
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                    f"https://discordapp.com/api/oauth2/applications/{application_id}/assets") as response:
+                if response.status == 200:
+                    for item in await response.json():
+                        if item.get('name') == key:
+                            key = item['id']
+                            break
 
         payload = {
             "name": name,
             "details": details,
             "state": state,
             "application_id": application_id,
-            "assets": {
-                "large_image": key,
-            },
+            "assets": {"large_image": key},
             "type": type_,
             "created_at": int(time.time()),
         }
@@ -44,44 +53,75 @@ class Activity:
         return payload
 
     @staticmethod
-    def Game(name, details="", state="", buttons={}, application_id="1072088555528138782", key="dolphine"):
+    async def game(
+        name: str, details: str = "", state: str = "", buttons: Optional[Dict[Any, Any]] = None,
+        application_id: str = "1072088555528138782", key: str = "dolphine"
+    ) -> Optional[Dict[Any, Any]]:
+        if buttons is None:
+            buttons = {}
+
         type_ = 0
-        return Activity.create_payload(name, details, state, buttons, application_id, key, type_)
+        return await Activity.create_payload(name, details, state, buttons, application_id, key, type_)
 
     @staticmethod
-    def Stream(name, details="", state="", url="https://www.youtube.com/watch?v=CyIrJVp-sH8", buttons={}, application_id="1037788701318729799", key="dolphine"):
-       type_ = 1
-       return Activity.create_payload(name, details, state, buttons, application_id, key, type_, url)
+    async def stream(
+        name: str, details: str = "", state: str = "",
+        url: str = "https://www.youtube.com/watch?v=CyIrJVp-sH8", buttons: Optional[Dict[Any, Any]] = None,
+        application_id: str = "1037788701318729799", key: str = "dolphine"
+    ) -> Optional[Dict[Any, Any]]:
+        if buttons is None:
+            buttons = {}
+
+        type_ = 1
+        return await Activity.create_payload(name, details, state, buttons, application_id, key, type_, url)
 
     @staticmethod
-    def Listen(name, details: str="", state: str="", buttons: dict={}, application_id: str="1037788701318729799", key: str = "dolphine"):
+    async def listen(
+        name: str, details: str = "", state: str = "", buttons: Optional[Dict[Any, Any]] = None,
+        application_id: str = "1037788701318729799", key: str = "dolphine"
+    ) -> Optional[Dict[Any, Any]]:
+        if buttons is None:
+            buttons = {}
+
         type_ = 2
-        return Activity.create_payload(name, details, state, buttons, application_id, key, type_)
+        return await Activity.create_payload(name, details, state, buttons, application_id, key, type_)
 
     @staticmethod
-    def Watch(name, details: str="", state: str="", buttons: dict={}, application_id: str="1037788701318729799", key: str = "dolphine"):
+    async def watch(
+        name: str, details: str = "", state: str = "", buttons: Optional[Dict[Any, Any]] = None,
+        application_id: str = "1037788701318729799", key: str = "dolphine"
+    ) -> Optional[Dict[Any, Any]]:
+        if buttons is None:
+            buttons = {}
+
         type_ = 3
-        return Activity.create_payload(name, details, state, buttons, application_id, key, type_)
+        return await Activity.create_payload(name, details, state, buttons, application_id, key, type_)
 
-class gateway:
-    ''' OP CODES '''
-    DISPATCH           = 0
-    HEARTBEAT          = 1
-    IDENTIFY           = 2
-    PRESENCE           = 3
-    VOICE_STATE        = 4
-    VOICE_PING         = 5
-    RESUME             = 6
-    RECONNECT          = 7
-    REQUEST_MEMBERS    = 8
+
+class Gateway:
+    # OP CODES
+    DISPATCH = 0
+    HEARTBEAT = 1
+    IDENTIFY = 2
+    PRESENCE = 3
+    VOICE_STATE = 4
+    VOICE_PING = 5
+    RESUME = 6
+    RECONNECT = 7
+    REQUEST_MEMBERS = 8
     INVALIDATE_SESSION = 9
-    HELLO              = 10
-    HEARTBEAT_ACK      = 11
-    GUILD_SYNC         = 12
+    HELLO = 10
+    HEARTBEAT_ACK = 11
+    GUILD_SYNC = 12
 
-    def __init__(self, http, show_heartbeat=False):
+    def __init__(self, http: Http, show_heartbeat=False):
+        self.token = None
+        self.user = None
+        self.bot = None
+        self.handler = None
+        self.ws = None
         self.show_heartbeat = show_heartbeat
-        self.http = http
+        self.http: Http = http
         self.zlib = zlib.decompressobj()
         self.zlib_suffix = b'\x00\x00\xff\xff'
         self.last_ack = time.perf_counter()
@@ -89,26 +129,26 @@ class gateway:
         self.latency = float('inf')
         self.alive = False
 
-    async def recv_msg(self):
-        '''
+    async def recv_msg(self) -> None:
+        """
         Receives Message from gateway, encodes as json and does things depending on op code
+        """
 
-        '''
         item = await self.ws.recv()
         buffer = bytearray()
         buffer.extend(item)
-        if len(item) < 4 or item[-4:] != self.zlib_suffix: return
+        if len(item) < 4 or item[-4:] != self.zlib_suffix:
+            return
 
         if item:
-            item    = self.zlib.decompress(item)
-            item    = json.loads(item) # Get json message from gateway
+            item = self.zlib.decompress(item)
+            item = json.loads(item)  # Get json message from gateway
 
-            op      = item.get('op') # Op code
-            data    = item.get('d') # Data
-            event   = item.get('t') # The event
+            op = item.get('op')  # Op code
+            data = item.get('d')  # Data
+            event = item.get('t')  # The event
 
-
-            if  op == self.RECONNECT:
+            if op == self.RECONNECT:
                 await self.close()
                 raise ReconnectWebsocket('Connection was closed.')
 
@@ -132,31 +172,40 @@ class gateway:
 
                 handle = f'handle_{event.lower()}'
 
-                if hasattr(self.handler, handle): # If the event handler exists, so e.g handle_ready
-                    method = getattr(self.handler,handle)
+                if hasattr(self.handler, handle):  # If the event handler exists, so e.g handle_ready
+                    method = getattr(self.handler, handle)
 
-                    val = await asyncio.gather(asyncio.create_task(method(data, self.user, self.http)), return_exceptions=True) # A background task is created to run the handler
+                    val = await asyncio.gather(
+                        asyncio.create_task(method(data, self.user, self.http)),
+                        return_exceptions=True
+                    )  # A background task is created to run the handler
                     for item in val:
-                        if item == None: break
-                        else: await self.bot.emit('error', item)
+                        if item is not None:
+                            await self.bot.emit("error", item)
+                        break
 
                     # asyncio.create_task(method(data, self.user, self.http))
                 # Handlers are all situated in events.py
 
-
-    def roundup(self, n):
+    @staticmethod
+    def roundup(n) -> int:
         import math
         return int(math.ceil(n / 100.0)) * 100
 
-    def chunks(self, lst, n):
+    @staticmethod
+    def chunks(lst: List[Any], n: int) -> Generator[List[Any], None, None]:
         for i in range(0, len(lst), 1):
-            if len(lst[:i+1]) > 3:
-                for i in range(i, len(lst), n): yield lst[i:i + n]
+            if len(lst[:i + 1]) > 3:
+                for i in range(i, len(lst), n):
+                    yield lst[i:i + n]
                 break
 
-            yield lst[:i+1]
+            yield lst[:i + 1]
 
-    async def change_presence(self, status: str, afk: bool=False, activity: dict= Activity.Game("Selfcord", "Greatest wrapper" )):
+    async def change_presence(
+        self, status: str, afk: bool = False,
+        activity=None
+    ) -> None:
         """Change the clients current presence
 
         Args:
@@ -164,9 +213,12 @@ class gateway:
             afk (bool): Whether client is set as AFK
             activity (Activity): Activity object
         """
+        if activity is None:
+            activity = await Activity.game("Selfcord", "Greatest wrapper")
+
         payload = {
-            "op": 3,
-            "d" : {
+            "op": self.PRESENCE,
+            "d": {
                 "since": time.time(),
                 "activities": [activity],
                 "status": status.lower(),
@@ -176,20 +228,19 @@ class gateway:
 
         await self.send_json(payload)
 
-
-
-    async def lazy_chunk(self, guild_id: str, channel_id: str, amount: int):
-        '''Sends lazy guild request to gather current online members
+    async def lazy_chunk(self, guild_id: str, channel_id: str, amount: int) -> None:
+        """Sends lazy guild request to gather current online members
 
         Args:
             guild_id (str): The guild id specified
             channel_id (str): The channel id specified
-        '''
+            amount (int): The amount of members
+        """
 
         ranges = []
 
         for i in range(0, amount, 100):
-            ranges.append([i, self.roundup(i + (amount - i)) - 1]) if i + 99 > amount else ranges.append([i, i+99])
+            ranges.append([i, self.roundup(i + (amount - i)) - 1]) if i + 99 > amount else ranges.append([i, i + 99])
 
         for item in self.chunks(ranges, 3):
             payload = {
@@ -197,36 +248,33 @@ class gateway:
                 'd': {
                     'guild_id': guild_id,
                     'typing': True,
-                    'channels': {channel_id:item}
+                    'channels': {channel_id: item}
                 }
             }
 
             await self.send_json(payload)
 
-
-    async def send_json(self, payload: dict):
-        '''Send json to the gateway
+    async def send_json(self, payload: Dict[Any, Any]) -> None:
+        """Send json to the gateway
 
         Args:
             payload (dict): Valid payload to send to the gateway
-        '''
+        """
         await self.ws.send(json.dumps(payload))
 
-    async def connect(self):
-        '''Connect to discord gateway
-        '''
-        self.ws = await websockets.connect('wss://gateway.discord.gg/?encoding=json&v=9&compress=zlib-stream', origin='https://discord.com')
+    async def connect(self) -> None:
+        """Connect to discord gateway"""
+        self.ws = await websockets.connect('wss://gateway.discord.gg/?encoding=json&v=9&compress=zlib-stream',
+                                           origin='https://discord.com')
         self.alive = True
 
-    async def close(self):
-        '''Close the connection to discord gateway
-        '''
-        self.alive= False
+    async def close(self) -> None:
+        """Close the connection to discord gateway"""
+        self.alive = False
         await self.ws.close()
 
-    async def identify(self):
-        '''Identify to gateway, uses amazing mobile client spoof
-        '''
+    async def identify(self) -> None:
+        """Identify to gateway, uses amazing mobile client spoof"""
         payload = {
             'op': 2,
             'd': {
@@ -242,62 +290,60 @@ class gateway:
         }
         await self.send_json(payload)
 
-
-
-    async def heartbeat(self, interval):
-        '''Heartbeat for gateway to maintain connection
+    async def heartbeat(self, interval: Union[int, float]) -> None:
+        """Heartbeat for gateway to maintain connection
 
         Args:
             interval (int): Interval between sends
-        '''
-        await aprint(f'Hearbeat loop has began with the interval of {interval} seconds!')
-        heartbeatJSON = {
-            'op': 1,
+        """
+        await aprint(f'Heartbeat loop has began with the interval of {interval} seconds!')
+        heartbeat_json = {
+            'op': self.HEARTBEAT,
             'd': time.time()
         }
         while True:
             await asyncio.sleep(interval)
-            await self.send_json(heartbeatJSON)
+            await self.send_json(heartbeat_json)
             self.last_send = time.perf_counter()
             if self.show_heartbeat:
                 await aprint('Sent Beat')
 
-    async def heartbeat_ack(self):
-        '''Whenever heartbeat ack is sent, logs the time between last send of heartbeat json and receive of the ack
-        '''
+    async def heartbeat_ack(self) -> None:
+        """Whenever heartbeat ack is sent, logs the time between last send of heartbeat json and receive of the ack"""
         self.last_ack = time.perf_counter()
         self.latency = self.last_ack - self.last_send
 
-    async def start(self, token: str, user: Client, bot):
-        '''Start discord gateway connection
+    async def start(self, token: str, user: Client, bot: Any) -> None:
+        """Start discord gateway connection
 
         Args:
             token (str): User token
             user (Client): User client
             bot (_type_): Bot class
-        '''
+        """
         self.handler = EventHandler(bot, self.http)
         self.bot = bot
 
-        await self.bot.inbuilt_commands() # In built commands very cool
+        await self.bot.inbuilt_commands()  # In built commands very cool
 
         self.user = user
         self.token = token
 
         await self.connect()
         while self.alive:
-            try: await self.recv_msg()
+            try:
+                await self.recv_msg()
             except KeyboardInterrupt:
                 await aprint('Shutting down...')
                 await self.close()
             except Exception as e:
-                error = "".join(format_exception(e, e, e.__traceback__))
+                error = "".join(format_exception(type(e), e, e.__traceback__))
                 await self.bot.emit("error", error)
                 await self.close()
 
-    async def ring(self, channel, guild=None):
+    async def ring(self, channel: Union[str, int], guild: Union[str, int] = None) -> None:
         payload = {
-            "op": 4,
+            "op": self.VOICE_STATE,
             "d": {
                 "guild_id": guild,
                 "channel_id": channel,
@@ -308,14 +354,11 @@ class gateway:
             }
         }
         await self.send_json(payload)
-        await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
+        await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring", json={"recipients": None})
 
-
-
-
-    async def leave_call(self):
+    async def leave_call(self) -> None:
         payload = {
-            "op": 4,
+            "op": self.VOICE_STATE,
             "d": {
                 "guild_id": None,
                 "channel_id": None,
@@ -325,19 +368,3 @@ class gateway:
             }
         }
         await self.send_json(payload)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
