@@ -243,7 +243,7 @@ class Bot:
         except Exception as e:
             raise ModuleNotFoundError(f"Extension does not exist {e}")
         ext = Extension(name=ext.name, description=ext.description, ext=ext(self), _events=ext._events)
-
+        self.extensions.add(ext)
         try:
             for name, event in ext._events.items():
                 for Event in event:
@@ -255,7 +255,7 @@ class Bot:
             error = "".join(format_exception(e, e, e.__traceback__))
             print(error)
 
-        self.extensions.add(ext)
+
 
 
 
@@ -384,7 +384,7 @@ class Bot:
         if house.lower() == "balance":
             await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 3})
 
-    async def change_presence(self, status: str, afk: bool=False, activity: dict=Activity.Game("test", "testing")):
+    async def change_presence(self, status: str, afk: bool, activity: dict):
         await self.gateway.change_presence(status, afk, activity=activity)
 
 

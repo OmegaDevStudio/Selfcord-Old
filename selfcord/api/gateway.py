@@ -13,11 +13,12 @@ from traceback import format_exception
 class Activity:
 
     @staticmethod
-    def Game(name, details: str="", state: str="", buttons: dict={}, application_id: str="1037788701318729799", key: str = "dolphine"):
+    def Game(name, details: str, state: str, buttons: dict, application_id: str, key: str):
         type = 0
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
         req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
+        print(req.json())
         for item in req.json():
 
             if item['name'] == key:
@@ -56,7 +57,7 @@ class Activity:
         return payload
 
     @staticmethod
-    def Stream(name, details: str="", state: str="", url: str="https://www.youtube.com/watch?v=CyIrJVp-sH8",buttons: dict={}, application_id: str="1037788701318729799", key: str = "dolphine"):
+    def Stream(name, details: str, state: str, url: str, buttons: dict, application_id: str, key: str):
         type = 1
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
@@ -100,7 +101,7 @@ class Activity:
         return payload
 
     @staticmethod
-    def Listen(name, details: str="", state: str="", buttons: dict={}, application_id: str="1037788701318729799", key: str = "dolphine"):
+    def Listen(name, details: str, state: str, buttons: dict, application_id: str, key: str ):
         type = 2
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
@@ -142,7 +143,7 @@ class Activity:
 
         return payload
     @staticmethod
-    def Watch(name, details: str="", state: str="", buttons: dict={}, application_id: str="1037788701318729799", key: str = "dolphine"):
+    def Watch(name, details: str, state: str, buttons: dict, application_id: str, key: str ):
         type = 3
 
         button_urls = [button for button in buttons.values()]
@@ -281,7 +282,7 @@ class gateway:
 
             yield lst[:i+1]
 
-    async def change_presence(self, status: str, afk: bool=False, activity: dict= Activity.Game("Selfcord", "Greatest wrapper" )):
+    async def change_presence(self, status: str, afk: bool, activity: dict):
         """Change the clients current presence
 
         Args:
@@ -417,7 +418,7 @@ class gateway:
                 await self.close()
             except Exception as e:
                 error = "".join(format_exception(e, e, e.__traceback__))
-                self.bot.emit("error", error)
+                await self.bot.emit("error", error)
                 await self.close()
 
     async def ring(self, channel, guild=None):
