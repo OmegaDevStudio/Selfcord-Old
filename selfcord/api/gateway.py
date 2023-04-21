@@ -257,7 +257,7 @@ class gateway:
                 # These events are discord events like message_create, role_create whatever.
 
                 handle = f'handle_{event.lower()}'
-
+                print(handle)
                 if hasattr(self.handler, handle): # If the event handler exists, so e.g handle_ready
                     method = getattr(self.handler,handle)
 
@@ -354,16 +354,40 @@ class gateway:
         '''Identify to gateway, uses amazing mobile client spoof
         '''
         payload = {
-            'op': 2,
-            'd': {
-                'token': self.token,
-                'properties': {
-                    '$os': 'android',
-                    '$browser': 'Discord Android',
-                    '$device': 'Discord Android',
-                    '$referrer': '',
-                    '$referring_domain': ''
-                },
+            "op": 2,
+            "d": {
+            "token": self.token,
+            "capabilities": 8189,
+            "properties": {
+                "os": "Linux",
+                "browser": "Discord Client",
+                "release_channel": "canary",
+                "client_version": "0.0.151",
+                "os_version": "5.10.177-1-MANJARO",
+                "os_arch": "x64",
+                "system_locale": "en-GB",
+                "window_manager": "KDE,unknown",
+                "distro": "\"Manjaro Linux\"",
+                "client_build_number": 191392,
+                "native_build_number": None,
+                "client_event_source": None
+            },
+            "presence": {
+                "status": "online",
+                "since": 0,
+                "activities": [],
+                "afk": False
+            },
+            "compress": False,
+            "client_state": {
+                "guild_versions": {},
+                "highest_last_message_id": "0",
+                "read_state_version": 0,
+                "user_guild_settings_version": -1,
+                "user_settings_version": -1,
+                "private_channels_version": "0",
+                "api_code_version": 0
+                }
             }
         }
         await self.send_json(payload)

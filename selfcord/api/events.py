@@ -16,6 +16,7 @@ class EventHandler:
     async def handle_ready(self, data, user: Client, http):
         '''Handles the ready event, what is executed when it appears
         '''
+        # await aprint(data)
         self.user = user
         for relationship in data.get('relationships'):
             if relationship.get('type') == 1:
@@ -30,6 +31,26 @@ class EventHandler:
 
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit('ready', perf_counter() - self.bot.t1)
+
+
+    async def handle_ready_supplemental(self, data, user: Client, http):
+        '''Handles the ready event, what is executed when it appears
+        '''
+        await aprint(data)
+        self.user = user
+        for relationship in data.get('relationships'):
+            if relationship.get('type') == 1:
+                self.user.friends.append(User(relationship['user'], self.bot, http))
+
+        for channel in data.get('private_channels'):
+            if channel.get('type') == 1: self.user.private_channels.append(DMChannel(channel,self.bot, http))
+            if channel.get('type') == 3: self.user.private_channels.append(GroupChannel(channel, self.bot, http))
+
+        for guild in data.get('guilds'):
+            await self.handle_guild_create(guild, self.user, http)
+
+        # Sends data from ready to the event handler in main.py (if it exists)
+        await self.bot.emit('ready_supplemental', perf_counter() - self.bot.t1)
 
     async def handle_guild_create(self, data, user: Client, http):
         '''
