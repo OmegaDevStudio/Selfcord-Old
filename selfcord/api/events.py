@@ -10,8 +10,8 @@ class EventHandler:
     '''
     def __init__(self, bot, http):
         self._events = {}
-        self.http    = http
-        self.bot     = bot
+        self.http = http
+        self.bot = bot
 
     async def handle_ready(self, data, user: Client, http):
         '''Handles the ready event, what is executed when it appears
