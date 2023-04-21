@@ -257,6 +257,7 @@ class gateway:
                 # These events are discord events like message_create, role_create whatever.
 
                 handle = f'handle_{event.lower()}'
+            
 
                 if hasattr(self.handler, handle): # If the event handler exists, so e.g handle_ready
                     method = getattr(self.handler,handle)
