@@ -108,7 +108,6 @@ class http:
                         await aprint(json)
                         break
 
-
                     elif resp.status == 201:
                         data = await resp.json()
                         break
@@ -124,6 +123,8 @@ class http:
                     else:
                         await aprint(resp.status)
                         json = await resp.json()
+
+
                         raise LoginFailure(json, resp.status)
         try:
             if resp.headers['set-cookie']:
@@ -148,8 +149,7 @@ class http:
         async with ClientSession() as session:
             async with session.get(f'{url}') as resp:
                 image = b64encode(await resp.read())
-                
-                newobj = str(image).split("'", 2)
+                newobj = str(image).split('"', 2)
 
         return f'data:image/png;base64,{newobj[1]}'
 

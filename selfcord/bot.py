@@ -251,6 +251,7 @@ class Bot:
                         self._events[event].append(Event(name=name, coro=Event.coro, ext=Event.ext))
                     except:
                         continue
+
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
             print(error)

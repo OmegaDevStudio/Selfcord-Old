@@ -91,6 +91,8 @@ class User:
 
     async def get_profile(self):
         data = await self.http.request(method="get", endpoint=f"/users/{self.id}/profile?with_mutual_guilds=true")
+
         if data != None:
             data = Profile(data, self.bot, self.http)
+
         return data
