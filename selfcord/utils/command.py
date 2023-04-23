@@ -11,13 +11,17 @@ class Extension:
         self.name: str | None = kwargs.get("name")
         self.description: str | None = kwargs.get('description')
         self.ext = kwargs.get("ext")
-        self._events = kwargs.get("_events")
+        self._events = defaultdict(list)
+        _events = self.ext._events
         commands = self.ext.commands
         self.commands = CommandCollection()
         for cmd in commands.recents():
             setattr(cmd, "ext", self.ext)
             self.commands.add(cmd)
         self.commands.copy()
+        commands.clear()
+        self._events.update(_events)
+        _events.clear()
 
 
 
@@ -39,7 +43,7 @@ class ExtensionCollection:
 
     def add(self, ext):
         if not isinstance(ext, Extension):
-            raise ValueError('cmd must be a subclass of Command')
+            raise ValueError('cmd must be a subclass of Extension')
         if self._is_already_registered(ext):
             raise ValueError('A name or alias is already registered')
         self.extensions[ext.name] = ext
@@ -106,7 +110,10 @@ class CommandCollection:
 
     def copy(self):
         self.commands.update(self.recent_commands)
-        self.recent_commands = {}
+        self.clear()
+
+    def clear(self):
+        self.recent_commands.clear()
 
     def get(self, alias, prefix=''):
         try:
@@ -155,6 +162,7 @@ class Extender:
             else:
                 cmd = Command(name=name, description=description, aliases=aliases, func=coro)
                 cls.commands.add(cmd)
+
             return cmd
 
         return decorator

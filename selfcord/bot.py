@@ -139,25 +139,28 @@ class Bot:
         return decorator
 
     async def emit(self, event, *args, **kwargs):
-        """Used to essentially push values to the decorator
+        """Used to essentially push values to the decorator when the event fires
 
         Args:
             event (str): The event name
         """
         on_event = "on_{}".format(event)
+
         # try:
         if hasattr(self, on_event):
             await getattr(self, on_event)(*args, **kwargs)
         if event in self._events.keys():
+
             for Event in self._events[event]:
-                # print(Event.coro, Event.name, Event.ext)
+
                 if Event.coro.__code__.co_varnames[0] == "self":
+
                     return asyncio.create_task(Event.coro(Event.ext, *args, **kwargs))
 
                 else:
-                    return asyncio.create_task(Event.coro(*args, **kwargs))
-        # except Exception as e:
-        #     raise RuntimeError("Failure to emit", e)
+
+                    asyncio.create_task(Event.coro(*args, **kwargs))
+
 
     def cmd(self, description="", aliases=[]):
         """Decorator to add commands for the bot
@@ -246,11 +249,10 @@ class Bot:
         self.extensions.add(ext)
         try:
             for name, event in ext._events.items():
-                for Event in event:
-                    try:
-                        self._events[event].append(Event(name=name, coro=Event.coro, ext=Event.ext))
-                    except:
-                        continue
+                for ext_event in event:
+                    self._events[name].append(Event(name=name, coro=ext_event.coro, ext=ext_event.ext))
+
+
 
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
