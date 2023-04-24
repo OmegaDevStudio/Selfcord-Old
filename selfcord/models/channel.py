@@ -72,7 +72,7 @@ class Messageable:
 #            for i in range(0, len(msgs), 2):
 #                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 2]))
 #                await asyncio.sleep(0.2)
-             
+
 
 
     async def spam(self, amount: int, content: str, tts=False):
@@ -91,6 +91,7 @@ class Messageable:
         for i in range(0, len(amount), 3):
             await asyncio.gather(
                 *(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i + 3]))
+            await asyncio.sleep(0.3)
 
     async def send(self, content=None, tts=False):
         """

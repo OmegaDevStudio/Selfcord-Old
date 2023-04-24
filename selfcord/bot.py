@@ -151,7 +151,7 @@ class Bot:
         if hasattr(self, on_event):
             await getattr(self, on_event)(*args, **kwargs)
         if event in self._events.keys():
-
+     
             for Event in self._events[event]:
 
                 if Event.coro.__code__.co_varnames[0] == "self":

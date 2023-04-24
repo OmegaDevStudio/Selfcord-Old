@@ -14,6 +14,12 @@ Read our [Wiki](https://github.com/Shell1010/Selfcord/wiki) in regards to docume
 
 ## Examples
 
+### Aeterna Selfbot
+
+A simple selfbot designed to showcase the library's features, intended to be seen as a template or base for other users.
+
+[Aeterna Selfbot](https://github.com/Shell1010/Aeterna-Selfbot)
+
 ### Message logger
 ```python
 import selfcord
