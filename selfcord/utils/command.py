@@ -179,10 +179,11 @@ class Extender:
             if not inspect.iscoroutinefunction(coro):
                 raise RuntimeWarning("Faulure")
             else:
-                cls._events[event].append(Event(name=event, coro=coro, ext=cls))
+                eve = Event(name=event, coro=coro, ext=cls)
+                cls._events[event].append(eve)
 
                 def wrapper(*args, **kwargs):
-                    result = cls._events[event].append(Event(name=event, coro=coro, ext=cls))
+                    result = cls._events[event].append(eve)
                     return result
 
                 return wrapper

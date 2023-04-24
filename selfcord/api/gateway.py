@@ -14,6 +14,8 @@ class Activity:
 
     @staticmethod
     def Game(name, details: str, state: str, buttons: dict, application_id: str, key: str):
+        """Method to generate "Playing ..." activity
+        """
         type = 0
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
@@ -58,6 +60,8 @@ class Activity:
 
     @staticmethod
     def Stream(name, details: str, state: str, url: str, buttons: dict, application_id: str, key: str):
+        """Method to generate "Streaming ..." activity
+        """
         type = 1
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
@@ -102,6 +106,8 @@ class Activity:
 
     @staticmethod
     def Listen(name, details: str, state: str, buttons: dict, application_id: str, key: str ):
+        """Method to generate "Listening ..." activity
+        """
         type = 2
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
@@ -144,6 +150,8 @@ class Activity:
         return payload
     @staticmethod
     def Watch(name, details: str, state: str, buttons: dict, application_id: str, key: str ):
+        """Method to generate "Watching ..." activity
+        """
         type = 3
 
         button_urls = [button for button in buttons.values()]
@@ -257,7 +265,7 @@ class gateway:
                 # These events are discord events like message_create, role_create whatever.
 
                 handle = f'handle_{event.lower()}'
-            
+
 
                 if hasattr(self.handler, handle): # If the event handler exists, so e.g handle_ready
                     method = getattr(self.handler,handle)
@@ -422,7 +430,13 @@ class gateway:
                 await self.bot.emit("error", error)
                 await self.close()
 
-    async def ring(self, channel, guild=None):
+    async def ring(self, channel: str, guild=None):
+        """Initiates a discord call
+
+        Args:
+            channel (str): Channel ID
+            guild (str, optional): Guild ID. Defaults to None.
+        """
         payload = {
             "op": 4,
             "d": {
@@ -441,6 +455,8 @@ class gateway:
 
 
     async def leave_call(self):
+        """Leaves a discord call
+        """
         payload = {
             "op": 4,
             "d": {

@@ -245,12 +245,14 @@ class Bot:
             ext = getattr(lib, 'Ext')
         except Exception as e:
             raise ModuleNotFoundError(f"Extension does not exist {e}")
+
+        # Creates an Extension - ext in this case refers to the Ext class used for initialisation
         ext = Extension(name=ext.name, description=ext.description, ext=ext(self), _events=ext._events)
         self.extensions.add(ext)
         try:
             for name, event in ext._events.items():
                 for ext_event in event:
-                    self._events[name].append(Event(name=name, coro=ext_event.coro, ext=ext_event.ext))
+                    self._events[name].append(Event(name=name, coro=ext_event.coro, ext=ext.ext))
 
 
 
