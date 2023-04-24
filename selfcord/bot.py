@@ -155,7 +155,7 @@ class Bot:
 
                 if Event.coro.__code__.co_varnames[0] == "self":
 
-                    return asyncio.create_task(Event.coro(Event.ext, *args, **kwargs))
+                    asyncio.create_task(Event.coro(Event.ext, *args, **kwargs))
 
                 else:
 
