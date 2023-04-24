@@ -381,7 +381,20 @@ class Bot:
         else:
             raise TypeError("Recipient ID not specified")
 
+    async def redeem_nitro(self, code: str):
+        """Helper function to redeem nitro
+
+        Args:
+            code (str): Nitro code
+        """
+        data = await self.http.request(method="post", endpoint=f"/entitlements/gift-codes/{code}/redeem", json={})
+        await aprint(f"{data}\n{code}")
     async def change_hypesquad(self, house: str):
+        """Helper function to change hypesquad
+
+        Args:
+            house (str): Hypesquad name
+        """
         if house.lower() == "bravery":
             await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 1})
         if house.lower() == "brilliance":
