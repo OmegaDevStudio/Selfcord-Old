@@ -262,12 +262,12 @@ class Context:
     def alias(self):
         for command in self.bot.commands:
             for alias in command.aliases:
-                if self.content.startswith(self.prefix + alias):
+                if self.content.lower().startswith(self.prefix + alias.lower()):
                     return alias
         for extension in self.bot.extensions:
             for command in extension.commands:
                 for alias in command.aliases:
-                    if self.content.startswith(self.prefix + alias):
+                    if self.content.lower().startswith(self.prefix + alias.lower()):
                         self.extension = extension.ext
                         return alias
         return None
