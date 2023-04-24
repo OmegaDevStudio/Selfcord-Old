@@ -13,6 +13,7 @@ from traceback import format_exception
 import io
 from functools import partial
 import importlib
+import aiohttp
 
 
 class Bot:
@@ -387,8 +388,14 @@ class Bot:
         Args:
             code (str): Nitro code
         """
-        data = await self.http.request(method="post", endpoint=f"/entitlements/gift-codes/{code}/redeem", json={})
-        await aprint(f"{data}\n{code}")
+        async with aiohttp.ClientSession() as session:
+            async with session.post(f"https://canary.discord.com/api/v9/entitlements/gift-codes/{code}/redeem", headers={"authorization": f"{self.token}", "user-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0"}) as resp:
+                j = await resp.json()
+                await aprint(j, resp.status)
+
+
+
+
     async def change_hypesquad(self, house: str):
         """Helper function to change hypesquad
 
