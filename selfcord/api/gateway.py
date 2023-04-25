@@ -20,7 +20,6 @@ class Activity:
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
         req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
-        print(req.json())
         for item in req.json():
 
             if item['name'] == key:
