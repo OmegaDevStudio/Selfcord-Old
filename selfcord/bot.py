@@ -66,7 +66,7 @@ class Bot:
                 """
                 if cat is None:
                     msg = f"```ini\n[ {self.user.name} Selfbot ]\n"
-                    msg += f"[ {self.user} ]\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n[ .Prefixes ] : {bot.prefixes}\n\n"
+                    msg += f"[ {self.user} ]\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n[ .Prefixes ] : {self.prefixes}\n\n"
                     msg += f"[ .Commands ]\n"
                     for command in self.commands:
                         msg += f". {command.name}: {command.description}\n"
@@ -82,11 +82,11 @@ class Bot:
                     for ext in self.extensions:
                         if name == ext.name.lower():
                             msg = f"```ini\n[ {self.user.name} Selfbot ]\n"
-                            msg += f"[ {self.user} ]\n\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n\n[ .Prefixes ] : {bot.prefixes}\n\n"
+                            msg += f"[ {self.user} ]\n\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n\n[ .Prefixes ] : {self.prefixes}\n\n"
                             msg += f"[ .Commands ]\n"
                             for command in ext.commands:
                                 if command.ext == ext.ext:
-                                    msg += f"{command.name}: {command.description}\n"
+                                    msg += f". {command.name}: {command.description}\n"
 
                             msg += f"```"
                             return await ctx.reply(f"{msg}")
@@ -94,10 +94,10 @@ class Bot:
                         for cmd in self.commands:
                             if name == cmd.name.lower():
                                 msg = f"```ini\n[ {self.user.name} Selfbot ]\n"
-                                msg += f"[ {self.user} ]\n\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n\n[ .Prefixes ] : {bot.prefixes}\n\n"
+                                msg += f"[ {self.user} ]\n\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n\n[ .Prefixes ] : {self.prefixes}\n\n"
                                 msg += f"[ .{cmd.name} ]\n"
                                 msg += f"[ Description ] :  {cmd.description} \n"
-                                msg += f"[ Long Description ] :\n{cmd.func.__doc__}"
+                                msg += f"[ Long Description ] :\n{cmd.func.__doc__}\n"
                                 msg += f"[ Aliases ] : {cmd.aliases} \n"
                                 args = inspect.signature(cmd.func)
                                 msg += f"\n[ Example Usage ] :\n[ {self.prefixes[0]}{cmd.aliases[0]}"
@@ -116,7 +116,7 @@ class Bot:
                                     msg += f"[ {self.user} ]\n\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n\n[ .Prefixes ] : {bot.prefixes}\n\n"
                                     msg += f"[ .{cmd.name} ]\n"
                                     msg += f"[ Description ] :  {cmd.description} \n"
-                                    msg += f"[ Long Description ] :\n{cmd.func.__doc__}"
+                                    msg += f"[ Long Description ] :\n{cmd.func.__doc__}\n"
                                     msg += f"[ Aliases ] :  {cmd.aliases} \n"
                                     args = inspect.signature(cmd.func)
                                     msg += f"\n[ Example Usage ] :\n[ {self.prefixes[0]}{cmd.aliases[0]}"
