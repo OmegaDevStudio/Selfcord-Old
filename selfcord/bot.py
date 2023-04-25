@@ -62,17 +62,18 @@ class Bot:
         if self.inbuilt_help:
             @self.cmd("The help command!", aliases=["test"])
             async def help(ctx, cat=None):
+                """The help command, dedicated to viewing all commands, extensions and information regarding commands.
+                """
                 if cat is None:
-                    msg = f"```diff\n"
-                    msg += f"+ {self.user} selfbot\n+ Prefixes:   {self.prefixes}\n\n"
-                    msg += f"- Commands\n"
-                    for ext in self.extensions:
-                        msg += f"- Ext {ext.name}: {ext.description}\n"
+                    msg = f"```ini\n[ {self.user.name} Selfbot ]\n"
+                    msg += f"[ {self.user} ]\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n[ .Prefixes ] : {bot.prefixes}\n\n"
+                    msg += f"[ .Commands ]\n"
                     for command in self.commands:
-                        msg += f"- {command.name}:    {command.description}\n"
+                        msg += f". {command.name}: {command.description}\n"
+                    msg += "\n[ .Extensions ]\n"
+                    for ext in self.extensions:
+                        msg += f"[ {ext.name} ] : [ {ext.description} ]\n"
 
-                        if len(msg) > 1980:
-                            msg += f"```"
                     msg += f"```"
                     return await ctx.reply(f"{msg}")
 
@@ -80,17 +81,54 @@ class Bot:
                     name = cat.lower()
                     for ext in self.extensions:
                         if name == ext.name.lower():
-                            msg = f"```diff\n"
-                            msg += f"+ {self.user} selfbot\n+ Prefixes:   {self.prefixes}\n\n"
-                            msg += f"- {ext.name} Commands\n"
-
+                            msg = f"```ini\n[ {self.user.name} Selfbot ]\n"
+                            msg += f"[ {self.user} ]\n\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n\n[ .Prefixes ] : {bot.prefixes}\n\n"
+                            msg += f"[ .Commands ]\n"
                             for command in ext.commands:
-
                                 if command.ext == ext.ext:
-                                    msg += f"- {command.name}:    {command.description}\n"
+                                    msg += f"{command.name}: {command.description}\n"
 
                             msg += f"```"
                             return await ctx.reply(f"{msg}")
+                    else:
+                        for cmd in self.commands:
+                            if name == cmd.name.lower():
+                                msg = f"```ini\n[ {self.user.name} Selfbot ]\n"
+                                msg += f"[ {self.user} ]\n\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n\n[ .Prefixes ] : {bot.prefixes}\n\n"
+                                msg += f"[ .{cmd.name} ]\n"
+                                msg += f"[ Description ] :  {cmd.description} \n"
+                                msg += f"[ Long Description ] :\n{cmd.func.__doc__}"
+                                msg += f"[ Aliases ] : {cmd.aliases} \n"
+                                args = inspect.signature(cmd.func)
+                                msg += f"\n[ Example Usage ] :\n[ {self.prefixes[0]}{cmd.aliases[0]}"
+                                for arg in args.parameters.keys():
+                                    if arg == "self" or arg == "ctx":
+                                        continue
+                                    msg += f" <{arg}>"
+                                msg += f" ]"
+
+                                msg += f"```"
+                                return await ctx.reply(f"{msg}")
+                        for ext in self.extensions:
+                            for cmd in ext.commands:
+                                if name == cmd.name.lower():
+                                    msg = f"```ini\n[ {self.user.name} Selfbot ]\n"
+                                    msg += f"[ {self.user} ]\n\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n\n[ .Prefixes ] : {bot.prefixes}\n\n"
+                                    msg += f"[ .{cmd.name} ]\n"
+                                    msg += f"[ Description ] :  {cmd.description} \n"
+                                    msg += f"[ Long Description ] :\n{cmd.func.__doc__}"
+                                    msg += f"[ Aliases ] :  {cmd.aliases} \n"
+                                    args = inspect.signature(cmd.func)
+                                    msg += f"\n[ Example Usage ] :\n[ {self.prefixes[0]}{cmd.aliases[0]}"
+                                    for arg in args.parameters.keys():
+                                        if arg == "self" or arg == "ctx":
+                                            continue
+                                        msg += f" <{arg}>"
+                                    msg += f" ]"
+
+
+                                    msg += f"```"
+                                    return await ctx.reply(f"{msg}")
 
 
 
@@ -151,7 +189,7 @@ class Bot:
         if hasattr(self, on_event):
             await getattr(self, on_event)(*args, **kwargs)
         if event in self._events.keys():
-     
+
             for Event in self._events[event]:
 
                 if Event.coro.__code__.co_varnames[0] == "self":
