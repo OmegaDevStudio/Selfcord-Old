@@ -11,15 +11,3 @@ contain the root `toctree` directive. -->
 
 
     * [selfcord package](selfcord.md)
-
-
-# Indices and tables
-
-
-* [Index](genindex.md)
-
-
-* [Module Index](py-modindex.md)
-
-
-* [Search Page](search.md)
