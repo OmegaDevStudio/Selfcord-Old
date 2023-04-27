@@ -6,7 +6,7 @@ bot = selfcord.Bot(prefixes=["!"])
 @pytest.mark.asyncio
 class Tests:
     async def test(self, *args):
-        print("HELLO WORLD", args)
+        return "HELLO WORLD"
 
     def add_cmd_test(self):
         try:
@@ -15,5 +15,9 @@ class Tests:
             raise RuntimeError(f"Failed to add command. Error: {e}")
 
         cmds = len(bot.commands)
-        print(cmds)
         assert cmds > 0
+
+
+
+
+
