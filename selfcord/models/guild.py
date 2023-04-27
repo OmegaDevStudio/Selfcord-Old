@@ -33,6 +33,11 @@ class Guild:
         return f"{self.name}"
 
     def _update(self, data):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         self.id = data.get('id')
         self.name = data.get('name')
         self.icon = data.get('icon')
@@ -76,13 +81,29 @@ class Guild:
                 self.emojis.append(emoji)
 
     async def ban(self, user_id: str):
+        """Bans a user from the guild
+
+        Args:
+            user_id (str): User ID specified to ban
+        """
         await self.http.request(method="put", endpoint=f"/guilds/{self.id}/bans/{user_id}", json={"delete_message_days":"7"})
 
     async def kick(self, user_id: str):
+        """Kicks a user from the guild
+
+        Args:
+            user_id (str): User ID specified to kick
+        """
         await self.http.request(method="delete", endpoint=f"/guilds/{self.id}/members/{user_id}")
 
 
-    async def txt_channel_create(self, name, parent_id=None):
+    async def txt_channel_create(self, name:str, parent_id: str=None):
+        """Creates a Text Channel in the guild
+
+        Args:
+            name (str): Name of the channel
+            parent_id (str, optional): ID of the category. Defaults to None.
+        """
         payload = {"name": name}
         payload.update({"permission_overwrites": []})
         payload.update({"type": 0})
@@ -91,23 +112,57 @@ class Guild:
 
         await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json=payload)
 
-    async def vc_channel_create(self, name):
+    async def vc_channel_create(self, name: str):
+        """Creates a voice channel in the guild
+
+        Args:
+            name (str): Name of the channel
+        """
         await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 2})
 
-    async def role_create(self, name):
+    async def role_create(self, name: str):
+        """Creates a role in the guild
+
+        Args:
+            name (str): Name of the role
+        """
         await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/roles", json = {"name": f"{name}"})
 
     async def category_channel_create(self, name):
+        """Creates a category in the guild
+
+        Args:
+            name (str): Name of the category
+        """
         await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 4})
 
     async def emoji_create(self, name: str, image_url: str):
+        """Creates an emoji in the guild
+
+        Args:
+            name (str): Name of the emoji
+            image_url (str): URL for an image
+        """
         image = await self.http.encode_image(image_url)
         await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/emojis", json= {"name": f"{name}", "image": image})
 
     async def get_members(self, channel_id: str):
+        """Get guild members for a guild via chunking
+
+        Args:
+            channel_id (str): Channel ID to chunk from
+        """
         await self.bot.gateway.lazy_chunk(self.id, channel_id, self.member_count)
 
     async def edit(self, name: str=None, icon_url: str=None, banner_url: str=None, description: str=None):
+        """Edits attributes for a guild
+
+        Args:
+            name (str, optional): Name of the guild. Defaults to None.
+            icon_url (str, optional): Image URL for Icon. Defaults to None.
+            banner_url (str, optional): Image URL for Banner. Defaults to None.
+            description (str, optional): Description of the guild. Defaults to None.
+        """
         fields = {}
         if name != None:
             fields['name'] = name
@@ -127,5 +182,7 @@ class Guild:
         await self.http.request(method = "patch", endpoint = f"/guilds/{self.id}", headers={"origin":"https://discord.com", "referer":f"https://discord.com/channels/{self.id}/{random.choice(self.channels)}"},json=fields)
 
     async def delete(self):
+        """Deletes the Guild Object
+        """
         await self.http.request(method = "delete", endpoint = f"/guilds/{self.id}")
 

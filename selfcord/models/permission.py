@@ -50,7 +50,7 @@ class Permission:
         self.permissions = self.calculate_permissions(data)
 
 
-    def calculate_permissions(self, perm_value):
+    def calculate_permissions(self, perm_value: int):
         permissions = []
         for perm, value in self.perms.items():
             if (perm_value & value) == value:

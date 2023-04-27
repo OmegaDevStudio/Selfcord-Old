@@ -32,6 +32,8 @@ class http:
         return data
 
     async def get_cookie(self):
+        """Gather cookie for user upon client start
+        """
         async with aiohttp.ClientSession() as session:
             async with session.get('https://discord.com', headers={'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.139 Chrome/91.0.4472.164 Electron/13.6.6 Safari/537.36'}) as resp:
                 dcf = resp.headers['set-cookie'].split('__dcfduid=')[0].split(';')[0]
@@ -145,7 +147,15 @@ class http:
         except:
             return None
 
-    async def encode_image(self, url):
+    async def encode_image(self, url: str) -> str:
+        """Turn an image url into a b64 payload
+
+        Args:
+            url (str): The URL of the image
+
+        Returns:
+            str: The b64 payload
+        """
         async with ClientSession() as session:
             async with session.get(f'{url}') as resp:
                 image = b64encode(await resp.read())

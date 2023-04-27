@@ -17,6 +17,11 @@ class Client:
 
 
     def _update(self, data):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         self.name = data.get("username")
         self.id = data.get("id")
         self.discriminator = data.get("discriminator")

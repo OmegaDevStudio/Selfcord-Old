@@ -16,6 +16,11 @@ class Message:
         return f"{self.content}"
 
     def _update(self, data):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         self.tts = data.get("tts")
         self.referenced_message = data.get("referenced_message")
         self.mentions = data.get("mentions")
@@ -36,10 +41,17 @@ class Message:
         self.guild = self.bot.get_guild(self.guild_id)
 
     async def delete(self):
+        """Delete the Message Object
+        """
         await self.http.request(method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}")
 
 
-    async def react(self, emoji):
+    async def react(self, emoji: str):
+        """React to a message with an emoji
+
+        Args:
+            emoji (str): The emoji
+        """
         raw_reaction = urllib.parse.urlencode({"emoji": emoji}).split("emoji=")[1]
         await self.http.request(method="put", endpoint=f"/channels/{self.channel_id}/messages/{self.id}/reactions/{raw_reaction}/%40me?location=Message&burst=false", headers={"referer": f"https://discord.com/channels/@me/{self.channel_id}"})
 

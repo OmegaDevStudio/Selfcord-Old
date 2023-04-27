@@ -12,12 +12,14 @@ from selfcord.models import message
 
 
 class Messageable:
+    """Parent class specific for those classes that include a textchat for sending messages.
+    """
     def __init__(self, http, bot) -> None:
         self.http = http
         self.bot = bot
 
 
-    async def history(self):
+    async def history(self) -> list[Message]:
         """
         Get channel message history.
 
@@ -42,7 +44,7 @@ class Messageable:
 
         return messages
 
-    async def purge(self, amount: int = None):
+    async def purge(self, amount: int = None) -> None:
         """
         Delete a number of messages, starting from the most recent.
 
@@ -75,7 +77,7 @@ class Messageable:
 
 
 
-    async def spam(self, amount: int, content: str, tts=False):
+    async def spam(self, amount: int, content: str, tts=False) -> None:
         """
         Send multiple of the same message.
 
@@ -85,7 +87,7 @@ class Messageable:
             - tts(bool) = False : Specify whether it is a TTS message.
 
         Returns:
-             No return value.
+            No return value.
         """
         amount: list[int] = [i + 1 for i in range(amount)]
         for i in range(0, len(amount), 3):
@@ -93,13 +95,16 @@ class Messageable:
                 *(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i + 3]))
             await asyncio.sleep(0.3)
 
-    async def send(self, content=None, tts=False):
+    async def send(self, content=None, tts=False) -> None:
         """
         Send a message to the text channel.
 
         Args:
             - content(str) : Message content. Should be string type or similar. Discord `embed` type is not allowed.
-            - tts(bool) :
+            - tts(bool) : Specify whether message is text-to-speech or not
+
+        Returns:
+            No return value.
         """
         if hasattr(self, "guild_id"):
             await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}"},
@@ -108,7 +113,17 @@ class Messageable:
             await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.id}"},
                                     json={"content": content, "tts": tts})
 
-    async def reply(self, message, content=None, tts=False):
+    async def reply(self, message: str, content=None, tts=False) -> None:
+        """Reply to a specific message
+
+        Args:
+            message (str): Message to reply to
+            content (_type_, optional): Message content to reply with. Defaults to None.
+            tts (bool, optional): Specify whether message is text-to-speech or not. Defaults to False.
+
+        Returns:
+            No return value.
+        """
         if hasattr(self, "guild_id"):
             await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}"},
                                     json={"content": content, "tts": tts,
@@ -173,7 +188,13 @@ class TextChannel(Messageable):
     def __str__(self) -> str:
         return f"{self.name}"
 
-    def _update(self, data):
+    def _update(self, data: dict):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
+
         self.topic = data.get("topic")
         self.rate_limit_per_user = data.get("rate_limit_per_user")
         self.position = data.get("position")
@@ -231,7 +252,20 @@ class TextChannel(Messageable):
             error = "".join(format_exception(e, e, e.__traceback__))
             return error
 
-    async def create_webhook(self, name: str = None, avatar_url: str = None):
+    async def create_webhook(self, name: str = None, avatar_url: str = None) -> Webhook:
+        """
+        Creates a webhook in the specified channel
+
+        Args:
+            name (str, optional): Name of the webhook. Defaults to None.
+            avatar_url (str, optional): Avatar of the webhook. Requires a URL. Defaults to None.
+
+        Returns:
+            webhook (Webhook): Returns the created webhook object.
+
+        Raises:
+            NameError: Name is required
+        """
         fields = {}
         if name != None:
             fields['name'] = name
@@ -241,7 +275,9 @@ class TextChannel(Messageable):
             data = await self.http.encode_image(avatar_url)
             fields['avatar'] = data
         data = await self.http.request(method="post", endpoint=f"/channels/{self.id}/webhooks", json=fields)
-        self.webhooks.append(Webhook(data, self.bot, http=self.http))
+        webhook = Webhook(data, self.bot, http=self.http)
+        self.webhooks.append(webhook)
+        return webhook
 
 
 class VoiceChannel(Messageable):
@@ -259,7 +295,12 @@ class VoiceChannel(Messageable):
     def __str__(self) -> str:
         return f"{self.name}"
 
-    def _update(self, data):
+    def _update(self, data: dict):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         self.name = data.get("name")
         self.id = data.get("id")
         self.guild_id = data.get("guild_id")
@@ -272,10 +313,27 @@ class VoiceChannel(Messageable):
         self.category_id = data.get("parent_id")
 
     async def delete(self):
+        """
+        Deletes the voice channel object.
+        """
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
         del self
 
-    async def create_webhook(self, name: str = None, avatar_url: str = None):
+    async def create_webhook(self, name: str = None, avatar_url: str = None) -> Webhook :
+        """
+        Creates a webhook in the specified channel
+
+        Args:
+            name (str, optional): Name of the webhook. Defaults to None.
+            avatar_url (str, optional): Avatar of the webhook. Requires a URL. Defaults to None.
+
+        Returns:
+            webhook (Webhook): Returns the created webhook object.
+
+        Raises:
+            NameError: Name is required
+        """
+
         fields = {}
         if name != None:
             fields['name'] = name
@@ -290,9 +348,13 @@ class VoiceChannel(Messageable):
         return webhook
 
     async def call(self):
+        """Initiates a call on the specified channel
+        """
         await self.bot.gateway.ring(self.id, self.guild_id)
 
     async def leave(self):
+        """Leaves call on the specified channel
+        """
         await self.bot.gateway.leave_call()
 
 
@@ -309,7 +371,12 @@ class Category:
     def __str__(self) -> str:
         return f"{self.name}"
 
-    def _update(self, data):
+    def _update(self, data: dict):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         self.name = data.get("name")
         self.id = data.get("id")
         self.guild_id = data.get("guild_id")
@@ -317,6 +384,8 @@ class Category:
         self.flags = data.get("flags")
 
     async def delete(self):
+        """Deletes the Category object.
+        """
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
         del self
 
@@ -334,20 +403,31 @@ class DMChannel(Messageable):
     def __str__(self) -> str:
         return f"{self.recipient}"
 
-    def _update(self, data):
+    def _update(self, data: dict):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         self.recipient = User(data.get("recipients")[0], self.bot, self.http)
         self.last_message_id = data.get("last_message_id")
         self.id = data.get("id")
         self.flags = data.get("id")
 
     async def delete(self):
+        """Deletes the DM Channel object.
+        """
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=false")
         del self
 
     async def call(self):
+        """Initiates the call on the specified channel
+        """
         await self.bot.gateway.ring(self.id)
 
     async def leave(self):
+        """Leaves the call on the specified channel
+        """
         await self.bot.gateway.leave_call()
 
 
@@ -365,7 +445,12 @@ class GroupChannel(Messageable):
     def __str__(self) -> str:
         return f"{self.name}"
 
-    def _update(self, data):
+    def _update(self, data: dict):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         for user in data.get("recipients"):
             self.recipients.append(User(user, self.bot, self.http))
         self.name = data.get("name")
@@ -376,12 +461,18 @@ class GroupChannel(Messageable):
         self.icon = data.get("icon")
 
     async def delete(self):
+        """Deletes the Group Channel Object
+        """
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=true")
         del self
 
     async def call(self):
+        """Initiates the call on the specified channel
+        """
         await self.bot.gateway.ring(self.id)
 
     async def leave(self):
+        """Leaves the call on the specified channel
+        """
         await self.bot.gateway.leave_call()
 

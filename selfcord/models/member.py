@@ -13,6 +13,11 @@ class Member:
 
 
     def _update(self, data):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         user = data.get("user")
         self.name = user.get("username")
         self.id = user.get("id")

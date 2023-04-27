@@ -13,8 +13,21 @@ from traceback import format_exception
 class Activity:
 
     @staticmethod
-    def Game(name, details: str, state: str, buttons: dict, application_id: str, key: str):
-        """Method to generate "Playing ..." activity
+    def Game(name: str, details: str, state: str, buttons: dict, application_id: str, key: str) -> dict[str, int]:
+        """Method to generate activity dict for the "Playing ..." payload
+
+        Args:
+            name (str): Name of the activity
+            details (str): Details of the activity
+            state (str): State of the activity
+            buttons (dict): Buttons for the activity.
+            Example:
+                { "My Website": "https://google.com"}
+            application_id (str): Application ID
+            key (str): Key for the large image
+
+        Returns:
+            dict[str, int]: Dict for the activity object for payload
         """
         type = 0
         button_urls = [button for button in buttons.values()]
@@ -58,8 +71,22 @@ class Activity:
         return payload
 
     @staticmethod
-    def Stream(name, details: str, state: str, url: str, buttons: dict, application_id: str, key: str):
-        """Method to generate "Streaming ..." activity
+    def Stream(name: str, details: str, state: str, url: str, buttons: dict, application_id: str, key: str) -> dict[str, int] :
+        """Method to generate activity dict for the "Streaming ..." payload
+
+        Args:
+            name (str): Name of the activity
+            details (str): Details of the activity
+            state (str): State of the activitiy
+            url (str): URL for streaming
+            buttons (dict): Buttons for the activity.
+            Example:
+                { "My Website": "https://google.com"}
+            application_id (str): Application ID
+            key (str): Key for the large image
+
+        Returns:
+            dict[str, int]: Dict for the activity object for payload
         """
         type = 1
         button_urls = [button for button in buttons.values()]
@@ -104,8 +131,21 @@ class Activity:
         return payload
 
     @staticmethod
-    def Listen(name, details: str, state: str, buttons: dict, application_id: str, key: str ):
-        """Method to generate "Listening ..." activity
+    def Listen(name: str, details: str, state: str, buttons: dict, application_id: str, key: str ) -> dict[str, int]:
+        """Method to generate activity dict for the "Listening ..." payload
+
+        Args:
+            name (str): Name of the activity
+            details (str): Details of the activity
+            state (str): State of the activity
+            buttons (dict): Buttons for the activity.
+            Example:
+                { "My Website": "https://google.com"}
+            application_id (str): Application ID
+            key (str): Key for the large image
+
+        Returns:
+            dict[str, int]: Dict for the activity object for payload
         """
         type = 2
         button_urls = [button for button in buttons.values()]
@@ -148,8 +188,21 @@ class Activity:
 
         return payload
     @staticmethod
-    def Watch(name, details: str, state: str, buttons: dict, application_id: str, key: str ):
-        """Method to generate "Watching ..." activity
+    def Watch(name: str, details: str, state: str, buttons: dict, application_id: str, key: str ) -> dict[str, int]:
+        """Method to generate activity dict for the "Watching ..." payload
+
+        Args:
+            name (str): Name of the activity
+            details (str): Details of the activity
+            state (str): State of the activity
+            buttons (dict): Buttons for the activity.
+            Example:
+                { "My Website": "https://google.com"}
+            application_id (str): Application ID
+            key (str): Key for the large image
+
+        Returns:
+            dict[str, int]: Dict for the activity object for payload
         """
         type = 3
 

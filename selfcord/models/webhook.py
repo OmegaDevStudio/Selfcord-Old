@@ -5,6 +5,11 @@ class Webhook:
         self._update(data)
 
     def _update(self, data):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         self.id = data.get("id")
         self.type = data.get("type")
         self.guild_id = data.get("guild_id")
@@ -17,8 +22,15 @@ class Webhook:
         self.source_guild = data.get("source_guild")
         self.source_channel = data.get("source_channel")
 
-    async def send(self, content):
+    async def send(self, content: str):
+        """Send a message via the webhook
+
+        Args:
+            content (str): Content of the message to send
+        """
         await self.http.request(method = "post", endpoint = f"/webhooks/{self.id}/{self.token}", json = {"content": content})
 
     async def delete(self):
+        """Deletes the webhook object
+        """
         await self.http.request(method = "delete", endpoint = f"/webhooks/{self.id}/{self.token}")

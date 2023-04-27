@@ -5,7 +5,7 @@ from collections import defaultdict
 
 
 class Extension:
-    """Extension object pretty much
+    """Extension object. Discord.py equivalent of cogs, a helper system to help manage and organise code into multiple files
     """
     def __init__(self, **kwargs):
         self.name: str | None = kwargs.get("name")
@@ -27,7 +27,7 @@ class Extension:
 
 
 class ExtensionCollection:
-    """Extension collection, where extensions are stored into
+    """Extension collection, where extensions are stored into. Utilised for Extender, Extensions as a whole. This is also used within help commands and command invocation.
     """
     def __init__(self):
         self.extensions = {}
@@ -36,26 +36,56 @@ class ExtensionCollection:
         for cmd in self.extensions.values():
             yield cmd
 
-    def _is_already_registered(self, ext):
+    def _is_already_registered(self, ext: Extension) -> bool:
+        """Whether the specified Extension is already registered
+
+        Args:
+            ext (Extension): Extension to check
+
+        Returns:
+            bool: True or False
+        """
         for extension in self.extensions.values():
             if ext.name == extension:
                 return True
+            else:
+                return False
+        else:
+            return False
 
-    def add(self, ext):
+    def add(self, ext: Extension):
+        """Adds an extension
+
+        Args:
+            ext (Extension): Extension to add
+
+        Raises:
+            ValueError: Extension must be subclass of extension
+            ValueError: A name or alias is already registered
+        """
         if not isinstance(ext, Extension):
-            raise ValueError('cmd must be a subclass of Extension')
+            raise ValueError('ext must be a subclass of Extension')
         if self._is_already_registered(ext):
             raise ValueError('A name or alias is already registered')
+        # Add extension to the collection
         self.extensions[ext.name] = ext
 
-    def get(self, alias, prefix=''):
+    def get(self, alias: str) -> Extension:
+        """Get an extension
+
+        Args:
+            alias (str): Name of the extension
+
+        Returns:
+            Extension: Extension obtained
+        """
         try:
             return self.extensions[alias]
         except KeyError:
             pass
-        for command in self.extensions:
-            if command.name in command.aliases:
-                return command
+        for extension in self.extensions:
+            if extension.name in extension.aliases:
+                return extension
 
 
 
@@ -71,7 +101,7 @@ class Command:
         self.signature = inspect.signature(self.func).parameters.items()
 
 class CommandCollection:
-    """Commands collection, where commands are stored into
+    """Commands collection, where commands are stored into. Utilised for help commands and general command invocation.
     """
     def __init__(self, **kwargs):
         self.commands = {}
@@ -83,20 +113,51 @@ class CommandCollection:
         for cmd in self.commands.values():
             yield cmd
 
-    def _is_already_registered(self, cmd):
+    def _is_already_registered(self, cmd: Command) -> bool:
+        """Whether the specified Command is already registered
+
+        Args:
+            cmd (Command): Command to check
+
+        Returns:
+            bool: True or False
+        """
         for command in self.commands.values():
             for alias in cmd.aliases:
                 if alias in command.aliases:
                     return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
 
     def append(self, collection):
+        """Append to commands, and recent_commands
+
+        Args:
+            collection (CommandCollection): Collection instance
+
+        Raises:
+            ValueError: Collection must be subclass of CommandCollection
+        """
         if not isinstance(collection, CommandCollection):
-            raise ValueError('collection must be a subclass of ExtensionCollection')
+            raise ValueError('collection must be a subclass of CommandCollection')
         for item in collection:
             self.commands[item.name] = item
             self.recent_commands[item.name] = item
 
-    def add(self, cmd):
+    def add(self, cmd: Command):
+        """Add a Command to the collection
+
+        Args:
+            cmd (Command): Command to be added
+
+        Raises:
+            ValueError: cmd must be a subclass of Command
+            ValueError: Name or Alias is already registered
+        """
         if not isinstance(cmd, Command):
             raise ValueError('cmd must be a subclass of Command')
         if self._is_already_registered(cmd):
@@ -105,17 +166,34 @@ class CommandCollection:
         self.recent_commands[cmd.name] = cmd
 
     def recents(self):
+        """View commands recently acquired
+
+        Yields:
+            Generator: [Command]
+        """
         for cmd in self.recent_commands.values():
             yield cmd
 
     def copy(self):
+        """Copy commands from recents to main collection
+        """
         self.commands.update(self.recent_commands)
         self.clear()
 
     def clear(self):
+        """Clear recents
+        """
         self.recent_commands.clear()
 
-    def get(self, alias, prefix=''):
+    def get(self, alias) -> Command:
+        """Get a specific command from the collection
+
+        Args:
+            alias (str): Name of the command
+
+        Returns:
+            Command: Command obtained
+        """
         try:
             return self.commands[alias]
         except KeyError:
@@ -124,6 +202,8 @@ class CommandCollection:
             if alias in command.aliases:
                 return command
 class Event:
+    """Event object
+    """
     def __init__(self, name, coro, ext) -> None:
         self.name = name
         self.coro = coro
@@ -131,9 +211,11 @@ class Event:
 
 
 class Extender:
+    """Extender subclass for extensions, used for implementing the decorators.
+    """
     commands = CommandCollection()
     _events = defaultdict(list)
-    def __init_subclass__(cls, name=None, description="") -> None:
+    def __init_subclass__(cls, name: str =None, description: str="") -> None:
         super().__init_subclass__()
         cls.name = name
         cls.description = description
@@ -142,12 +224,12 @@ class Extender:
 
 
     @classmethod
-    def cmd(cls, description="", aliases=[]):
+    def cmd(cls, description: str="", aliases: list[str]=[]):
         """Decorator to add commands for the bot
 
         Args:
             description (str, optional): Description of command. Defaults to "".
-            aliases (list, optional): Alternative names for command. Defaults to [].
+            aliases (list[str], optional): Alternative names for command. Defaults to [].
 
         Raises:
             RuntimeWarning: If you suck and don't use a coroutine
@@ -214,7 +296,7 @@ class Extender:
             cmd = Command(name=name, description=description, aliases=aliases, func=coro, ext=cls)
             cls.commands.add(cmd)
 class Context:
-    """Context related for commands, and invokation
+    """Context related for commands, and invocation
     """
     def __init__(self, bot, message, http) -> None:
         self.bot = bot
@@ -314,7 +396,7 @@ class Context:
         converter = self.get_converter(param)
         return converter(value)
 
-    async def get_arguments(self):
+    async def get_arguments(self) -> tuple[list, dict]:
         """Get arguments by checking function arguments and comparing to arguments in message.
 
         Returns:

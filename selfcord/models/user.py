@@ -13,6 +13,11 @@ class Profile:
 
 
     def __update(self, data: dict):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
 
         self.connected_accounts = [Connected_Account(account) for account in data.get("connected_accounts")]
 
@@ -45,6 +50,11 @@ class Connected_Account:
         self.__update(data)
 
     def __update(self, data: dict):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         self.type = data.get("type")
         self.name = data.get("name")
         self.id = data.get("id")
@@ -63,16 +73,30 @@ class User:
         return f"""{self.name}#{self.discriminator}"""
 
     @property
-    def created_at(self):
+    def created_at(self) -> datetime.datetime:
+        """Returns the time in which the User was created
+
+        Returns:
+            datetime.datetime: The timestamp
+        """
         return datetime.datetime.utcfromtimestamp(((int(self.id) >> 22) + 1420070400000) / 1000)
 
     @property
-    def b64token(self):
+    def b64token(self) -> str:
+        """Returns the b64 user id
+
+        Returns:
+            str: The b64 user id
+        """
         return str(b64encode(self.id.encode("utf-8")), "utf-8")
 
 
     def _update(self, data):
+        """Updater method intended to create the attributes for the object
 
+        Args:
+            data (dict): JSON data from gateway
+        """
         self.name = data.get("username")
         self.id = data.get("id")
         self.discriminator = data.get("discriminator")
@@ -87,9 +111,16 @@ class User:
 
 
     async def create_dm(self):
+        """Create a dm for the user
+        """
         await self.http.request(method="post", endpoint="/users/@me/channels", json={"recipients": [self.id]})
 
-    async def get_profile(self):
+    async def get_profile(self) -> Profile:
+        """Get the User profile
+
+        Returns:
+            Profile: The User Profile object
+        """
         data = await self.http.request(method="get", endpoint=f"/users/{self.id}/profile?with_mutual_guilds=true")
 
         if data != None:

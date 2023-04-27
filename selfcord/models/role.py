@@ -9,6 +9,11 @@ class Role:
         self._update(data)
 
     def _update(self, data):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         role = data.get("role")
 
         self.id = data.get("id") if role==None else role.get("id")
@@ -30,5 +35,7 @@ class Role:
         return f"{self.name}"
 
     async def delete(self):
+        """Delete the Role Object
+        """
         await self.http.request(method="delete", endpoint=f"/guilds/{self.guild_id}/roles/{self.id}")
         del self

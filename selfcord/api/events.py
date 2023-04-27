@@ -13,9 +13,14 @@ class EventHandler:
         self.http    = http
         self.bot     = bot
 
-    async def handle_ready(self, data, user: Client, http):
-        '''Handles the ready event, what is executed when it appears
-        '''
+    async def handle_ready(self, data: dict, user: Client, http):
+        """Handles what happens when the ready event is fired, when the bot first connects
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
         self.user = user
         for relationship in data.get('relationships'):
             if relationship.get('type') == 1:
@@ -31,10 +36,14 @@ class EventHandler:
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit('ready', perf_counter() - self.bot.t1)
 
-    async def handle_guild_create(self, data, user: Client, http):
-        '''
-        Handles what happens when a guild is created
-        '''
+    async def handle_guild_create(self, data: dict, user: Client, http):
+        """Handles what happens when a guild is created
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
         self.user = user
         guild = Guild(data, self.bot, http)
         self.user.guilds.append(guild)
@@ -42,9 +51,13 @@ class EventHandler:
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit('guild_create', guild)
 
-    async def handle_message_create(self, data, user: Client, http):
-        '''Handles what happens when a message is created
-        '''
+    async def handle_message_create(self, data: dict, user: Client, http):
+        """Handles what happens when a message is created, or sent
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
         self.user = user
         message = Message(data, self.bot, http)
         self.user.messages.append(message)
@@ -56,9 +69,14 @@ class EventHandler:
                 # Attempts to invoke the command if has prefix and from the user
                 if message.content.startswith(prefix): await self.bot.process_commands(message)
 
-    async def handle_message_delete(self, data, user: Client, http):
-        '''Handles what happens when a message is created. Disclaimer: Only guild id, message id and channel id will be present if the message is not in bots cache.
-        '''
+    async def handle_message_delete(self, data: dict, user: Client, http):
+        """Handles what happens when a message is deleted. Very little data will be logged if the message is not in the bots cache.
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
         self.user = user
         id =data.get('id')
         for message in self.user.messages:
@@ -87,9 +105,14 @@ class EventHandler:
             message = deleted_message(data)
             await self.bot.emit('message_delete', message)
 
-    async def handle_channel_create(self, channel, user: Client, http):
-        '''Handles what happens when a channel is created
-        '''
+    async def handle_channel_create(self, channel: dict, user: Client, http):
+        """Handles what happens when a channel is created
+
+        Args:
+            channel (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
         self.user = user
         if channel.get('type') == 0:
             id = channel.get('guild_id')
@@ -119,9 +142,14 @@ class EventHandler:
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit('channel_create', channel)
 
-    async def handle_guild_member_list_update(self, data, user: Client, http):
-        '''Handles what happens when member chunk payload is sent via gateway
-        '''
+    async def handle_guild_member_list_update(self, data: dict, user: Client, http):
+        """Handles what happens when a member chunk payload is received
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
         members   = []
         self.user = user
 
@@ -136,8 +164,13 @@ class EventHandler:
 
 
     async def handle_channel_delete(self, data, user: Client, http):
-        '''Handles what happens when a channel is deleted
-        '''
+        """Handles what happens when a channel is deleted
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
         self.user = user
         id = data.get('id')
         for channel in self.user.private_channels:
@@ -165,8 +198,13 @@ class EventHandler:
 
 
     async def handle_guild_role_create(self, role, user: Client, http):
-        '''Handles what happens when a role is created
-        '''
+        """Handles what happens when a role is created
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
         self.user = user
 
         for guild in self.user.guilds:
@@ -177,8 +215,13 @@ class EventHandler:
         await self.bot.emit('role_create', role)
 
     async def handle_guild_role_delete(self, role, user: Client, http):
-        '''Handles what happens when a role is deleted
-        '''
+        """Handles what happens when a role is deleted
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
         self.user = user
 
         for guild in self.user.guilds:

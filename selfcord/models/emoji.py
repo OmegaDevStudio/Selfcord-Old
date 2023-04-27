@@ -11,7 +11,12 @@ class Emoji:
     def __str__(self) -> str:
         return f"{self.name}"
 
-    def _update(self, data):
+    def _update(self, data: dict):
+        """Updater method intended to create the attributes for the object
+
+        Args:
+            data (dict): JSON data from gateway
+        """
         self.name = data.get("name")
         self.id = data.get("id")
         self.roles = data.get("roles")
@@ -22,5 +27,7 @@ class Emoji:
 
 
     async def delete(self):
+        """Deletes the Emoji Object
+        """
         await self.http.request(method="delete", endpoint=f"/guilds/{self.guild_id}/emojis/{self.id}")
         del self
