@@ -113,7 +113,7 @@ class Bot:
                             for cmd in ext.commands:
                                 if name == cmd.name.lower():
                                     msg = f"```ini\n[ {self.user.name} Selfbot ]\n"
-                                    msg += f"[ {self.user} ]\n\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n\n[ .Prefixes ] : {bot.prefixes}\n\n"
+                                    msg += f"[ {self.user} ]\n\nType <prefix>help <ext_name> to view commands relating to a specific extension. Type <prefix>help <cmd_name> to view information regarding a command.\n\n[ .Prefixes ] : {self.prefixes}\n\n"
                                     msg += f"[ .{cmd.name} ]\n"
                                     msg += f"[ Description ] :  {cmd.description} \n"
                                     msg += f"[ Long Description ] :\n{cmd.func.__doc__}\n"
