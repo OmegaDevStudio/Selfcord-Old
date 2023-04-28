@@ -14,25 +14,66 @@ Command Object pretty much
 ### _class_ selfcord.utils.command.CommandCollection(\*\*kwargs)
 Bases: `object`
 
-Commands collection, where commands are stored into
+Commands collection, where commands are stored into. Utilised for help commands and general command invocation.
 
 
-#### add(cmd)
+#### add(cmd: Command)
+Add a Command to the collection
+
+Args:
+
+    cmd (Command): Command to be added
+
+Raises:
+
+    ValueError: cmd must be a subclass of Command
+    ValueError: Name or Alias is already registered
+
 
 #### append(collection)
+Append to commands, and recent_commands
+
+Args:
+
+    collection (CommandCollection): Collection instance
+
+Raises:
+
+    ValueError: Collection must be subclass of CommandCollection
+
 
 #### clear()
+Clear recents
+
 
 #### copy()
+Copy commands from recents to main collection
 
-#### get(alias, prefix='')
+
+#### get(alias)
+Get a specific command from the collection
+
+Args:
+
+    alias (str): Name of the command
+
+Returns:
+
+    Command: Command obtained
+
 
 #### recents()
+View commands recently acquired
+
+Yields:
+
+    Generator: [Command]
+
 
 ### _class_ selfcord.utils.command.Context(bot, message, http)
 Bases: `object`
 
-Context related for commands, and invokation
+Context related for commands, and invocation
 
 
 #### _property_ alias()
@@ -122,9 +163,13 @@ Args:
 ### _class_ selfcord.utils.command.Event(name, coro, ext)
 Bases: `object`
 
+Event object
+
 
 ### _class_ selfcord.utils.command.Extender()
 Bases: `object`
+
+Extender subclass for extensions, used for implementing the decorators.
 
 
 #### _classmethod_ add_cmd(coro, description='', aliases=[])
@@ -141,13 +186,13 @@ Raises:
     RuntimeWarning: If you suck and don’t use a coroutine
 
 
-#### _classmethod_ cmd(description='', aliases=[])
+#### _classmethod_ cmd(description: str = '', aliases: list[str] = [])
 Decorator to add commands for the bot
 
 Args:
 
     description (str, optional): Description of command. Defaults to “”.
-    aliases (list, optional): Alternative names for command. Defaults to [].
+    aliases (list[str], optional): Alternative names for command. Defaults to [].
 
 Raises:
 
@@ -167,18 +212,39 @@ Args:
 ### _class_ selfcord.utils.command.Extension(\*\*kwargs)
 Bases: `object`
 
-Extension object pretty much
+Extension object. Discord.py equivalent of cogs, a helper system to help manage and organise code into multiple files
 
 
 ### _class_ selfcord.utils.command.ExtensionCollection()
 Bases: `object`
 
-Extension collection, where extensions are stored into
+Extension collection, where extensions are stored into. Utilised for Extender, Extensions as a whole. This is also used within help commands and command invocation.
 
 
-#### add(ext)
+#### add(ext: Extension)
+Adds an extension
 
-#### get(alias, prefix='')
+Args:
+
+    ext (Extension): Extension to add
+
+Raises:
+
+    ValueError: Extension must be subclass of extension
+    ValueError: A name or alias is already registered
+
+
+#### get(alias: str)
+Get an extension
+
+Args:
+
+    alias (str): Name of the extension
+
+Returns:
+
+    Extension: Extension obtained
+
 ## Module contents
 
 Utility related modules for selfcord

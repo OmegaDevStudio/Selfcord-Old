@@ -33,40 +33,93 @@ Bases: `object`
 Used to handle discord events
 
 
-#### _async_ handle_channel_create(channel, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
+#### _async_ handle_channel_create(channel: dict, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
 Handles what happens when a channel is created
+
+Args:
+
+    channel (dict): JSON data from gateway
+    user (Client): The client instance
+    http (http): HTTP instance
 
 
 #### _async_ handle_channel_delete(data, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
 Handles what happens when a channel is deleted
 
+Args:
 
-#### _async_ handle_guild_create(data, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
+    data (dict): JSON data from gateway
+    user (Client): The client instance
+    http (http): HTTP instance
+
+
+#### _async_ handle_guild_create(data: dict, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
 Handles what happens when a guild is created
 
+Args:
 
-#### _async_ handle_guild_member_list_update(data, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
-Handles what happens when member chunk payload is sent via gateway
+    data (dict): JSON data from gateway
+    user (Client): The client instance
+    http (http): HTTP instance
+
+
+#### _async_ handle_guild_member_list_update(data: dict, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
+Handles what happens when a member chunk payload is received
+
+Args:
+
+    data (dict): JSON data from gateway
+    user (Client): The client instance
+    http (http): HTTP instance
 
 
 #### _async_ handle_guild_role_create(role, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
 Handles what happens when a role is created
 
+Args:
+
+    data (dict): JSON data from gateway
+    user (Client): The client instance
+    http (http): HTTP instance
+
 
 #### _async_ handle_guild_role_delete(role, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
 Handles what happens when a role is deleted
 
+Args:
 
-#### _async_ handle_message_create(data, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
-Handles what happens when a message is created
-
-
-#### _async_ handle_message_delete(data, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
-Handles what happens when a message is created. Disclaimer: Only guild id, message id and channel id will be present if the message is not in bots cache.
+    data (dict): JSON data from gateway
+    user (Client): The client instance
+    http (http): HTTP instance
 
 
-#### _async_ handle_ready(data, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
-Handles the ready event, what is executed when it appears
+#### _async_ handle_message_create(data: dict, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
+Handles what happens when a message is created, or sent
+Args:
+
+> data (dict): JSON data from gateway
+> user (Client): The client instance
+> http (http): HTTP instance
+
+
+#### _async_ handle_message_delete(data: dict, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
+Handles what happens when a message is deleted. Very little data will be logged if the message is not in the bots cache.
+
+Args:
+
+    data (dict): JSON data from gateway
+    user (Client): The client instance
+    http (http): HTTP instance
+
+
+#### _async_ handle_ready(data: dict, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
+Handles what happens when the ready event is fired, when the bot first connects
+
+Args:
+
+    data (dict): JSON data from gateway
+    user (Client): The client instance
+    http (http): HTTP instance
 
 ## selfcord.api.gateway module
 
@@ -75,20 +128,89 @@ Handles the ready event, what is executed when it appears
 Bases: `object`
 
 
-#### _static_ Game(name, details: str, state: str, buttons: dict, application_id: str, key: str)
-Method to generate “Playing …” activity
+#### _static_ Game(name: str, details: str, state: str, buttons: dict, application_id: str, key: str)
+Method to generate activity dict for the “Playing …” payload
+
+Args:
+
+    name (str): Name of the activity
+    details (str): Details of the activity
+    state (str): State of the activity
+    buttons (dict): Buttons for the activity.
+    Example:
+
+    > { “My Website”: “[https://google.com](https://google.com)”}
+
+    application_id (str): Application ID
+    key (str): Key for the large image
+
+Returns:
+
+    dict[str, int]: Dict for the activity object for payload
 
 
-#### _static_ Listen(name, details: str, state: str, buttons: dict, application_id: str, key: str)
-Method to generate “Listening …” activity
+#### _static_ Listen(name: str, details: str, state: str, buttons: dict, application_id: str, key: str)
+Method to generate activity dict for the “Listening …” payload
+
+Args:
+
+    name (str): Name of the activity
+    details (str): Details of the activity
+    state (str): State of the activity
+    buttons (dict): Buttons for the activity.
+    Example:
+
+    > { “My Website”: “[https://google.com](https://google.com)”}
+
+    application_id (str): Application ID
+    key (str): Key for the large image
+
+Returns:
+
+    dict[str, int]: Dict for the activity object for payload
 
 
-#### _static_ Stream(name, details: str, state: str, url: str, buttons: dict, application_id: str, key: str)
-Method to generate “Streaming …” activity
+#### _static_ Stream(name: str, details: str, state: str, url: str, buttons: dict, application_id: str, key: str)
+Method to generate activity dict for the “Streaming …” payload
+
+Args:
+
+    name (str): Name of the activity
+    details (str): Details of the activity
+    state (str): State of the activitiy
+    url (str): URL for streaming
+    buttons (dict): Buttons for the activity.
+    Example:
+
+    > { “My Website”: “[https://google.com](https://google.com)”}
+
+    application_id (str): Application ID
+    key (str): Key for the large image
+
+Returns:
+
+    dict[str, int]: Dict for the activity object for payload
 
 
-#### _static_ Watch(name, details: str, state: str, buttons: dict, application_id: str, key: str)
-Method to generate “Watching …” activity
+#### _static_ Watch(name: str, details: str, state: str, buttons: dict, application_id: str, key: str)
+Method to generate activity dict for the “Watching …” payload
+
+Args:
+
+    name (str): Name of the activity
+    details (str): Details of the activity
+    state (str): State of the activity
+    buttons (dict): Buttons for the activity.
+    Example:
+
+    > { “My Website”: “[https://google.com](https://google.com)”}
+
+    application_id (str): Application ID
+    key (str): Key for the large image
+
+Returns:
+
+    dict[str, int]: Dict for the activity object for payload
 
 
 ### _class_ selfcord.api.gateway.gateway(http, show_heartbeat=False)
@@ -211,9 +333,21 @@ Args:
 Bases: `object`
 
 
-#### _async_ encode_image(url)
+#### _async_ encode_image(url: str)
+Turn an image url into a b64 payload
+
+Args:
+
+    url (str): The URL of the image
+
+Returns:
+
+    str: The b64 payload
+
 
 #### _async_ get_cookie()
+Gather cookie for user upon client start
+
 
 #### remove_dupes(dictionary: dict)
 

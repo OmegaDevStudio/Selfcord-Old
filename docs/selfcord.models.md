@@ -12,6 +12,8 @@ Category Object
 
 
 #### _async_ delete()
+Deletes the Category object.
+
 
 ### _class_ selfcord.models.channel.DMChannel(data, bot, http)
 Bases: `Messageable`
@@ -20,10 +22,16 @@ DM Channel Object
 
 
 #### _async_ call()
+Initiates the call on the specified channel
+
 
 #### _async_ delete()
+Deletes the DM Channel object.
+
 
 #### _async_ leave()
+Leaves the call on the specified channel
+
 
 ### _class_ selfcord.models.channel.GroupChannel(data, bot, http)
 Bases: `Messageable`
@@ -32,13 +40,21 @@ Group Channel Object
 
 
 #### _async_ call()
+Initiates the call on the specified channel
+
 
 #### _async_ delete()
+Deletes the Group Channel Object
+
 
 #### _async_ leave()
+Leaves the call on the specified channel
+
 
 ### _class_ selfcord.models.channel.Messageable(http, bot)
 Bases: `object`
+
+Parent class specific for those classes that include a textchat for sending messages.
 
 
 #### _async_ history()
@@ -65,7 +81,19 @@ Returns:
     No return value
 
 
-#### _async_ reply(message, content=None, tts=False)
+#### _async_ reply(message: str, content=None, tts=False)
+Reply to a specific message
+
+Args:
+
+    message (str): Message to reply to
+    content (_type_, optional): Message content to reply with. Defaults to None.
+    tts (bool, optional): Specify whether message is text-to-speech or not. Defaults to False.
+
+Returns:
+
+    No return value.
+
 
 #### _async_ send(content=None, tts=False)
 Send a message to the text channel.
@@ -76,7 +104,11 @@ Args:
     * content(str) : Message content. Should be string type or similar. Discord embed type is not allowed.
 
 
-    * tts(bool) :
+    * tts(bool) : Specify whether message is text-to-speech or not
+
+Returns:
+
+    No return value.
 
 
 #### _async_ spam(amount: int, content: str, tts=False)
@@ -157,6 +189,21 @@ Example Object (ref: [https://discord.com/developers/docs/resources/channel#chan
 
 
 #### _async_ create_webhook(name: Optional[str] = None, avatar_url: Optional[str] = None)
+Creates a webhook in the specified channel
+
+Args:
+
+    name (str, optional): Name of the webhook. Defaults to None.
+    avatar_url (str, optional): Avatar of the webhook. Requires a URL. Defaults to None.
+
+Returns:
+
+    webhook (Webhook): Returns the created webhook object.
+
+Raises:
+
+    NameError: Name is required
+
 
 #### _async_ delete()
 Deletes the text channel object.
@@ -204,12 +251,33 @@ Voice Channel Object
 
 
 #### _async_ call()
+Initiates a call on the specified channel
+
 
 #### _async_ create_webhook(name: Optional[str] = None, avatar_url: Optional[str] = None)
+Creates a webhook in the specified channel
+
+Args:
+
+    name (str, optional): Name of the webhook. Defaults to None.
+    avatar_url (str, optional): Avatar of the webhook. Requires a URL. Defaults to None.
+
+Returns:
+
+    webhook (Webhook): Returns the created webhook object.
+
+Raises:
+
+    NameError: Name is required
+
 
 #### _async_ delete()
+Deletes the voice channel object.
+
 
 #### _async_ leave()
+Leaves call on the specified channel
+
 ## selfcord.models.client module
 
 
@@ -228,6 +296,8 @@ Emoji Object
 
 
 #### _async_ delete()
+Deletes the Emoji Object
+
 ## selfcord.models.guild module
 
 
@@ -258,24 +328,85 @@ Guild Object
 #### VOICECHANNEL(_ = _ )
 
 #### _async_ ban(user_id: str)
+Bans a user from the guild
+
+Args:
+
+    user_id (str): User ID specified to ban
+
 
 #### _async_ category_channel_create(name)
+Creates a category in the guild
+
+Args:
+
+    name (str): Name of the category
+
 
 #### _async_ delete()
+Deletes the Guild Object
+
 
 #### _async_ edit(name: Optional[str] = None, icon_url: Optional[str] = None, banner_url: Optional[str] = None, description: Optional[str] = None)
+Edits attributes for a guild
+
+Args:
+
+    name (str, optional): Name of the guild. Defaults to None.
+    icon_url (str, optional): Image URL for Icon. Defaults to None.
+    banner_url (str, optional): Image URL for Banner. Defaults to None.
+    description (str, optional): Description of the guild. Defaults to None.
+
 
 #### _async_ emoji_create(name: str, image_url: str)
+Creates an emoji in the guild
+
+Args:
+
+    name (str): Name of the emoji
+    image_url (str): URL for an image
+
 
 #### _async_ get_members(channel_id: str)
+Get guild members for a guild via chunking
+
+Args:
+
+    channel_id (str): Channel ID to chunk from
+
 
 #### _async_ kick(user_id: str)
+Kicks a user from the guild
 
-#### _async_ role_create(name)
+Args:
 
-#### _async_ txt_channel_create(name, parent_id=None)
+    user_id (str): User ID specified to kick
 
-#### _async_ vc_channel_create(name)
+
+#### _async_ role_create(name: str)
+Creates a role in the guild
+
+Args:
+
+    name (str): Name of the role
+
+
+#### _async_ txt_channel_create(name: str, parent_id: Optional[str] = None)
+Creates a Text Channel in the guild
+
+Args:
+
+    name (str): Name of the channel
+    parent_id (str, optional): ID of the category. Defaults to None.
+
+
+#### _async_ vc_channel_create(name: str)
+Creates a voice channel in the guild
+
+Args:
+
+    name (str): Name of the channel
+
 ## selfcord.models.member module
 
 
@@ -294,8 +425,16 @@ Message Object
 
 
 #### _async_ delete()
+Delete the Message Object
 
-#### _async_ react(emoji)
+
+#### _async_ react(emoji: str)
+React to a message with an emoji
+
+Args:
+
+    emoji (str): The emoji
+
 ## selfcord.models.permission module
 
 
@@ -305,7 +444,7 @@ Bases: `object`
 Permission Object
 
 
-#### calculate_permissions(perm_value)
+#### calculate_permissions(perm_value: int)
 ## selfcord.models.role module
 
 
@@ -316,6 +455,8 @@ Role Object
 
 
 #### _async_ delete()
+Delete the Role Object
+
 ## selfcord.models.user module
 
 
@@ -333,13 +474,33 @@ Bases: `object`
 User Object
 
 
-#### _property_ b64token()
+#### _property_ b64token(_: st_ )
+Returns the b64 user id
+
+Returns:
+
+    str: The b64 user id
+
 
 #### _async_ create_dm()
+Create a dm for the user
 
-#### _property_ created_at()
+
+#### _property_ created_at(_: datetim_ )
+Returns the time in which the User was created
+
+Returns:
+
+    datetime.datetime: The timestamp
+
 
 #### _async_ get_profile()
+Get the User profile
+
+Returns:
+
+    Profile: The User Profile object
+
 ## selfcord.models.webhook module
 
 
@@ -348,8 +509,16 @@ Bases: `object`
 
 
 #### _async_ delete()
+Deletes the webhook object
 
-#### _async_ send(content)
+
+#### _async_ send(content: str)
+Send a message via the webhook
+
+Args:
+
+    content (str): Content of the message to send
+
 ## Module contents
 
 Data objects from discord, used throughout selfcord
