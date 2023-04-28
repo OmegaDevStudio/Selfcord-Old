@@ -12,7 +12,7 @@ if __name__ == "__main__":
         readme="README.md",
         author="Shell of OMEGA",
         license="MIT",
-        install_requires=["aiohttp==3.7.4.post0","aioconsole==0.3.3", "websockets==10.1", "importlib", "requests"],
+        install_requires=["aiohttp==3.7.4.post0","aioconsole==0.3.3", "websockets==10.1", "requests"],
         setup_requires=['pytest-runner'],
         tests_require=['pytest'],
         test_suite='tests',
