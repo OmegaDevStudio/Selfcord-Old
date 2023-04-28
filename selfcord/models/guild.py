@@ -6,6 +6,7 @@ from itertools import zip_longest
 from aiohttp import ClientSession
 from base64 import b64encode
 import random
+from datetime import datetime, timedelta, timezone
 class Guild:
     """Guild Object
     """
@@ -96,6 +97,17 @@ class Guild:
         """
         await self.http.request(method="delete", endpoint=f"/guilds/{self.id}/members/{user_id}")
 
+    def utc_now(self):
+        return datetime.now(timezone.utc)
+
+    async def timeout(self, user_id: str, hours=0, mins=0, seconds=0):
+        """Timeouts a user in the guild
+
+        Args:
+            user_id (str): User ID specified to timeout
+        """
+        duration = self.utc_now() + timedelta(hours, mins, seconds)
+        await self.http.request(method="patch", endpoint=f"/guilds/{self.id}/members/{user_id}", json={"communication_disabled_until": str(duration)})
 
     async def txt_channel_create(self, name:str, parent_id: str=None):
         """Creates a Text Channel in the guild
