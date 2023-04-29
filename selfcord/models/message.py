@@ -45,6 +45,19 @@ class Message:
         """
         await self.http.request(method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}")
 
+    async def edit(self, content: str):
+        """Edits the specified message
+
+        Args:
+            content (str): Content to edit message to.
+        """
+        if self.guild_id != None:
+            resp = await self.http.request(method="patch", endpoint=f"/channels/{self.channel_id}/messages/{self.id}", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.channel_id}/{self.guild_id}"}, json={"content":content})
+            resp.update({"guild_id" : self.guild_id})
+        else:
+            resp = await self.http.request(method="patch", endpoint=f"/channels/{self.channel_id}/messages/{self.id}", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.channel_id}"}, json={"content":content})
+        return Message(resp, self.bot, self.http)
+
 
     async def react(self, emoji: str):
         """React to a message with an emoji

@@ -95,7 +95,7 @@ class Messageable:
                 *(asyncio.create_task(self.send(tts=tts, content=content)) for amoun in amount[i:i + 3]))
             await asyncio.sleep(0.3)
 
-    async def send(self, content=None, tts=False) -> None:
+    async def send(self, content=None, tts=False) -> Message:
         """
         Send a message to the text channel.
 
@@ -107,13 +107,18 @@ class Messageable:
             No return value.
         """
         if hasattr(self, "guild_id"):
-            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}"},
+            resp = await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}"},
                                     json={"content": content, "tts": tts})
+            resp.update({"guild_id": self.guild_id})
+
         else:
-            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.id}"},
+            resp = await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.id}"},
                                     json={"content": content, "tts": tts})
 
-    async def reply(self, message: str, content=None, tts=False) -> None:
+        return Message(resp, self.bot, self.http)
+
+
+    async def reply(self, message: str, content=None, tts=False) -> Message:
         """Reply to a specific message
 
         Args:
@@ -125,17 +130,19 @@ class Messageable:
             No return value.
         """
         if hasattr(self, "guild_id"):
-            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}"},
+            resp = await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}"},
                                     json={"content": content, "tts": tts,
                                         "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"},
                                         "allowed_mentions": {"parse": ["users", "roles", "everyone"],
                                                             "replied_user": False}})
+            resp.update({"guild_id": self.guild_id})
         else:
-            await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.id}"},
+            resp = await self.http.request(method="post", endpoint=f"/channels/{self.id}/messages", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.id}"},
                                     json={"content": content, "tts": tts,
                                         "message_reference": {"channel_id": f"{self.id}", "message_id": f"{message.id}"},
                                         "allowed_mentions": {"parse": ["users", "roles", "everyone"],
                                                             "replied_user": False}})
+        return Message(resp, self.bot, self.http)
 
 
 

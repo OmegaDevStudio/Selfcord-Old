@@ -487,7 +487,8 @@ class Context:
             content (str): The message you would like to send
             tts (bool, optional): Whether message should be tts or not. Defaults to False.
         """
-        await self.channel.reply(self.message, content, tts)
+        message = await self.channel.reply(self.message, content, tts)
+        return message
 
     async def send(self, content: str, tts=False):
         """Helper function to send message to the current channel
@@ -496,7 +497,8 @@ class Context:
             content (str): The message you would like to send
             tts (bool, optional): Whether message should be tts or not. Defaults to False.
         """
-        await self.channel.send( content=content, tts=tts)
+        message = await self.channel.send( content=content, tts=tts)
+        return message
 
     async def spam(self, amount: int, content: str):
         """Helper function to spam messages in the current channel (uses asyncio.gather !!!!)
@@ -514,6 +516,14 @@ class Context:
             amount (int): The amount of messages to purge, defaults to All.
         """
         await self.channel.purge(amount)
+
+    async def edit(self, content: str):
+        """Helper function to edit the message you sent
+
+        Args:
+            content (str): Content to edit to
+        """
+        await self.message.edit(content)
 
 
 
