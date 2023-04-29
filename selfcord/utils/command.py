@@ -523,7 +523,9 @@ class Context:
         Args:
             content (str): Content to edit to
         """
-        await self.message.edit(content)
+        message = await self.message.edit(content)
+        return message
+
 
 
 
