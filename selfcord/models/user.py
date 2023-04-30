@@ -115,6 +115,7 @@ class User:
         """
         await self.http.request(method="post", endpoint="/users/@me/channels", json={"recipients": [self.id]})
 
+
     async def get_profile(self) -> Profile:
         """Get the User profile
 
