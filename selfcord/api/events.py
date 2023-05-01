@@ -150,16 +150,38 @@ class EventHandler:
             user (Client): The client instance
             http (http): HTTP instance
         """
-        members   = []
         self.user = user
+        ops = []
+        data = data['ops']
+        for main in data:
+            op = main['op']
+            ops.append(op)
 
-        try:
-            for item in data['ops'][0]['items']:
-                try: members.append(User(item['member']['user'], self.bot, http))
+        for main in data:
+            if ('INSERT' and 'DELETE') in ops:
+                try:
+                    person = User(main['item']['member']['user'], self.bot, self.http)
+                    await self.bot.emit('member_chunk', members=None, other=None, join=None, leave=person)
                 except: continue
+            elif 'INSERT' in ops:
+                try:
+                    person = User(main['item']['member']['user'], self.bot, self.http)
+                    await self.bot.emit('member_chunk', members=None, other=None, join=person, leave=None)
+                except: continue
+            elif 'UPDATE' in ops:
+                try:
+                    person = User(main['item']['member']['user'], self.bot, self.http)
+                    await self.bot.emit('member_chunk', members=None, other=person, join=None, leave=None)
+                except: continue
+            elif 'SYNC' in ops:
+                users = [ ]
+                for item in main['items']:
+                    try:
+                        users.append(User(item['member']['user'], self.bot, self.http))
+                    except: continue
+                await self.bot.emit('member_chunk', members=users, other=None, join=None, leave=None)
 
-            await self.bot.emit('member_chunk', members)
-        except: pass
+
 
 
 
