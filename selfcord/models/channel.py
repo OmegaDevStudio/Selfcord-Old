@@ -1,3 +1,4 @@
+from __future__ import annotations
 from .message import Message
 import time
 from .user import User

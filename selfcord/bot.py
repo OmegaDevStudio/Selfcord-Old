@@ -1,3 +1,4 @@
+from __future__ import annotations
 import asyncio
 import json
 from .api import gateway, http, Activity
@@ -343,7 +344,7 @@ class Bot:
             if guild.id == guild_id:
                 return guild
 
-    async def get_user(self, user_id: str):
+    async def get_user(self, user_id: str) -> User:
         """
         Function to retrieve user data. Probably need to be friends with them to retrieve the details.
 
@@ -436,7 +437,7 @@ class Bot:
 
 
 
-    async def change_hypesquad(self, house: str):
+    async def change_hypesquad(self, house: "str"):
         """Helper function to change hypesquad
 
         Args:
@@ -450,6 +451,13 @@ class Bot:
             await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 3})
 
     async def change_presence(self, status: str, afk: bool, activity: dict):
+        """Change discord activity presence
+
+        Args:
+            status (str): Online, Offline, Dnd, Invisible
+            afk (bool): True or False
+            activity (dict): Selfcord.Activity method.
+        """
         await self.gateway.change_presence(status, afk, activity=activity)
 
 

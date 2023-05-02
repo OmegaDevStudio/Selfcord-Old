@@ -1,3 +1,4 @@
+from __future__ import annotations
 from .permission import Permission
 
 class Role:

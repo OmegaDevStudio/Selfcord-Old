@@ -1,4 +1,4 @@
-
+from __future__ import annotations
 import inspect
 import re
 from collections import defaultdict
@@ -295,6 +295,8 @@ class Extender:
 
             cmd = Command(name=name, description=description, aliases=aliases, func=coro, ext=cls)
             cls.commands.add(cmd)
+
+
 class Context:
     """Context related for commands, and invocation
     """

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 class Webhook:
     def __init__(self, data: dict, bot, http) -> None:
         self.http = http

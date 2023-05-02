@@ -1,3 +1,4 @@
+from __future__ import annotations
 from time import perf_counter
 from ..models.role import Role
 from ..models import User, Client, Guild, TextChannel, VoiceChannel, DMChannel, GroupChannel, Message

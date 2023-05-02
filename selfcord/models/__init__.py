@@ -1,5 +1,3 @@
-"""Data objects from discord, used throughout selfcord
-"""
 from .user import User, Profile, Connected_Account
 from .client import Client
 from .guild import Guild
