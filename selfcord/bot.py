@@ -361,9 +361,16 @@ class Bot:
         user = User(data, bot=self, http=self.http)
         return user
 
+    async def create_guild(self, name: str, icon_url: str = None, template: str = "2TffvPucqHkN"):
+        """Creates a guild
+        """
+        image = await self.http.encode_image(icon_url)
+        await self.http.request(method="post", endpoint=f"/guilds", headers={"origin": "https://discord.com", "referer": "https://discord.com/channels/@me"}, json={"name": name, "icon": image, "template": template })
+
+
     async def add_friend(self, user_id: str):
         """
-        Function to add random user as a friend.
+        Function to add a specific user as a friend.
 
         Args:
             user_id (str): ID of the possible random user.
@@ -371,6 +378,7 @@ class Bot:
         Returns:
             No return value.
         """
+
         await self.http.request(method="put", endpoint=f"/users/@me/relationships/{user_id}",
                                 headers={"origin": "https://discord.com",
                                          "referer": f"https://discord.com/channels/@me/{random.choice(self.user.private_channels).id}"},
