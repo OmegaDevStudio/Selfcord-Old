@@ -3,7 +3,8 @@ from time import perf_counter
 from ..models.role import Role
 from ..models import User, Client, Guild, TextChannel, VoiceChannel, DMChannel, GroupChannel, Message
 from aioconsole import aprint
-
+import asyncio
+from .voice import Voice
 
 class EventHandler:
     '''
@@ -65,10 +66,16 @@ class EventHandler:
 
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit('message', message)
-        if message.author.id == self.bot.user.id:
+        if not self.bot.userbot:
+            if message.author.id == self.bot.user.id:
+                for prefix in self.bot.prefixes:
+                    # Attempts to invoke the command if has prefix and from the user
+                    if message.content.startswith(prefix): await self.bot.process_commands(message)
+        else:
             for prefix in self.bot.prefixes:
-                # Attempts to invoke the command if has prefix and from the user
-                if message.content.startswith(prefix): await self.bot.process_commands(message)
+                    # Attempts to invoke the command if has prefix
+                    if message.content.startswith(prefix): await self.bot.process_commands(message)
+
 
     async def handle_message_delete(self, data: dict, user: Client, http):
         """Handles what happens when a message is deleted. Very little data will be logged if the message is not in the bots cache.
@@ -237,7 +244,7 @@ class EventHandler:
 
         await self.bot.emit('role_create', role)
 
-    async def handle_guild_role_delete(self, role, user: Client, http):
+    async def handle_guild_role_delete(self, role: dict, user: Client, http):
         """Handles what happens when a role is deleted
 
         Args:
@@ -254,6 +261,35 @@ class EventHandler:
                         await self.bot.emit('role_delete', role)
                         guild.roles.remove(role)
                         return
+
+
+    async def handle_voice_state_update(self, data: dict, user: Client, http):
+        """Handles the voice state updating
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
+        if data['channel'] != None:
+            self.session_id = data['session_id']
+
+    async def handle_voice_server_update(self, data: dict, user: Client, http):
+        """Handles the voice server updating
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
+        self.token = data['token']
+        self.endpoint = data['endpoint']
+        self.guild_id = data['guild_id']
+        await asyncio.sleep(1)
+        self.voice = Voice(self.session_id, self.token, self.endpoint)
+
+
+
 
 
 

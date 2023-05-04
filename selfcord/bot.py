@@ -18,7 +18,7 @@ import aiohttp
 
 
 class Bot:
-    def __init__(self, show_beat: bool = False, prefixes: list = ["s!"], inbuilt_help=True) -> None:
+    def __init__(self, show_beat: bool = False, prefixes: list = ["s!"], inbuilt_help=True, userbot=False, eval=False) -> None:
         self.inbuilt_help= inbuilt_help
         self.show_beat = show_beat
         self.token = None
@@ -30,6 +30,8 @@ class Bot:
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
         self.extensions = ExtensionCollection()
         self.user = None
+        self.eval = eval
+        self.userbot = userbot
 
 
     def run(self, token: str):
@@ -134,28 +136,28 @@ class Bot:
 
 
 
+        if self.eval:
+            def clean_code(content):
+                if content.startswith("```") and content.endswith("```"):
+                    return "\n".join(content.split("\n")[1:])[:-3]
+                else:
+                    return content
 
-        def clean_code(content):
-            if content.startswith("```") and content.endswith("```"):
-                return "\n".join(content.split("\n")[1:])[:-3]
-            else:
-                return content
+            @self.cmd(description="Executes and runs code", aliases=['exec'])
+            async def eval(ctx, *, code: str):
+                """Runs python code via exec, intended for experienced usage. This can be DANGEROUS if you do not know what you are doing, use with caution.
+                """
+                code = clean_code(code)
 
-        @self.cmd(description="Executes and runs code", aliases=['exec'])
-        async def eval(ctx, *, code: str):
-            """Runs python code via exec, intended for experienced usage. This can be DANGEROUS if you do not know what you are doing, use with caution.
-            """
-            code = clean_code(code)
+                try:
+                    with contextlib.redirect_stdout(io.StringIO()) as f:
+                        await aexec(code)
+                        result = f"```{f.getvalue()}\n```"
+                except Exception as e:
+                    error = "".join(format_exception(e, e, e.__traceback__))
+                    result = f"```\n{error}```"
 
-            try:
-                with contextlib.redirect_stdout(io.StringIO()) as f:
-                    await aexec(code)
-                    result = f"```{f.getvalue()}\n```"
-            except Exception as e:
-                error = "".join(format_exception(e, e, e.__traceback__))
-                result = f"```\n{error}```"
-
-            await ctx.reply(result)
+                await ctx.reply(result)
 
     def on(self, event: str):
         """Decorator for events

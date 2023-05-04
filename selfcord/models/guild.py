@@ -63,15 +63,19 @@ class Guild:
                 type = channel.get("type")
                 if type == self.TEXTCHANNEL:
                     channel = TextChannel(channel, self.bot, self.http)
+                    channel.guild_id = self.id
                     self.channels.append(channel)
                 elif type == self.VOICECHANNEL:
                     channel = VoiceChannel(channel, self.bot, self.http)
+                    channel.guild_id = self.id
                     self.channels.append(channel)
                 elif type == self.CATEGORY:
                     channel = Category(channel, self.bot, self.http)
+                    channel.guild_id = self.id
                     self.channels.append(channel)
                 else:
                     channel = TextChannel(channel, self.bot, self.http)
+                    channel.guild_id = self.id
                     self.channels.append(channel)
 
             if role != None:
@@ -80,6 +84,7 @@ class Guild:
 
             if emoji != None:
                 emoji = Emoji(emoji, self.bot, self.http)
+                emoji.guild_id = self.id
                 self.emojis.append(emoji)
 
     async def ban(self, user_id: str):

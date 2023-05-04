@@ -8,10 +8,6 @@ import asyncio
 from selfcord.models import message
 
 
-
-
-
-
 class Messageable:
     """Parent class specific for those classes that include a textchat for sending messages.
     """
@@ -144,6 +140,52 @@ class Messageable:
                                         "allowed_mentions": {"parse": ["users", "roles", "everyone"],
                                                             "replied_user": False}})
         return Message(resp, self.bot, self.http)
+
+
+class Voiceable(Messageable):
+    """Parent class specific for those classes that include a voice chat, or call functionality
+    """
+    def __init__(self, http, bot) -> None:
+        super().__init__(http, bot)
+        self.http = http
+        self.bot = bot
+
+    async def video_call(self):
+        """Initiates a video call on the specified channel
+        """
+        if hasattr(self, "guild_id"):
+            await self.bot.gateway.video_call(self.id, self.guild_id)
+        else:
+            await self.bot.gateway.video_call(self.id)
+
+    async def stream_call(self):
+        """Initiates a stream call on the specified channel
+        """
+        if hasattr(self, "guild_id"):
+            await self.bot.gateway.stream_call(self.id, self.guild_id)
+        else:
+            await self.bot.gateway.stream_call(self.id)
+
+    async def call(self):
+        """Initiates a call on the specified channel
+        """
+
+        if hasattr(self, "guild_id"):
+
+            await self.bot.gateway.call(self.id, self.guild_id)
+        else:
+            await self.bot.gateway.call(self.id)
+
+
+    async def leave_call(self):
+        """Leaves call on the specified channel
+        """
+        await self.bot.gateway.leave_call()
+
+
+
+
+
 
 
 
@@ -288,7 +330,7 @@ class TextChannel(Messageable):
         return webhook
 
 
-class VoiceChannel(Messageable):
+class VoiceChannel(Voiceable, Messageable):
     """Voice Channel Object
     """
 
@@ -355,15 +397,7 @@ class VoiceChannel(Messageable):
         self.webhooks.append(webhook)
         return webhook
 
-    async def call(self):
-        """Initiates a call on the specified channel
-        """
-        await self.bot.gateway.ring(self.id, self.guild_id)
 
-    async def leave(self):
-        """Leaves call on the specified channel
-        """
-        await self.bot.gateway.leave_call()
 
 
 class Category:
@@ -398,7 +432,7 @@ class Category:
         del self
 
 
-class DMChannel(Messageable):
+class DMChannel(Voiceable, Messageable):
     """DM Channel Object
     """
 
@@ -428,18 +462,10 @@ class DMChannel(Messageable):
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=false")
         del self
 
-    async def call(self):
-        """Initiates the call on the specified channel
-        """
-        await self.bot.gateway.ring(self.id)
-
-    async def leave(self):
-        """Leaves the call on the specified channel
-        """
-        await self.bot.gateway.leave_call()
 
 
-class GroupChannel(Messageable):
+
+class GroupChannel(Voiceable, Messageable):
     """Group Channel Object
     """
 
@@ -474,13 +500,4 @@ class GroupChannel(Messageable):
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}?silent=true")
         del self
 
-    async def call(self):
-        """Initiates the call on the specified channel
-        """
-        await self.bot.gateway.ring(self.id)
-
-    async def leave(self):
-        """Leaves the call on the specified channel
-        """
-        await self.bot.gateway.leave_call()
 

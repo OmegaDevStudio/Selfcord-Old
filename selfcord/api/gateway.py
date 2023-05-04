@@ -279,7 +279,6 @@ class gateway:
     async def recv_msg(self):
         '''
         Receives Message from gateway, encodes as json and does things depending on op code
-
         '''
         item = await self.ws.recv()
         buffer = bytearray()
@@ -483,8 +482,8 @@ class gateway:
                 await self.bot.emit("error", error)
                 await self.close()
 
-    async def ring(self, channel: str, guild=None):
-        """Initiates a discord call
+    async def video_call(self, channel: str, guild=None):
+        """Initiates a discord video call
 
         Args:
             channel (str): Channel ID
@@ -502,7 +501,71 @@ class gateway:
             }
         }
         await self.send_json(payload)
-        await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
+        if guild == None:
+            await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
+
+
+    async def call(self, channel: str, guild=None):
+        """Initiates a discord call
+
+        Args:
+            channel (str): Channel ID
+            guild (str, optional): Guild ID. Defaults to None.
+        """
+        payload = {
+            "op": 4,
+            "d": {
+                "guild_id": guild,
+                "channel_id": channel,
+                "preferred_region": "rotterdam",
+                "self_mute": False,
+                "self_deaf": False,
+                "self_video": False,
+            }
+        }
+        await self.send_json(payload)
+        if guild == None:
+            await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
+
+
+    async def stream_call(self, channel: str, guild=None):
+        """Initiates a discord stream call
+
+        Args:
+            channel (str): Channel ID
+            guild (str, optional): Guild ID. Defaults to None.
+        """
+        type = "guild" if guild != None else "call"
+        payload = {
+            "op": 18,
+            "d": {
+                "guild_id": guild,
+                "channel_id": channel,
+                "preferred_region": "rotterdam",
+                "type": type
+            }
+        }
+        await self.send_json(payload)
+        if guild == None:
+            await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
+
+            payload = {
+                "op": 22,
+                "d": {
+                    "stream_key": f"call:{channel}:{self.user.id}",
+                    "paused": False
+                }
+            }
+        else:
+            payload = {
+                "op": 22,
+                "d": {
+                    "stream_key": f"guild:{guild}:{channel}:{self.user.id}",
+                    "paused": False
+                }
+            }
+
+        await self.send_json(payload)
 
 
 

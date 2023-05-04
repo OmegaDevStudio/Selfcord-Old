@@ -465,8 +465,9 @@ class Context:
         """
         if self.command is None:
             return
-        if self.message.author.id != self.bot.user.id:
-            return
+        if not self.bot.userbot:
+            if self.message.author.id != self.bot.user.id:
+                return
         if self.command_content != None:
             args, kwargs = await self.get_arguments()
             func = self.command.func
