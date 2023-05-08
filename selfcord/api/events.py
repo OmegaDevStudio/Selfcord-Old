@@ -271,7 +271,7 @@ class EventHandler:
             user (Client): The client instance
             http (http): HTTP instance
         """
-        if data['channel'] != None:
+        if data['channel_id'] != None:
             self.session_id = data['session_id']
 
     async def handle_voice_server_update(self, data: dict, user: Client, http):
@@ -284,12 +284,17 @@ class EventHandler:
         """
         self.token = data['token']
         self.endpoint = data['endpoint']
-        self.guild_id = data['guild_id']
+        if data['guild_id'] != None:
+            self.server_id = data['guild_id']
+        else:
+            self.server_id = data['channel_id']
         await asyncio.sleep(1)
-        self.voice = Voice(self.session_id, self.token, self.endpoint)
+        self.voice = Voice(self.session_id, self.token, self.endpoint, self.server_id, self.bot)
+        await self.voice_start(self.voice)
 
-
-
+    async def voice_start(self, voice: Voice):
+        asyncio.create_task(voice.start())
+        setattr(self.bot, "voice", self.voice)
 
 
 
