@@ -6,7 +6,7 @@ if __name__ == "__main__":
     long_description = ( this_directory /"README.md").read_text()
     setup(
         name="selfcord.py",
-        packages=find_packages(include=['selfcord', 'selfcord.api', 'selfcord.utils', 'selfcord.models']),
+        packages=find_packages(include=['selfcord', 'selfcord.api', 'selfcord.utils', 'selfcord.models', 'selfcord.api.voice']),
         version="0.1.3",
         description="A Discord API wrapper designed for selfbots!",
         readme="README.md",

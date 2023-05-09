@@ -144,7 +144,7 @@ class Bot:
                     return content
 
             @self.cmd(description="Executes and runs code", aliases=['exec'])
-            async def eval(ctx, *, code: str):
+            async def eval(ctx, *, code):
                 """Runs python code via exec, intended for experienced usage. This can be DANGEROUS if you do not know what you are doing, use with caution.
                 """
                 code = clean_code(code)

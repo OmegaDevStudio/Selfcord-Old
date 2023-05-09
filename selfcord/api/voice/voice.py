@@ -78,8 +78,7 @@ class Voice:
         header[1] = 0x78
         struct.pack_into('>H', header, 2, self.sequence)
         struct.pack_into('>I', header, 4, self.timestamp)
-        struct.pack_into('>I', header, 4, self.SSRC)
-
+        struct.pack_into('>I', header, 8, self.SSRC)
         return self.encrypt_xsalsa20_poly1305(header, encoded)
 
     def encrypt_xsalsa20_poly1305(self, header: bytes, data) -> bytes:
