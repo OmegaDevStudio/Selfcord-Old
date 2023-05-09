@@ -6,6 +6,21 @@
 * [selfcord.api package](selfcord.api.md)
 
 
+    * [Subpackages](selfcord.api.md#subpackages)
+
+
+        * [selfcord.api.voice package](selfcord.api.voice.md)
+
+
+            * [Submodules](selfcord.api.voice.md#submodules)
+
+
+            * [selfcord.api.voice.voice module](selfcord.api.voice.md#module-selfcord.api.voice.voice)
+
+
+            * [Module contents](selfcord.api.voice.md#module-selfcord.api.voice)
+
+
     * [Submodules](selfcord.api.md#submodules)
 
 
@@ -58,6 +73,15 @@
 
 
             * [`EventHandler.handle_ready()`](selfcord.api.md#selfcord.api.events.EventHandler.handle_ready)
+
+
+            * [`EventHandler.handle_voice_server_update()`](selfcord.api.md#selfcord.api.events.EventHandler.handle_voice_server_update)
+
+
+            * [`EventHandler.handle_voice_state_update()`](selfcord.api.md#selfcord.api.events.EventHandler.handle_voice_state_update)
+
+
+            * [`EventHandler.voice_start()`](selfcord.api.md#selfcord.api.events.EventHandler.voice_start)
 
 
     * [selfcord.api.gateway module](selfcord.api.md#module-selfcord.api.gateway)
@@ -120,6 +144,9 @@
             * [`gateway.VOICE_STATE`](selfcord.api.md#selfcord.api.gateway.gateway.VOICE_STATE)
 
 
+            * [`gateway.call()`](selfcord.api.md#selfcord.api.gateway.gateway.call)
+
+
             * [`gateway.change_presence()`](selfcord.api.md#selfcord.api.gateway.gateway.change_presence)
 
 
@@ -150,9 +177,6 @@
             * [`gateway.recv_msg()`](selfcord.api.md#selfcord.api.gateway.gateway.recv_msg)
 
 
-            * [`gateway.ring()`](selfcord.api.md#selfcord.api.gateway.gateway.ring)
-
-
             * [`gateway.roundup()`](selfcord.api.md#selfcord.api.gateway.gateway.roundup)
 
 
@@ -160,6 +184,12 @@
 
 
             * [`gateway.start()`](selfcord.api.md#selfcord.api.gateway.gateway.start)
+
+
+            * [`gateway.stream_call()`](selfcord.api.md#selfcord.api.gateway.gateway.stream_call)
+
+
+            * [`gateway.video_call()`](selfcord.api.md#selfcord.api.gateway.gateway.video_call)
 
 
     * [selfcord.api.http module](selfcord.api.md#module-selfcord.api.http)
@@ -204,25 +234,13 @@
         * [`DMChannel`](selfcord.models.md#selfcord.models.channel.DMChannel)
 
 
-            * [`DMChannel.call()`](selfcord.models.md#selfcord.models.channel.DMChannel.call)
-
-
             * [`DMChannel.delete()`](selfcord.models.md#selfcord.models.channel.DMChannel.delete)
-
-
-            * [`DMChannel.leave()`](selfcord.models.md#selfcord.models.channel.DMChannel.leave)
 
 
         * [`GroupChannel`](selfcord.models.md#selfcord.models.channel.GroupChannel)
 
 
-            * [`GroupChannel.call()`](selfcord.models.md#selfcord.models.channel.GroupChannel.call)
-
-
             * [`GroupChannel.delete()`](selfcord.models.md#selfcord.models.channel.GroupChannel.delete)
-
-
-            * [`GroupChannel.leave()`](selfcord.models.md#selfcord.models.channel.GroupChannel.leave)
 
 
         * [`Messageable`](selfcord.models.md#selfcord.models.channel.Messageable)
@@ -258,16 +276,25 @@
         * [`VoiceChannel`](selfcord.models.md#selfcord.models.channel.VoiceChannel)
 
 
-            * [`VoiceChannel.call()`](selfcord.models.md#selfcord.models.channel.VoiceChannel.call)
-
-
             * [`VoiceChannel.create_webhook()`](selfcord.models.md#selfcord.models.channel.VoiceChannel.create_webhook)
 
 
             * [`VoiceChannel.delete()`](selfcord.models.md#selfcord.models.channel.VoiceChannel.delete)
 
 
-            * [`VoiceChannel.leave()`](selfcord.models.md#selfcord.models.channel.VoiceChannel.leave)
+        * [`Voiceable`](selfcord.models.md#selfcord.models.channel.Voiceable)
+
+
+            * [`Voiceable.call()`](selfcord.models.md#selfcord.models.channel.Voiceable.call)
+
+
+            * [`Voiceable.leave_call()`](selfcord.models.md#selfcord.models.channel.Voiceable.leave_call)
+
+
+            * [`Voiceable.stream_call()`](selfcord.models.md#selfcord.models.channel.Voiceable.stream_call)
+
+
+            * [`Voiceable.video_call()`](selfcord.models.md#selfcord.models.channel.Voiceable.video_call)
 
 
     * [selfcord.models.client module](selfcord.models.md#module-selfcord.models.client)
@@ -345,7 +372,13 @@
             * [`Guild.role_create()`](selfcord.models.md#selfcord.models.guild.Guild.role_create)
 
 
+            * [`Guild.timeout()`](selfcord.models.md#selfcord.models.guild.Guild.timeout)
+
+
             * [`Guild.txt_channel_create()`](selfcord.models.md#selfcord.models.guild.Guild.txt_channel_create)
+
+
+            * [`Guild.utc_now()`](selfcord.models.md#selfcord.models.guild.Guild.utc_now)
 
 
             * [`Guild.vc_channel_create()`](selfcord.models.md#selfcord.models.guild.Guild.vc_channel_create)
@@ -364,6 +397,9 @@
 
 
             * [`Message.delete()`](selfcord.models.md#selfcord.models.message.Message.delete)
+
+
+            * [`Message.edit()`](selfcord.models.md#selfcord.models.message.Message.edit)
 
 
             * [`Message.react()`](selfcord.models.md#selfcord.models.message.Message.react)
@@ -483,6 +519,9 @@
             * [`Context.convert()`](selfcord.utils.md#selfcord.utils.command.Context.convert)
 
 
+            * [`Context.edit()`](selfcord.utils.md#selfcord.utils.command.Context.edit)
+
+
             * [`Context.get_arguments()`](selfcord.utils.md#selfcord.utils.command.Context.get_arguments)
 
 
@@ -548,7 +587,7 @@
 ## selfcord.bot module
 
 
-### _class_ selfcord.bot.Bot(show_beat: bool = False, prefixes: list = ['s!'], inbuilt_help=True)
+### _class_ selfcord.bot.Bot(show_beat: bool = False, prefixes: list = ['s!'], inbuilt_help=True, userbot=False, eval=False)
 Bases: `object`
 
 
@@ -567,7 +606,7 @@ Raises:
 
 
 #### _async_ add_friend(user_id: str)
-Function to add random user as a friend.
+Function to add a specific user as a friend.
 
 Args:
 
@@ -599,6 +638,14 @@ Raises:
 
 
 #### _async_ change_presence(status: str, afk: bool, activity: dict)
+Change discord activity presence
+
+Args:
+
+    status (str): Online, Offline, Dnd, Invisible
+    afk (bool): True or False
+    activity (dict): Selfcord.Activity method.
+
 
 #### cmd(description='', aliases=[])
 Decorator to add commands for the bot
@@ -629,7 +676,11 @@ Returns:
     DMChannel object
 
 
-#### _async_ edit_profile(bio: Optional[str] = None, accent: Optional[int] = None)
+#### _async_ create_guild(name: str, icon_url: str = None, template: str = '2TffvPucqHkN')
+Creates a guild
+
+
+#### _async_ edit_profile(bio: str = None, accent: int = None)
 Edits user profile
 
 

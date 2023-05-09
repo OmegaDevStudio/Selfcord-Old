@@ -10,6 +10,9 @@
         * [selfcord.api package](selfcord.api.md)
 
 
+            * [Subpackages](selfcord.api.md#subpackages)
+
+
             * [Submodules](selfcord.api.md#submodules)
 
 
@@ -107,6 +110,9 @@
 
 
             * [`Bot.create_dm()`](selfcord.md#selfcord.bot.Bot.create_dm)
+
+
+            * [`Bot.create_guild()`](selfcord.md#selfcord.bot.Bot.create_guild)
 
 
             * [`Bot.edit_profile()`](selfcord.md#selfcord.bot.Bot.edit_profile)

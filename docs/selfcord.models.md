@@ -16,39 +16,23 @@ Deletes the Category object.
 
 
 ### _class_ selfcord.models.channel.DMChannel(data, bot, http)
-Bases: `Messageable`
+Bases: `Voiceable`, `Messageable`
 
 DM Channel Object
-
-
-#### _async_ call()
-Initiates the call on the specified channel
 
 
 #### _async_ delete()
 Deletes the DM Channel object.
 
 
-#### _async_ leave()
-Leaves the call on the specified channel
-
-
 ### _class_ selfcord.models.channel.GroupChannel(data, bot, http)
-Bases: `Messageable`
+Bases: `Voiceable`, `Messageable`
 
 Group Channel Object
 
 
-#### _async_ call()
-Initiates the call on the specified channel
-
-
 #### _async_ delete()
 Deletes the Group Channel Object
-
-
-#### _async_ leave()
-Leaves the call on the specified channel
 
 
 ### _class_ selfcord.models.channel.Messageable(http, bot)
@@ -69,7 +53,7 @@ Returns:
     messages(list) : List of messages from the channel.
 
 
-#### _async_ purge(amount: Optional[int] = None)
+#### _async_ purge(amount: int = None)
 Delete a number of messages, starting from the most recent.
 
 Args:
@@ -188,7 +172,7 @@ Example Object (ref: [https://discord.com/developers/docs/resources/channel#chan
     }
 
 
-#### _async_ create_webhook(name: Optional[str] = None, avatar_url: Optional[str] = None)
+#### _async_ create_webhook(name: str = None, avatar_url: str = None)
 Creates a webhook in the specified channel
 
 Args:
@@ -217,7 +201,7 @@ Returns:
     No return value
 
 
-#### _async_ edit(name: Optional[str] = None, parent_id: Optional[int] = None, position: Optional[int] = None, topic: Optional[str] = None)
+#### _async_ edit(name: str = None, parent_id: int = None, position: int = None, topic: str = None)
 Edits the text channel object details. Requires the Manage Channels permission.
 Not all details can be modified.
 
@@ -245,16 +229,12 @@ Returns:
 
 
 ### _class_ selfcord.models.channel.VoiceChannel(data, bot, http)
-Bases: `Messageable`
+Bases: `Voiceable`, `Messageable`
 
 Voice Channel Object
 
 
-#### _async_ call()
-Initiates a call on the specified channel
-
-
-#### _async_ create_webhook(name: Optional[str] = None, avatar_url: Optional[str] = None)
+#### _async_ create_webhook(name: str = None, avatar_url: str = None)
 Creates a webhook in the specified channel
 
 Args:
@@ -275,8 +255,26 @@ Raises:
 Deletes the voice channel object.
 
 
-#### _async_ leave()
+### _class_ selfcord.models.channel.Voiceable(http, bot)
+Bases: `Messageable`
+
+Parent class specific for those classes that include a voice chat, or call functionality
+
+
+#### _async_ call()
+Initiates a call on the specified channel
+
+
+#### _async_ leave_call()
 Leaves call on the specified channel
+
+
+#### _async_ stream_call()
+Initiates a stream call on the specified channel
+
+
+#### _async_ video_call()
+Initiates a video call on the specified channel
 
 ## selfcord.models.client module
 
@@ -347,7 +345,7 @@ Args:
 Deletes the Guild Object
 
 
-#### _async_ edit(name: Optional[str] = None, icon_url: Optional[str] = None, banner_url: Optional[str] = None, description: Optional[str] = None)
+#### _async_ edit(name: str = None, icon_url: str = None, banner_url: str = None, description: str = None)
 Edits attributes for a guild
 
 Args:
@@ -391,7 +389,15 @@ Args:
     name (str): Name of the role
 
 
-#### _async_ txt_channel_create(name: str, parent_id: Optional[str] = None)
+#### _async_ timeout(user_id: str, hours=0, mins=0, seconds=0)
+Timeouts a user in the guild
+
+Args:
+
+    user_id (str): User ID specified to timeout
+
+
+#### _async_ txt_channel_create(name: str, parent_id: str = None)
 Creates a Text Channel in the guild
 
 Args:
@@ -399,6 +405,8 @@ Args:
     name (str): Name of the channel
     parent_id (str, optional): ID of the category. Defaults to None.
 
+
+#### utc_now()
 
 #### _async_ vc_channel_create(name: str)
 Creates a voice channel in the guild
@@ -426,6 +434,14 @@ Message Object
 
 #### _async_ delete()
 Delete the Message Object
+
+
+#### _async_ edit(content: str)
+Edits the specified message
+
+Args:
+
+    content (str): Content to edit message to.
 
 
 #### _async_ react(emoji: str)
@@ -520,5 +536,3 @@ Args:
     content (str): Content of the message to send
 
 ## Module contents
-
-Data objects from discord, used throughout selfcord

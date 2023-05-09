@@ -1,5 +1,107 @@
 # selfcord.api package
 
+## Subpackages
+
+
+* [selfcord.api.voice package](selfcord.api.voice.md)
+
+
+    * [Submodules](selfcord.api.voice.md#submodules)
+
+
+    * [selfcord.api.voice.voice module](selfcord.api.voice.md#module-selfcord.api.voice.voice)
+
+
+        * [`Voice`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice)
+
+
+            * [`Voice.CHANNELS`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.CHANNELS)
+
+
+            * [`Voice.FRAME_LENGTH`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.FRAME_LENGTH)
+
+
+            * [`Voice.HEARTBEAT`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.HEARTBEAT)
+
+
+            * [`Voice.HEARTBEAT_ACK`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.HEARTBEAT_ACK)
+
+
+            * [`Voice.READY`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.READY)
+
+
+            * [`Voice.SAMPLES_PER_FRAME`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.SAMPLES_PER_FRAME)
+
+
+            * [`Voice.SAMPLE_SIZE`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.SAMPLE_SIZE)
+
+
+            * [`Voice.SAMPLING_RATE`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.SAMPLING_RATE)
+
+
+            * [`Voice.SESSION_DESCRIPTION`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.SESSION_DESCRIPTION)
+
+
+            * [`Voice.checked_add()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.checked_add)
+
+
+            * [`Voice.close()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.close)
+
+
+            * [`Voice.connect()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.connect)
+
+
+            * [`Voice.convert()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.convert)
+
+
+            * [`Voice.encode_data()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.encode_data)
+
+
+            * [`Voice.encrypt_xsalsa20_poly1305()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.encrypt_xsalsa20_poly1305)
+
+
+            * [`Voice.get_voice_packet()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.get_voice_packet)
+
+
+            * [`Voice.handle_description()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.handle_description)
+
+
+            * [`Voice.handle_ready()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.handle_ready)
+
+
+            * [`Voice.heartbeat()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.heartbeat)
+
+
+            * [`Voice.identify()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.identify)
+
+
+            * [`Voice.ip_discovery()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.ip_discovery)
+
+
+            * [`Voice.play()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.play)
+
+
+            * [`Voice.recv_msg()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.recv_msg)
+
+
+            * [`Voice.send_audio_data()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.send_audio_data)
+
+
+            * [`Voice.send_json()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.send_json)
+
+
+            * [`Voice.speak()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.speak)
+
+
+            * [`Voice.start()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.start)
+
+
+            * [`Voice.udp_select()`](selfcord.api.voice.md#selfcord.api.voice.voice.Voice.udp_select)
+
+
+    * [Module contents](selfcord.api.voice.md#module-selfcord.api.voice)
+
+
 ## Submodules
 
 ## selfcord.api.errors module
@@ -83,7 +185,7 @@ Args:
     http (http): HTTP instance
 
 
-#### _async_ handle_guild_role_delete(role, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
+#### _async_ handle_guild_role_delete(role: dict, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
 Handles what happens when a role is deleted
 
 Args:
@@ -121,6 +223,28 @@ Args:
     user (Client): The client instance
     http (http): HTTP instance
 
+
+#### _async_ handle_voice_server_update(data: dict, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
+Handles the voice server updating
+
+Args:
+
+    data (dict): JSON data from gateway
+    user (Client): The client instance
+    http (http): HTTP instance
+
+
+#### _async_ handle_voice_state_update(data: dict, user: [Client](selfcord.models.md#selfcord.models.client.Client), http)
+Handles the voice state updating
+
+Args:
+
+    data (dict): JSON data from gateway
+    user (Client): The client instance
+    http (http): HTTP instance
+
+
+#### _async_ voice_start(voice: [Voice](selfcord.api.voice.md#selfcord.api.voice.voice.Voice))
 ## selfcord.api.gateway module
 
 
@@ -245,6 +369,15 @@ OP CODES
 
 #### VOICE_STATE(_ = _ )
 
+#### _async_ call(channel: str, guild=None)
+Initiates a discord call
+
+Args:
+
+    channel (str): Channel ID
+    guild (str, optional): Guild ID. Defaults to None.
+
+
 #### _async_ change_presence(status: str, afk: bool, activity: dict)
 Change the clients current presence
 
@@ -298,15 +431,6 @@ Leaves a discord call
 Receives Message from gateway, encodes as json and does things depending on op code
 
 
-#### _async_ ring(channel: str, guild=None)
-Initiates a discord call
-
-Args:
-
-    channel (str): Channel ID
-    guild (str, optional): Guild ID. Defaults to None.
-
-
 #### roundup(n)
 
 #### _async_ send_json(payload: dict)
@@ -325,6 +449,24 @@ Args:
     token (str): User token
     user (Client): User client
     bot (_type_): Bot class
+
+
+#### _async_ stream_call(channel: str, guild=None)
+Initiates a discord stream call
+
+Args:
+
+    channel (str): Channel ID
+    guild (str, optional): Guild ID. Defaults to None.
+
+
+#### _async_ video_call(channel: str, guild=None)
+Initiates a discord video call
+
+Args:
+
+    channel (str): Channel ID
+    guild (str, optional): Guild ID. Defaults to None.
 
 ## selfcord.api.http module
 
@@ -380,5 +522,3 @@ Returns:
     Client: A Client object
 
 ## Module contents
-
-Discord API related modules, used to interact with discord

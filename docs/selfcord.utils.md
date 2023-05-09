@@ -107,6 +107,14 @@ Returns:
     Type[str]: The type of parameter
 
 
+#### _async_ edit(content: str)
+Helper function to edit the message you sent
+
+Args:
+
+    content (str): Content to edit to
+
+
 #### _async_ get_arguments()
 Get arguments by checking function arguments and comparing to arguments in message.
 
@@ -125,7 +133,7 @@ Used to actually run the command
 
 #### _property_ prefix()
 
-#### _async_ purge(amount: Optional[int] = None)
+#### _async_ purge(amount: int = None)
 Helper function to purge messages in the current channel, uses asyncio gather.
 
 Args:
@@ -246,5 +254,3 @@ Returns:
     Extension: Extension obtained
 
 ## Module contents
-
-Utility related modules for selfcord
