@@ -126,7 +126,7 @@ bot.run(token)
 ```
 ## Some Useful Links
 - [Documentation](https://github.com/Shell1010/Selfcord/wiki)
-- [Other Documentation (messy)](https://github.com/Shell1010/Selfcord/docs)
+- [Other Documentation (messy)](https://github.com/Shell1010/Selfcord/tree/main/docs)
 - [PyPi](https://pypi.org/project/selfcord/)
 - [Official Discord Server](https://discord.gg/FCFnnBGzkg)
 - [A simple selfbot designed to showcase the library's features](https://github.com/Shell1010/Aeterna-Selfbot)
