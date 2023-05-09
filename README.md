@@ -1,5 +1,5 @@
 <div align="center">
-<img src="/logo.png" widht="180" height="180" style="border-radius: 50%;">
+<img src="./logo.png" widht="180" height="180" style="border-radius: 50%;">
 <h1 align="center">SELFCORD</h1>
 <strong><i>A Powerful Library To make Discord SelfBot in Python</i></strong>
 <br>
@@ -19,18 +19,14 @@
 
  - Modern Pythonic API using `async`/`await` syntax
  - Easy to use with an object oriented design
- - Optimised for both speed and memory 
+ - Optimised for both speed and memory
  - Prevents detection of user account automation
  - Clean Documentation
  - Community Support
- 
-## Installation
-Python 3.8 or higher is required
-```
-# Linux/macOS
-pip3 install selfcord.py
 
-# Windows
+## Installation
+Python 3.10 or higher is required
+```
 pip install selfcord.py
 ```
 
@@ -59,7 +55,7 @@ bot.run(token)
 ```
 ## Examples/Usage
 ### Message logger
-In This Code, If Someone Deleted Messages in the server, it records details such as the server name, channel name, message content, and the author's name
+In this snippet, If someone deletes messages in the server, it records details such as the server name, channel name, message content, and the author's name
 ```python
 import selfcord
 
@@ -92,7 +88,7 @@ CONTENT:
 bot.run(token)
 ```
 ### Purge command
-In This Code, Selfbot is able to delete certain amount of messages from a channel
+In this snippet, you are able to delete certain amount of messages from a channel
 ```python
 import selfcord
 
@@ -111,7 +107,7 @@ bot.run(token)
 ```
 
 ### Deleted message sniper
-In This Code, Self bot can retrieves the most recently deleted message by the bot user and replies with the author's name and the content of the deleted message
+In this snippet, you can retrieve the most recently deleted message.
 ```python
 import selfcord
 
@@ -128,11 +124,12 @@ async def snipe(ctx):
 
 bot.run(token)
 ```
-## Some Useful Link
+## Some Useful Links
 - [Documentation](https://github.com/Shell1010/Selfcord/wiki)
+- [Other Documentation (messy)](https://github.com/Shell1010/Selfcord/docs)
 - [PyPi](https://pypi.org/project/selfcord/)
 - [Official Discord Server](https://discord.gg/FCFnnBGzkg)
 - [A simple selfbot designed to showcase the library's features](https://github.com/Shell1010/Aeterna-Selfbot)
 
-## Contributing 
+## Contributing
 Contributors are always Welcome
