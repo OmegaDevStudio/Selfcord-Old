@@ -1,9 +1,31 @@
-# Selfcord
-A discord selfbot API wrapper (WIP)
+<div align="center">
+<img src="./logo.png" widht="180" height="180" style="border-radius: 50%;">
+<h1 align="center">SELFCORD</h1>
+<strong><i>A Powerful Library To make Discord SelfBot in Python</i></strong>
+<br>
+<br>
+<a href="https://www.python.org/">
+<img src="https://img.shields.io/badge/MADE%20WITH-PYTHON-red?logoColor=red&logo=Python&style=for-the-badge">
+</a>
+<a href="https://pypi.org/project/selfcord/">
+<img src="https://img.shields.io/badge/version-0.2.5-blue?logo=adguard&style=for-the-badge">
+</a>
+<a href="https://github.com/Shell1010/Selfcord/wiki">
+<img src="https://img.shields.io/badge/documentation-green?logo=gitbook&style=for-the-badge">
+</a>
+</div>
+
+## Feautres
+
+ - Modern Pythonic API using `async`/`await` syntax
+ - Easy to use with an object oriented design
+ - Optimised for both speed and memory
+ - Prevents detection of user account automation
+ - Clean Documentation
+ - Community Support
 
 ## Installation
-
-Run this in the command line.
+Python 3.10 or higher is required
 ```
 pip install selfcord.py
 ```
@@ -12,15 +34,28 @@ pip install selfcord.py
 
 Read our [Wiki](https://github.com/Shell1010/Selfcord/wiki) in regards to documentation and getting started.
 
-## Examples
+## Getting Started
+A selfbot that responds to a message ("ping!") with another message ("pong").
+```py
+import selfcord
 
-### Aeterna Selfbot
+token = "insert token"
+bot = selfcord.Bot()
 
-A simple selfbot designed to showcase the library's features, intended to be seen as a template or base for other users.
+@bot.on("ready")
+async def ready(time):
+    print(f"Connected To {bot.user.name}\n Startup took {time:0.2f} seconds")
 
-[Aeterna Selfbot](https://github.com/Shell1010/Aeterna-Selfbot)
+@bot.on("message")
+async def responder(message):
+    if message.content == "ping!":
+        await message.channel.send("pong!")
 
+bot.run(token)
+```
+## Examples/Usage
 ### Message logger
+In this snippet, If someone deletes messages in the server, it records details such as the server name, channel name, message content, and the author's name
 ```python
 import selfcord
 
@@ -53,6 +88,7 @@ CONTENT:
 bot.run(token)
 ```
 ### Purge command
+In this snippet, you are able to delete certain amount of messages from a channel
 ```python
 import selfcord
 
@@ -71,6 +107,7 @@ bot.run(token)
 ```
 
 ### Deleted message sniper
+In this snippet, you can retrieve the most recently deleted message.
 ```python
 import selfcord
 
@@ -87,7 +124,12 @@ async def snipe(ctx):
 
 bot.run(token)
 ```
+## Some Useful Links
+- [Documentation](https://github.com/Shell1010/Selfcord/wiki)
+- [Other Documentation (messy)](https://github.com/Shell1010/Selfcord/docs)
+- [PyPi](https://pypi.org/project/selfcord/)
+- [Official Discord Server](https://discord.gg/FCFnnBGzkg)
+- [A simple selfbot designed to showcase the library's features](https://github.com/Shell1010/Aeterna-Selfbot)
 
-## Help & Support
-
-Please join our [discord server](https://discord.gg/FCFnnBGzkg) here.
+## Contributing
+Contributors are always Welcome
