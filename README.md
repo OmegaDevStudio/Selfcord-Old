@@ -1,5 +1,19 @@
-# Selfcord
-A discord selfbot API wrapper (WIP)
+<div align="center">
+<img>
+<h1 align="center">SELFCORD</h1>
+<strong><i>A Powerful Library To make Discord SelfBot in Python</i></strong>
+<br>
+<br>
+<a href="https://www.python.org/">
+<img src="https://img.shields.io/badge/MADE%20WITH-PYTHON-red?logoColor=red&logo=Python&style=for-the-badge">
+</a>
+<a href="https://ddl-api.cycno.repl.co/">
+<img src="https://img.shields.io/badge/version-0.1-blue?logo=adguard&style=for-the-badge">
+</a>
+<a href="https://ddl-api.cycno.repl.co/">
+<img src="https://img.shields.io/badge/documentation-green?logo=gitbook&style=for-the-badge">
+</a>
+</div>
 
 ## Installation
 
