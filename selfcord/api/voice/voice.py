@@ -97,15 +97,14 @@ class Voice:
     async def send_audio_data(self, data: bytes):
         self.checked_add('sequence', 1, 65535)
         encoded = self.encode_data(data)
-        packet = self.get_voice_packet(encoded)
-        packets = io.BytesIO(packet)
+        packets = io.BytesIO(self.get_voice_packet(encoded))
         while True:
             await asyncio.sleep(0.020)
-            packet = packets.read(20)
-            if packet == b'':
+            packet = packets.read(100)
+            if len(packet) == 0:
                 break
             await self.speak(True)
-            self.socket.sendto(packets.read(10), (self.endpoint_IP, self.voice_port))
+            self.socket.sendto(packet, (self.endpoint_IP, self.voice_port))
         self.checked_add('timestamp', self.SAMPLES_PER_FRAME, 4294967295)
         await self.speak(False)
 
