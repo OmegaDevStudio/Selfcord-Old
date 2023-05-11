@@ -12,7 +12,7 @@ import nacl.secret
 import os
 import aiofiles
 from pydub import AudioSegment
-
+import io
 
 class Voice:
 
@@ -75,7 +75,7 @@ class Voice:
         header = bytearray(12)
 
         header[0] = 0x80
-        header[1] = 0x78
+        header[1] = 0x72
         struct.pack_into('>H', header, 2, self.sequence)
         struct.pack_into('>I', header, 4, self.timestamp)
         struct.pack_into('>I', header, 8, self.SSRC)
@@ -98,9 +98,16 @@ class Voice:
         self.checked_add('sequence', 1, 65535)
         encoded = self.encode_data(data)
         packet = self.get_voice_packet(encoded)
-        asyncio.create_task(self.speak(True))
-        self.socket.sendto(packet, (self.endpoint_IP, self.voice_port))
+        packets = io.BytesIO(packet)
+        while True:
+            await asyncio.sleep(0.020)
+            packet = packets.read(20)
+            if packet == b'':
+                break
+            await self.speak(True)
+            self.socket.sendto(packets.read(10), (self.endpoint_IP, self.voice_port))
         self.checked_add('timestamp', self.SAMPLES_PER_FRAME, 4294967295)
+        await self.speak(False)
 
 
     async def convert(self, path):
@@ -108,6 +115,7 @@ class Voice:
         sound.export("song.wav", format="wav")
 
     async def play(self, path):
+        await self.speak(False)
         if os.path.exists(path):
             if os.path.isfile(path):
                 async with aiofiles.open(path, mode="rb") as f:
@@ -119,17 +127,15 @@ class Voice:
             RuntimeError("Path does not exist")
 
     async def speak(self, state: bool):
-        while True:
-            payload = {
-                "op": 5,
-                "d": {
-                    "speaking": int(state),
-                    "ssrc": self.SSRC,
-                    "delay": 0,
-                }
+        payload = {
+            "op": 5,
+            "d": {
+                "speaking": int(state),
+                "ssrc": self.SSRC,
+                "delay": 0,
             }
-            await asyncio.sleep(3)
-            await self.send_json(payload)
+        }
+        await self.send_json(payload)
 
     async def send_json(self, payload: dict):
         '''Send json to the websocket

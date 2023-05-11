@@ -128,3 +128,17 @@ class User:
             data = Profile(data, self.bot, self.http)
 
         return data
+
+    async def get_mutual_friends(self) -> list[User]:
+        """Get the User mutual friends
+
+        Returns:
+            list[User]: Mutual friends
+        """
+        data = await self.http.request(method="get", endpoint=f"/users/{self.id}/relationships")
+
+        if len(data) != 0:
+            return [User(user, self.bot, self.http) for user in data]
+        else:
+            return []
+
