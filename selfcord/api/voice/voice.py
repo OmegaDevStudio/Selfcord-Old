@@ -11,7 +11,6 @@ import nacl.utils
 import nacl.secret
 import os
 import aiofiles
-from pydub import AudioSegment
 import io
 
 class Voice:
@@ -108,10 +107,6 @@ class Voice:
         self.checked_add('timestamp', self.SAMPLES_PER_FRAME, 4294967295)
         await self.speak(False)
 
-
-    async def convert(self, path):
-        sound = AudioSegment.from_mp3(path)
-        sound.export("song.wav", format="wav")
 
     async def play(self, path):
         await self.speak(False)
