@@ -112,7 +112,7 @@ class Guild:
         Args:
             user_id (str): User ID specified to timeout
         """
-        duration = self.utc_now() + timedelta(hours, mins, seconds)
+        duration = self.utc_now() + timedelta(hours=hours, minutes=mins, seconds=seconds)
         await self.http.request(method="patch", endpoint=f"/guilds/{self.id}/members/{user_id}", json={"communication_disabled_until": str(duration)})
 
     async def txt_channel_create(self, name:str, parent_id: str=None):
