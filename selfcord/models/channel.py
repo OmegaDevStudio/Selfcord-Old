@@ -25,9 +25,13 @@ class Messageable:
 
         Returns:
             messages(list) : List of messages from the channel.
+            None : If client does not have view permission for the channel or no data found
         """
         messages = []
         data = await self.http.request(method="get", endpoint=f"/channels/{self.id}/messages?limit=100")
+        if data is None:
+            return None
+
         for msg in data:
             messages.append(Message(msg, self.bot, self.http))
         while True:
