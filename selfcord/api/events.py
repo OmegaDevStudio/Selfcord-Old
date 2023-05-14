@@ -10,10 +10,11 @@ class EventHandler:
     '''
     Used to handle discord events
     '''
-    def __init__(self, bot, http):
+    def __init__(self, bot, http, debug=False):
         self._events = {}
         self.http    = http
         self.bot     = bot
+        self.debug = debug
 
     async def handle_ready(self, data: dict, user: Client, http):
         """Handles what happens when the ready event is fired, when the bot first connects
@@ -289,7 +290,7 @@ class EventHandler:
         else:
             self.server_id = data['channel_id']
         await asyncio.sleep(1)
-        self.voice = Voice(self.session_id, self.token, self.endpoint, self.server_id, self.bot)
+        self.voice = Voice(self.session_id, self.token, self.endpoint, self.server_id, self.bot, debug=self.debug)
         await self.voice_start(self.voice)
 
     async def voice_start(self, voice: Voice):

@@ -7,7 +7,7 @@ from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, 
 from collections import defaultdict
 from aioconsole import aprint, aexec
 import time
-from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension, Event
+from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension, Event, logging
 import random
 import contextlib
 from traceback import format_exception
@@ -17,14 +17,15 @@ import importlib
 import aiohttp
 
 
+log = logging.getLogger("Bot")
 class Bot:
-    def __init__(self, show_beat: bool = False, prefixes: list = ["s!"], inbuilt_help=True, userbot=False, eval=False) -> None:
+    def __init__(self, debug: bool = False, prefixes: list = ["s!"], inbuilt_help=True, userbot=False, eval=False) -> None:
         self.inbuilt_help= inbuilt_help
-        self.show_beat = show_beat
+        self.debug = debug
         self.token = None
-        self.http = http()
+        self.http = http(debug)
         self.t1 = time.perf_counter()
-        self.gateway = gateway(self.http, self.show_beat)
+        self.gateway = gateway(self.http, self.debug)
         self._events = defaultdict(list)
         self.commands = CommandCollection()
         self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
@@ -46,6 +47,9 @@ class Bot:
             data = await self.http.static_login(token)
             self.user = Client(data)
             await self.gateway.start(token, self.user, self)
+            if self.debug:
+                log.debug("Started Bot")
+                log.info(f"Logged in as {self.user}")
 
         try:
             asyncio.run(runner())
@@ -297,12 +301,13 @@ class Bot:
             for name, event in ext._events.items():
                 for ext_event in event:
                     self._events[name].append(Event(name=name, coro=ext_event.coro, ext=ext.ext))
-
-
+            if self.debug:
+                log.debug("Loaded Extension")
+                log.info(f"Loaded {ext.name} to Bot")
 
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
-            print(error)
+            log.error(f"{error}")
 
 
 
@@ -368,6 +373,9 @@ class Bot:
         """
         image = await self.http.encode_image(icon_url)
         await self.http.request(method="post", endpoint=f"/guilds", headers={"origin": "https://discord.com", "referer": "https://discord.com/channels/@me"}, json={"name": name, "icon": image, "template": template })
+        if self.debug:
+            log.debug("Finished Creating Guild")
+            log.info(f"Created Guild NAME: {name} TEMPLATE: {template} ICON: {icon_url}")
 
 
     async def add_friend(self, user_id: str):
@@ -385,6 +393,9 @@ class Bot:
                                 headers={"origin": "https://discord.com",
                                          "referer": f"https://discord.com/channels/@me/{random.choice(self.user.private_channels).id}"},
                                 json={})
+        if self.debug:
+            log.debug("Sent Friend request")
+            log.info(f"Sent Friend request to {user_id}")
 
     async def edit_profile(self, bio: str = None, accent: int = None):
         """ Edits user profile
@@ -395,6 +406,8 @@ class Bot:
         if accent != None:
             fields['accent'] = accent
         await self.http.request(method="patch", endpoint=f"/users/@me/profile", json=fields)
+        if self.debug:
+            log.debug("Finished Edit profile")
 
     async def change_pfp(self, avatar_url=None):
         """Disclaimer: This may phone lock your account :(
@@ -412,6 +425,8 @@ class Bot:
                                     json={'avatar': image})
         else:
             raise TypeError("Avatar url not specified")
+        if self.debug:
+            log.debug("Finished changing avatar")
 
     async def create_dm(self, recipient_id: int):
         """
@@ -429,6 +444,8 @@ class Bot:
         if recipient_id is not None:
             data = await self.http.request(method="post", endpoint="/users/@me/channels",
                                            json={"recipient_id": recipient_id})
+            if self.debug:
+                log.debug("Created DM Channel")
             return DMChannel(data, bot=self, http=self.http)
         else:
             raise TypeError("Recipient ID not specified")
@@ -442,7 +459,7 @@ class Bot:
         async with aiohttp.ClientSession() as session:
             async with session.post(f"https://canary.discord.com/api/v9/entitlements/gift-codes/{code}/redeem", headers={"authorization": f"{self.token}", "user-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0", "content-type":"application/json"}, json={}) as resp:
                 j = await resp.json()
-                await aprint(j, resp.status)
+                log.info(F"Status: {resp.status} Nitro Redeem response: {j}")
 
 
 
@@ -459,6 +476,9 @@ class Bot:
             await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 2})
         if house.lower() == "balance":
             await self.http.request(method="post", endpoint = "/hypesquad/online", json = {"house_id": 3})
+        if self.debug:
+            log.debug("Finished changing hypesquad")
+            log.info(f"Changed hypesquad to {house}")
 
     async def change_presence(self, status: str, afk: bool, activity: dict):
         """Change discord activity presence
@@ -469,6 +489,9 @@ class Bot:
             activity (dict): Selfcord.Activity method.
         """
         await self.gateway.change_presence(status, afk, activity=activity)
+        if self.debug:
+            log.debug("Finished changing presence")
+            log.info(f"Changed Status to {status}, AFK to {afk}")
 
 
 

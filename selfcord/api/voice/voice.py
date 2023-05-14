@@ -12,6 +12,10 @@ import nacl.secret
 import os
 import aiofiles
 import io
+import ffmpeg
+from ...utils import logging
+
+log = logging.getLogger("Voice")
 
 class Voice:
 
@@ -20,6 +24,8 @@ class Voice:
     FRAME_LENGTH = 20  # in milliseconds
     SAMPLE_SIZE = struct.calcsize('h') * CHANNELS
     SAMPLES_PER_FRAME = int(SAMPLING_RATE / 1000 * FRAME_LENGTH)
+    FRAME_SIZE = SAMPLES_PER_FRAME * SAMPLE_SIZE
+
 
     """Op codes"""
     READY = 2
@@ -28,7 +34,7 @@ class Voice:
     HEARTBEAT = 8
 
 
-    def __init__(self, session_id: str, token: str, endpoint: str, server_id: str, bot) -> None:
+    def __init__(self, session_id: str, token: str, endpoint: str, server_id: str, bot, debug=False) -> None:
         self.session_id = session_id
         self.token = token
         self.endpoint = endpoint
@@ -37,7 +43,9 @@ class Voice:
         self.alive = False
         self.mode = "xsalsa20_poly1305"
         self.sequence = 0
+        self.debug = debug
         self.timestamp = 0
+
 
 
     async def connect(self):
@@ -64,7 +72,19 @@ class Voice:
 
     async def handle_description(self, data: dict):
         self.secret_key: list[int] = data.get("secret_key")
+        if self.debug:
+            log.debug("Finished session description event")
+            log.info(f"Gathered Secret Key: {self.secret_key}")
 
+    def pcm_encode(self, file: str):
+        out, err = (
+            ffmpeg
+            .input(file)
+            .output('-', format='s16le', acodec='pcm_s16le', ac=2, ar='48k')
+            .overwrite_output()
+            .run(capture_stdout=True, capture_stderr=True)
+        )
+        return out
 
     def encode_data(self, data: bytes):
         self.encoder = opuslib.Encoder(self.SAMPLING_RATE, self.CHANNELS, opuslib.APPLICATION_AUDIO)
@@ -74,7 +94,7 @@ class Voice:
         header = bytearray(12)
 
         header[0] = 0x80
-        header[1] = 0x72
+        header[1] = 0x78
         struct.pack_into('>H', header, 2, self.sequence)
         struct.pack_into('>I', header, 4, self.timestamp)
         struct.pack_into('>I', header, 8, self.SSRC)
@@ -93,20 +113,40 @@ class Voice:
         else:
             setattr(self, attr, val + value)
 
-    async def send_audio_data(self, data: bytes):
+    async def send_encode_audio_data(self, data: bytes):
         self.checked_add('sequence', 1, 65535)
         buffer = io.BytesIO(data)
-        await self.speak(True)
         while True:
-            data = buffer.read(100)
+            data = buffer.read(self.FRAME_SIZE)
             if len(data) == 0:
                 break
             encoded = self.encode_data(data)
             packet = self.get_voice_packet(encoded)
-            await asyncio.sleep(0.020)
+            await self.speak(True)
             self.socket.sendto(packet, (self.endpoint_IP, self.voice_port))
-        self.checked_add('timestamp', self.SAMPLES_PER_FRAME, 4294967295)
+            if self.debug:
+                log.debug("Send Audio Packet to the voice port")
+                log.info(f"Length of data {len(packet)}")
+            await asyncio.sleep(self.FRAME_LENGTH / 1000)
         await self.speak(False)
+        self.checked_add('timestamp', self.SAMPLES_PER_FRAME, 4294967295)
+
+    async def send_audio_data(self, data: bytes):
+        self.checked_add('sequence', 1, 65535)
+        buffer = io.BytesIO(data)
+        while True:
+            data = buffer.read(self.FRAME_SIZE)
+            if len(data) == 0:
+                break
+            packet = self.get_voice_packet(data)
+            await self.speak(True)
+            self.socket.sendto(packet, (self.endpoint_IP, self.voice_port))
+            if self.debug:
+                log.debug("Send Audio Packet to the voice port")
+                log.info(f"Length of data {len(packet)}")
+            await asyncio.sleep(self.FRAME_LENGTH / 1000)
+        await self.speak(False)
+        self.checked_add('timestamp', self.SAMPLES_PER_FRAME, 4294967295)
 
 
     async def play(self, path):
@@ -115,13 +155,23 @@ class Voice:
             if os.path.isfile(path):
                 async with aiofiles.open(path, mode="rb") as f:
                     data = await f.read()
+                # data = self.pcm_encode(path)
+                if self.debug:
+                    log.info(f"File Path: {path}")
+                if path.endswith(".opus"):
+                    if self.debug:
+                        log.debug("Using non-encoding function for send of voice data")
                     await self.send_audio_data(data)
+                else:
+                    if self.debug:
+                        log.debug("Using encode function for send of voice data")
+                    await self.send_encode_audio_data(data)
             else:
                 RuntimeError("Path is not a file")
         else:
             RuntimeError("Path does not exist")
 
-    async def speak(self, state: bool):
+    async def speak(self, state):
         payload = {
             "op": 5,
             "d": {
@@ -163,6 +213,9 @@ class Voice:
             }
         }
         await self.send_json(payload)
+        if self.debug:
+            log.debug("Sent voice identify payload")
+            log.info(f"Identified on USER: {self.bot.user} SERVER: {self.server_id} TOKEN: {self.token} SESSION_ID: {self.session_id}")
 
     async def start(self):
         await self.connect()
@@ -170,7 +223,10 @@ class Voice:
         while self.alive:
             try: await self.recv_msg()
             except KeyboardInterrupt:
-                await aprint('Shutting down...')
+                log.critical('Shutting down')
+                await self.close()
+            except Exception as e:
+                log.critical(f'Shutting down {e}')
                 await self.close()
 
 
@@ -179,16 +235,21 @@ class Voice:
         self.endpoint_IP = data.get("ip")
         self.voice_port = data.get("port")
         await self.ip_discovery()
+        if self.debug:
+            log.debug("Finished voice ready event")
+            log.info(f"Gathered SSRC: {self.SSRC} ENDPOINT IP: {self.endpoint_IP} PORT: {self.voice_port}")
 
     async def heartbeat(self, data: dict):
         interval = data.get("heartbeat_interval") / 1000.0
-        while True:
+        while self.alive:
             await asyncio.sleep(interval)
             payload = {
                 "op": 3,
                 "d": time.time()
             }
             await self.send_json(payload)
+            if self.debug:
+                log.debug("Sent Heartbeat")
 
     async def udp_select(self):
         payload = {
@@ -206,6 +267,9 @@ class Voice:
             }
         }
         await self.send_json(payload)
+        if self.debug:
+            log.debug("Sent UDP select payload")
+            log.info(f"Sent on Address {self.IP} and Port {self.port}")
 
     async def ip_discovery(self):
         self.socket: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -215,6 +279,9 @@ class Voice:
         struct.pack_into('>H', packet, 2, 70)
         struct.pack_into('>I', packet, 4, self.SSRC)
         self.socket.sendto(packet, (self.endpoint_IP, self.voice_port))
+        if self.debug:
+            log.debug("Sent IP discovery packet")
+            log.info(f"Sent packet to Address: {self.endpoint_IP} and Port: {self.voice_port}")
         while True:
             try:
                 data = self.socket.recv(74)
@@ -225,5 +292,8 @@ class Voice:
         ip_end = data.index(0, ip_start)
         self.IP = data[ip_start:ip_end].decode('ascii')
         self.port = struct.unpack_from('>H', data, len(data) - 2)[0]
+        if self.debug:
+            log.debug("Received IP discovery response")
+            log.info(f"Received Address {self.IP} and Port {self.port}")
         await self.udp_select()
 

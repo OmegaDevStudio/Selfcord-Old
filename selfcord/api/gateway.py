@@ -1,8 +1,8 @@
 from __future__ import annotations
 import asyncio
 import websockets
-from aioconsole import aprint
 import json
+import os
 import time
 import zlib
 from .events import EventHandler
@@ -10,9 +10,11 @@ from .errors import ReconnectWebsocket
 from selfcord.models.client import Client
 import requests
 from traceback import format_exception
+from ..utils import logging
+
+log = logging.getLogger("Gateway")
 
 class Activity:
-
     @staticmethod
     def Game(name: str, details: str, state: str, buttons: dict, application_id: str, key: str) -> dict[str, int]:
         """Method to generate activity dict for the "Playing ..." payload
@@ -266,8 +268,8 @@ class gateway:
     HEARTBEAT_ACK      = 11
     GUILD_SYNC         = 12
 
-    def __init__(self, http, show_heartbeat=False):
-        self.show_heartbeat = show_heartbeat
+    def __init__(self, http, debug=False):
+        self.debug = debug
         self.http = http
         self.zlib = zlib.decompressobj()
         self.zlib_suffix = b'\x00\x00\xff\xff'
@@ -362,6 +364,9 @@ class gateway:
         }
 
         await self.send_json(payload)
+        if self.debug:
+            log.debug("Began rich presence")
+            log.info(f"{activity}")
 
 
 
@@ -390,6 +395,10 @@ class gateway:
 
             await self.send_json(payload)
 
+        if self.debug:
+            log.debug("Finished guild lazy chunking")
+            log.info(f"Subscription to GUILD: {guild_id} with CHANNEL: {channel_id}")
+
 
     async def send_json(self, payload: dict):
         '''Send json to the gateway
@@ -404,12 +413,16 @@ class gateway:
         '''
         self.ws = await websockets.connect('wss://gateway.discord.gg/?encoding=json&v=9&compress=zlib-stream', origin='https://discord.com', max_size=None)
         self.alive = True
+        if self.debug:
+            log.debug("Established connection to Discord Gateway")
 
     async def close(self):
         '''Close the connection to discord gateway
         '''
         self.alive= False
         await self.ws.close()
+        if self.debug:
+            log.debug("Closed connection to discord gateway")
 
     async def identify(self):
         '''Identify to gateway, uses amazing mobile client spoof
@@ -428,6 +441,9 @@ class gateway:
             }
         }
         await self.send_json(payload)
+        if self.debug:
+            log.debug("Sent identify payload")
+            log.info(f"Idenitified with {self.token} under Discord Android")
 
 
 
@@ -437,7 +453,7 @@ class gateway:
         Args:
             interval (int): Interval between sends
         '''
-        await aprint(f'Hearbeat loop has began with the interval of {interval} seconds!')
+        log.info(f'Hearbeat loop has began with the interval of {interval} seconds!')
         heartbeatJSON = {
             'op': 1,
             'd': time.time()
@@ -446,8 +462,9 @@ class gateway:
             await asyncio.sleep(interval)
             await self.send_json(heartbeatJSON)
             self.last_send = time.perf_counter()
-            if self.show_heartbeat:
-                await aprint('Sent Beat')
+            if self.debug:
+                log.debug('Sent heartbeat')
+                log.info(f"Delay since last heartbeat {self.last_send}")
 
     async def heartbeat_ack(self):
         '''Whenever heartbeat ack is sent, logs the time between last send of heartbeat json and receive of the ack
@@ -463,7 +480,7 @@ class gateway:
             user (Client): User client
             bot (_type_): Bot class
         '''
-        self.handler = EventHandler(bot, self.http)
+        self.handler = EventHandler(bot, self.http, self.debug)
         self.bot = bot
 
         await self.bot.inbuilt_commands() # In built commands very cool
@@ -475,11 +492,13 @@ class gateway:
         while self.alive:
             try: await self.recv_msg()
             except KeyboardInterrupt:
-                await aprint('Shutting down...')
+                log.critical('Shutting down...')
                 await self.close()
             except Exception as e:
                 error = "".join(format_exception(e, e, e.__traceback__))
                 await self.bot.emit("error", error)
+                if self.debug:
+                    log.critical(f"{error}")
                 await self.close()
 
     async def video_call(self, channel: str, guild=None):
@@ -501,8 +520,13 @@ class gateway:
             }
         }
         await self.send_json(payload)
+        if self.debug:
+            log.debug("Initiated video call")
+            log.info(f"Began video call to GUILD: {guild} and CHANNEL: {channel}")
         if guild == None:
             await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
+            if self.debug:
+                log.debug("Sent Ring")
 
 
     async def call(self, channel: str, guild=None):
@@ -524,8 +548,14 @@ class gateway:
             }
         }
         await self.send_json(payload)
+        if self.debug:
+            log.debug("Initiated call")
+            log.info(f"Began call to GUILD: {guild} and CHANNEL: {channel}")
         if guild == None:
             await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
+            if self.debug:
+                log.debug("Sent Ring")
+
 
 
     async def stream_call(self, channel: str, guild=None):
@@ -546,7 +576,11 @@ class gateway:
             }
         }
         await self.send_json(payload)
+        if self.debug:
+            log.debug("Initiated call")
+            log.info(f"Began call to GUILD: {guild} and CHANNEL: {channel}")
         if guild == None:
+
             await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
 
             payload = {
@@ -556,6 +590,9 @@ class gateway:
                     "paused": False
                 }
             }
+            if self.debug:
+                log.debug("Initiated streaming")
+                log.info(f"Began stream to CHANNEL: {channel}")
         else:
             payload = {
                 "op": 22,
@@ -564,6 +601,9 @@ class gateway:
                     "paused": False
                 }
             }
+            if self.debug:
+                log.debug("Initiated streaming")
+                log.info(f"Began stream to GUILD: {guild} and CHANNEL: {channel}")
 
         await self.send_json(payload)
 
@@ -584,6 +624,13 @@ class gateway:
             }
         }
         await self.send_json(payload)
+        if self.debug:
+            log.debug("Left Voice call")
+        if hasattr(self.bot, "voice"):
+            await self.bot.voice.close()
+            delattr(self.bot, "voice")
+        if self.debug:
+            log.info("Voice attribute for bot has been deleted")
 
 
 
