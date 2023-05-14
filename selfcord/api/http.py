@@ -33,6 +33,9 @@ class http:
         self.token = token
         data = await self.request('get', '/users/@me')
         self.client = Client(data)
+        if self.debug:
+            log.debug("Finished Static login")
+            log.info(f"Gathered information on {self.client}")
         return data
 
     async def get_cookie(self):
@@ -52,6 +55,9 @@ class http:
             async with session.get('https://discord.com/api/v9/experiments', headers={'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.139 Chrome/91.0.4472.164 Electron/13.6.6 Safari/537.36'}) as resp:
                 json = await resp.json()
                 self.fingerprint = json['fingerprint']
+        if self.debug:
+            log.debug("Gathered cookie and fingerprint")
+            log.info(f"Fingerprint Gathered: {self.fingerprint}")
 
     def remove_dupes(self, dictionary: dict):
         return set(dictionary)
@@ -91,6 +97,9 @@ class http:
             request = getattr(session, method)
             while True:
                 async with request(url, *args, **kwargs) as resp:
+                    if self.debug:
+                        log.debug(f"Sent Request URL: {url} Payload: {args} {kwargs}")
+
                     if resp.status == 429:
                         try:
                             json = await resp.json()
@@ -174,6 +183,8 @@ class http:
             async with session.get(f'{url}') as resp:
                 image = b64encode(await resp.read())
                 newobj = str(image).split("'", 2)
-
+        if self.debug:
+            log.debug("Finished encoding image")
+            log.info(f"Encoded Image: {url}")
         return f'data:image/png;base64,{newobj[1]}'
 

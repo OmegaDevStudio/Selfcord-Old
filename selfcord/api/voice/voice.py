@@ -124,10 +124,11 @@ class Voice:
             packet = self.get_voice_packet(encoded)
             await self.speak(True)
             self.socket.sendto(packet, (self.endpoint_IP, self.voice_port))
-            if self.debug:
-                log.debug("Send Audio Packet to the voice port")
-                log.info(f"Length of data {len(packet)}")
+
             await asyncio.sleep(self.FRAME_LENGTH / 1000)
+        if self.debug:
+            log.debug("Send Audio Packet to the voice port")
+            log.info(f"Length of data {len(data)}")
         await self.speak(False)
         self.checked_add('timestamp', self.SAMPLES_PER_FRAME, 4294967295)
 
@@ -151,13 +152,13 @@ class Voice:
 
     async def play(self, path):
         await self.speak(False)
+        if self.debug:
+            log.info(f"File Path: {path}")
         if os.path.exists(path):
             if os.path.isfile(path):
                 async with aiofiles.open(path, mode="rb") as f:
                     data = await f.read()
                 # data = self.pcm_encode(path)
-                if self.debug:
-                    log.info(f"File Path: {path}")
                 if path.endswith(".opus"):
                     if self.debug:
                         log.debug("Using non-encoding function for send of voice data")
@@ -223,10 +224,10 @@ class Voice:
         while self.alive:
             try: await self.recv_msg()
             except KeyboardInterrupt:
-                log.critical('Shutting down')
+                log.error('Shutting down')
                 await self.close()
             except Exception as e:
-                log.critical(f'Shutting down {e}')
+                log.error(f'Websocket Unexpectedly closed: {e}')
                 await self.close()
 
 

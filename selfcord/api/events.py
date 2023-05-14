@@ -5,6 +5,9 @@ from ..models import User, Client, Guild, TextChannel, VoiceChannel, DMChannel, 
 from aioconsole import aprint
 import asyncio
 from .voice import Voice
+from ..utils import logging
+
+log = logging.getLogger("Event")
 
 class EventHandler:
     '''
@@ -275,6 +278,29 @@ class EventHandler:
         if data['channel_id'] != None:
             self.session_id = data['session_id']
 
+    async def handle_presence_update(self, data: dict, user: Client, http):
+        """Handles the presence updating
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
+        last_modified = data.get("last_modified")
+        status = data.get("status")
+        check = data.get("user").get("username")
+        if check != None:
+            user = User(data.get("user"), self.bot, self.http)
+        else:
+            id = data.get("user").get("id")
+            user = await self.bot.get_user(id)
+        client_status = data.get("client_status")
+        mobile = client_status.get("mobile")
+        desktop = client_status.get("desktop")
+        web = client_status.get("web")
+        activity = data.get("activities")
+        await self.bot.emit('presence_update', user, status, last_modified, mobile, desktop, web, activity)
+
     async def handle_voice_server_update(self, data: dict, user: Client, http):
         """Handles the voice server updating
 
@@ -296,6 +322,9 @@ class EventHandler:
     async def voice_start(self, voice: Voice):
         asyncio.create_task(voice.start())
         setattr(self.bot, "voice", self.voice)
+        if self.debug:
+            log.debug("Voice attribute created")
+            log.info(f"Created voice attribute with Session ID: {self.session_id} Endpoint: {self.endpoint}")
 
 
 
