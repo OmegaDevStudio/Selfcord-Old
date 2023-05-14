@@ -4,9 +4,10 @@ import time
 from .user import User
 from .webhook import Webhook
 import asyncio
-
+from ..utils import logging
 from selfcord.models import message
 
+log = logging.getLogger("Channel")
 
 class Messageable:
     """Parent class specific for those classes that include a textchat for sending messages.
@@ -324,7 +325,7 @@ class TextChannel(Messageable):
         if name != None:
             fields['name'] = name
         else:
-            raise TypeError("Name is required...")
+            log.error("Name is required")
         if avatar_url != None:
             data = await self.http.encode_image(avatar_url)
             fields['avatar'] = data
@@ -392,7 +393,7 @@ class VoiceChannel(Voiceable, Messageable):
         if name != None:
             fields['name'] = name
         else:
-            raise TypeError("Name is required...")
+            log.error("Name is required...")
         if avatar_url != None:
             data = await self.http.encode_image(avatar_url)
             fields['avatar'] = data

@@ -286,6 +286,12 @@ class EventHandler:
             user (Client): The client instance
             http (http): HTTP instance
         """
+        PLAYING = 0
+        STREAMING = 1
+        LISTENING = 2
+        WATCHING = 3
+        CUSTOM = 4
+
         last_modified = data.get("last_modified")
         status = data.get("status")
         check = data.get("user").get("username")
@@ -295,11 +301,22 @@ class EventHandler:
             id = data.get("user").get("id")
             user = await self.bot.get_user(id)
         client_status = data.get("client_status")
-        mobile = client_status.get("mobile")
-        desktop = client_status.get("desktop")
-        web = client_status.get("web")
         activity = data.get("activities")
-        await self.bot.emit('presence_update', user, status, last_modified, mobile, desktop, web, activity)
+        activities = []
+        if activity != None:
+            for activity in activity:
+                type = activity.get("type")
+                if type == PLAYING:
+                    type = "PLAYING"
+                elif type == STREAMING:
+                    type = "STREAMING"
+                elif type == WATCHING:
+                    type == "WATCHING"
+                elif type == 4:
+                    type = "CUSTOM"
+                activities.append({"Type": type, "Name": activity.get("name")})
+
+        await self.bot.emit('presence_update', user, status, last_modified, client_status, activities)
 
     async def handle_voice_server_update(self, data: dict, user: Client, http):
         """Handles the voice server updating

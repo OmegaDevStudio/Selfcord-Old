@@ -298,12 +298,12 @@ class gateway:
 
             if  op == self.RECONNECT:
                 await self.close()
-                raise ReconnectWebsocket('Connection was closed.')
+                log.error("Reconnect websocket")
 
             elif op == self.INVALIDATE_SESSION:
                 if data:
                     await self.close()
-                    raise ReconnectWebsocket('Connection was closed.')
+                    log.error("Session Invalidated")
 
             elif op == self.HELLO:
                 # Begins heartbeat and sends identify if this op is received

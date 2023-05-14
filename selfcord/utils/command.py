@@ -2,7 +2,9 @@ from __future__ import annotations
 import inspect
 import re
 from collections import defaultdict
+from .logging import logging
 
+log = logging.getLogger("Commands")
 
 class Extension:
     """Extension object. Discord.py equivalent of cogs, a helper system to help manage and organise code into multiple files
@@ -64,9 +66,9 @@ class ExtensionCollection:
             ValueError: A name or alias is already registered
         """
         if not isinstance(ext, Extension):
-            raise ValueError('ext must be a subclass of Extension')
+            log.error(f"ext is not an Extension or subclass of Extension")
         if self._is_already_registered(ext):
-            raise ValueError('A name or alias is already registered')
+            log.error("Name or Alias is already registered")
         # Add extension to the collection
         self.extensions[ext.name] = ext
 
@@ -81,8 +83,8 @@ class ExtensionCollection:
         """
         try:
             return self.extensions[alias]
-        except KeyError:
-            pass
+        except KeyError as e:
+            log.error(f"{e}")
         for extension in self.extensions:
             if extension.name in extension.aliases:
                 return extension
@@ -143,7 +145,7 @@ class CommandCollection:
             ValueError: Collection must be subclass of CommandCollection
         """
         if not isinstance(collection, CommandCollection):
-            raise ValueError('collection must be a subclass of CommandCollection')
+            log.error("collection is not a subclass of CommandCollection")
         for item in collection:
             self.commands[item.name] = item
             self.recent_commands[item.name] = item
@@ -159,9 +161,9 @@ class CommandCollection:
             ValueError: Name or Alias is already registered
         """
         if not isinstance(cmd, Command):
-            raise ValueError('cmd must be a subclass of Command')
+            log.error("cmd must be a subclass of Command")
         if self._is_already_registered(cmd):
-            raise ValueError('A name or alias is already registered')
+            log.error("Command Name or Alias is already registered")
         self.commands[cmd.name] = cmd
         self.recent_commands[cmd.name] = cmd
 
@@ -196,8 +198,8 @@ class CommandCollection:
         """
         try:
             return self.commands[alias]
-        except KeyError:
-            pass
+        except KeyError as e:
+            log.error(f"{e}")
         for command in self.commands:
             if alias in command.aliases:
                 return command
@@ -240,7 +242,7 @@ class Extender:
         def decorator(coro):
             name = coro.__name__
             if not inspect.iscoroutinefunction(coro):
-                raise RuntimeWarning("Not an async function!")
+                log.error("Not a coroutine")
             else:
                 cmd = Command(name=name, description=description, aliases=aliases, func=coro)
                 cls.commands.add(cmd)
@@ -259,7 +261,7 @@ class Extender:
 
         def decorator(coro):
             if not inspect.iscoroutinefunction(coro):
-                raise RuntimeWarning("Faulure")
+                log.error("Not a coroutine")
             else:
                 eve = Event(name=event, coro=coro, ext=cls)
                 cls._events[event].append(eve)
@@ -289,7 +291,7 @@ class Extender:
             aliases = [aliases]
         name = coro.__name__
         if not inspect.iscoroutinefunction(coro):
-            raise RuntimeWarning("Not an async function!")
+            log.error("Not a coroutine")
         else:
 
 
@@ -383,7 +385,7 @@ class Context:
         if callable(param.annotation):
             return param.annotation
         else:
-            raise ValueError('Parameter annotation must be callable')
+            log.error("Parameter annotation must be callable")
 
     def convert(self, param, value):
         """Attempts to turn x value in y value, using get_converter func for the values
@@ -478,8 +480,10 @@ class Context:
             else:
 
                 args.insert(0, self)
-
-        await func(*args, **kwargs)
+        try:
+            await func(*args, **kwargs)
+        except Exception as e:
+            log.error(f"{e}")
 
 
 

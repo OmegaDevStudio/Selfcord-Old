@@ -120,7 +120,7 @@ class http:
                         json = await resp.json()
                         if self.debug:
                             log.info(f"Attempted to send request to URL: {url} PAYLOAD: {args} {kwargs}")
-                        raise LoginFailure(json, resp.status)
+                        log.error(f"{json} -- {resp.status}")
 
                     elif resp.status == 403:
                         json = await resp.json()
@@ -150,7 +150,7 @@ class http:
                             log.error(f"Error Response: {json}")
                         except Exception as e:
                             log.error(f"Unable to log response: {e}")
-                        raise LoginFailure(json, resp.status)
+                        log.error(f"{json} -- {resp.status}")
         try:
             if resp.headers['set-cookie']:
                 dcf = resp.headers['set-cookie'].split('__dcfduid=')[0].split(';')[0]

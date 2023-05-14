@@ -172,7 +172,7 @@ class Bot:
 
         def decorator(coro):
             if not inspect.iscoroutinefunction(coro):
-                raise RuntimeWarning("Faulure")
+                log.error("Not a coroutine")
             else:
                 self._events[event].append(Event(name=event, coro=coro, ext=None))
 
@@ -226,7 +226,7 @@ class Bot:
         def decorator(coro):
             name = coro.__name__
             if not inspect.iscoroutinefunction(coro):
-                raise RuntimeWarning("Not an async function!")
+                log.error("Not a coroutine")
             else:
                 cmd = Command(name=name, description=description, aliases=aliases, func=coro)
                 self.commands.add(cmd)
@@ -250,7 +250,7 @@ class Bot:
             aliases = [aliases]
         name = coro.__name__
         if not inspect.iscoroutinefunction(coro):
-            raise RuntimeWarning("Not an async function!")
+            log.error("Not a coroutine")
         else:
             cmd = Command(name=name, description=description, aliases=aliases, func=coro)
             self.commands.add(cmd)
@@ -279,7 +279,7 @@ class Bot:
         try:
             name = importlib.util.resolve_name(name, None)
         except Exception as e:
-            raise ModuleNotFoundError(f"{name} does not exist")
+            log.error(f"{e}")
 
         spec = importlib.util.find_spec(name)
 
@@ -288,11 +288,11 @@ class Bot:
         try:
             spec.loader.exec_module(lib)
         except Exception as e:
-            raise ModuleNotFoundError(f"Spec could not be loaded {e}")
+            log.error(f"Spec could not be loaded {e}")
         try:
             ext = getattr(lib, 'Ext')
         except Exception as e:
-            raise ModuleNotFoundError(f"Extension does not exist {e}")
+            log.error(f"Extension does not exist {e}")
 
         # Creates an Extension - ext in this case refers to the Ext class used for initialisation
         ext = Extension(name=ext.name, description=ext.description, ext=ext(self), _events=ext._events)
@@ -424,7 +424,7 @@ class Bot:
                                                                                     "referer": "https://discord.com/channels/@me"},
                                     json={'avatar': image})
         else:
-            raise TypeError("Avatar url not specified")
+            log.error("Avatar URL not specified")
         if self.debug:
             log.debug("Finished changing avatar")
 
@@ -448,7 +448,7 @@ class Bot:
                 log.debug("Created DM Channel")
             return DMChannel(data, bot=self, http=self.http)
         else:
-            raise TypeError("Recipient ID not specified")
+            log.error("Recipient ID not specified")
 
     async def redeem_nitro(self, code: str):
         """Helper function to redeem nitro
