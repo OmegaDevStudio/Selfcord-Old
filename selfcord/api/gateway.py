@@ -464,7 +464,7 @@ class gateway:
             self.last_send = time.perf_counter()
             if self.debug:
                 log.debug('Sent heartbeat')
-                log.info(f"Delay since last heartbeat {self.last_send}")
+                log.info(f"Delay since last heartbeat {self.last_send:.2f}")
 
     async def heartbeat_ack(self):
         '''Whenever heartbeat ack is sent, logs the time between last send of heartbeat json and receive of the ack
