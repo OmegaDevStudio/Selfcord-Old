@@ -12,8 +12,9 @@ import nacl.secret
 import os
 import aiofiles
 import io
-import ffmpeg
+# import ffmpeg
 from ...utils import logging
+from traceback import format_exception
 
 log = logging.getLogger("Voice")
 
@@ -76,15 +77,15 @@ class Voice:
             log.debug("Finished session description event")
             log.info(f"Gathered Secret Key: {self.secret_key}")
 
-    def pcm_encode(self, file: str):
-        out, err = (
-            ffmpeg
-            .input(file)
-            .output('-', format='s16le', acodec='pcm_s16le', ac=2, ar='48k')
-            .overwrite_output()
-            .run(capture_stdout=True, capture_stderr=True)
-        )
-        return out
+    # def pcm_encode(self, file: str):
+    #     out, err = (
+    #         ffmpeg
+    #         .input(file)
+    #         .output('-', format='s16le', acodec='pcm_s16le', ac=2, ar='48k')
+    #         .overwrite_output()
+    #         .run(capture_stdout=True, capture_stderr=True)
+    #     )
+    #     return out
 
     def encode_data(self, data: bytes):
         self.encoder = opuslib.Encoder(self.SAMPLING_RATE, self.CHANNELS, opuslib.APPLICATION_AUDIO)

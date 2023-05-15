@@ -3,6 +3,7 @@ import inspect
 import re
 from collections import defaultdict
 from .logging import logging
+from traceback import format_exception
 
 log = logging.getLogger("Commands")
 
@@ -484,7 +485,7 @@ class Context:
             await func(*args, **kwargs)
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
-            log.error(f"Could not run command{e}")
+            log.error(f"Could not run command {error}")
 
 
 
