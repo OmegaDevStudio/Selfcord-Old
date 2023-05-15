@@ -6,6 +6,7 @@ from .webhook import Webhook
 import asyncio
 from ..utils import logging
 from selfcord.models import message
+from traceback import format_exception
 
 log = logging.getLogger("Channel")
 
@@ -303,9 +304,8 @@ class TextChannel(Messageable):
         try:
             await self.http.request(method="patch", endpoint=f"/channels/{self.id}", json=payload)
         except Exception as e:
-            from traceback import format_exception
             error = "".join(format_exception(e, e, e.__traceback__))
-            return error
+            log.error(f"Could not edit channel {error}")
 
     async def create_webhook(self, name: str = None, avatar_url: str = None) -> Webhook:
         """

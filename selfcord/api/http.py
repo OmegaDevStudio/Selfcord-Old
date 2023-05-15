@@ -149,7 +149,8 @@ class http:
                             json = await resp.json()
                             log.error(f"Error Response: {json}")
                         except Exception as e:
-                            log.error(f"Unable to log response: {e}")
+                            error = "".join(format_exception(e, e, e.__traceback__))
+                            log.error(f"Unable to log response: {error}")
                         log.error(f"{json} -- {resp.status}")
         try:
             if resp.headers['set-cookie']:

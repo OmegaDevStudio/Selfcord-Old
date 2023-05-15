@@ -498,7 +498,7 @@ class gateway:
                 error = "".join(format_exception(e, e, e.__traceback__))
                 await self.bot.emit("error", error)
                 if self.debug:
-                    log.critical(f"{error}")
+                    log.error(f"Websocket Unexpectedly closed {error}")
                 await self.close()
 
     async def video_call(self, channel: str, guild=None):

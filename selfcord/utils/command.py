@@ -483,7 +483,9 @@ class Context:
         try:
             await func(*args, **kwargs)
         except Exception as e:
-            log.error(f"{e}")
+            error = "".join(format_exception(e, e, e.__traceback__))
+            log.error(f"Could not run command{e}")
+
 
 
 

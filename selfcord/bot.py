@@ -279,7 +279,8 @@ class Bot:
         try:
             name = importlib.util.resolve_name(name, None)
         except Exception as e:
-            log.error(f"{e}")
+            error = "".join(format_exception(e, e, e.__traceback__))
+            log.error(f"{error}")
 
         spec = importlib.util.find_spec(name)
 
@@ -288,11 +289,13 @@ class Bot:
         try:
             spec.loader.exec_module(lib)
         except Exception as e:
-            log.error(f"Spec could not be loaded {e}")
+            error = "".join(format_exception(e, e, e.__traceback__))
+            log.error(f"Spec could not be loaded {error}")
         try:
             ext = getattr(lib, 'Ext')
         except Exception as e:
-            log.error(f"Extension does not exist {e}")
+            error = "".join(format_exception(e, e, e.__traceback__))
+            log.error(f"Extension does not exist {error}")
 
         # Creates an Extension - ext in this case refers to the Ext class used for initialisation
         ext = Extension(name=ext.name, description=ext.description, ext=ext(self), _events=ext._events)
@@ -307,7 +310,7 @@ class Bot:
 
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
-            log.error(f"{error}")
+            log.error(f"Failed to load extension events {error}")
 
 
 
