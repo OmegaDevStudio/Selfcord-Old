@@ -10,7 +10,7 @@ logging.config.dictConfig({
 logging.getLogger("websockets.client").disabled = True
 logging.getLogger("urllib3.connectionpool").disabled = True
 
-FMT = "[{levelname:^9}] {name}: {message}"
+FMT = "[{asctime}][{levelname:^9}] {name}: {message}"
 
 FORMATS = {
     logging.DEBUG: f"\33[93m{FMT}\33[0m",
@@ -23,7 +23,7 @@ FORMATS = {
 class CustomFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         log_fmt = FORMATS[record.levelno]
-        formatter = logging.Formatter(log_fmt, style="{")
+        formatter = logging.Formatter(log_fmt, style="{", datefmt="%H:%M:%S")
         return formatter.format(record)
 
 handler = logging.StreamHandler()

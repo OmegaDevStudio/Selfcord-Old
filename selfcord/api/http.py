@@ -112,7 +112,7 @@ class http:
                             text = await resp.text()
                             log.error(f"Error upon parsing json : {text}")
                             if self.debug:
-                                log.error(f"Error upon parsing json : {error}")
+                                log.error(f"Error upon parsing json : \n{error}")
                                 log.info(f"Attempted to send request to URL: {url} PAYLOAD: {kwargs}")
                             break
 
@@ -150,7 +150,7 @@ class http:
                             log.error(f"Error Response: {json}")
                         except Exception as e:
                             error = "".join(format_exception(e, e, e.__traceback__))
-                            log.error(f"Unable to log response: {error}")
+                            log.error(f"Unable to log response: \n{error}")
                         log.error(f"{json} -- {resp.status}")
         try:
             if resp.headers['set-cookie']:

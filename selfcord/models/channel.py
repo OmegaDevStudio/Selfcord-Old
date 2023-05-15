@@ -305,7 +305,7 @@ class TextChannel(Messageable):
             await self.http.request(method="patch", endpoint=f"/channels/{self.id}", json=payload)
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
-            log.error(f"Could not edit channel {error}")
+            log.error(f"Could not edit channel \n{error}")
 
     async def create_webhook(self, name: str = None, avatar_url: str = None) -> Webhook:
         """

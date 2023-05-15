@@ -298,8 +298,8 @@ class EventHandler:
         if check != None:
             user = User(data.get("user"), self.bot, self.http)
         else:
-            id = data.get("user").get("id")
-            user = await self.bot.get_user(id)
+            user = data.get("user").get("id")
+
         client_status = data.get("client_status")
         activity = data.get("activities")
         activities = []

@@ -229,7 +229,7 @@ class Voice:
                 await self.close()
             except Exception as e:
                 error = "".join(format_exception(e, e, e.__traceback__))
-                log.error(f'Websocket Unexpectedly closed {error}')
+                log.error(f'Websocket Unexpectedly closed \n{error}')
                 await self.close()
 
 
