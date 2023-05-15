@@ -306,7 +306,7 @@ class Bot:
                     self._events[name].append(Event(name=name, coro=ext_event.coro, ext=ext.ext))
             if self.debug:
                 log.debug("Loaded Extension")
-                log.info(f"Loaded {ext.name} to Bot")
+                log.info(f"Loaded Extension {ext.name} to Bot")
 
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))

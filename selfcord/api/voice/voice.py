@@ -6,9 +6,12 @@ import json
 import time
 import struct
 import socket
-import opuslib
-import nacl.utils
-import nacl.secret
+try:
+    import opuslib
+    import nacl.utils
+    import nacl.secret
+except:
+    pass
 import os
 import aiofiles
 import io
@@ -228,8 +231,7 @@ class Voice:
                 log.error('Shutting down')
                 await self.close()
             except Exception as e:
-                error = "".join(format_exception(e, e, e.__traceback__))
-                log.error(f'Websocket Unexpectedly closed \n{error}')
+                log.error(f'Websocket Unexpectedly closed {e}')
                 await self.close()
 
 

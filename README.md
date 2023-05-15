@@ -8,7 +8,7 @@
 <img src="https://img.shields.io/badge/MADE%20WITH-PYTHON-red?logoColor=red&logo=Python&style=for-the-badge">
 </a>
 <a href="https://pypi.org/project/selfcord/">
-<img src="https://img.shields.io/badge/version-0.1.6-blue?logo=adguard&style=for-the-badge">
+<img src="https://img.shields.io/badge/version-0.1.7-blue?logo=adguard&style=for-the-badge">
 </a>
 <a href="https://github.com/Shell1010/Selfcord/wiki">
 <img src="https://img.shields.io/badge/documentation-green?logo=gitbook&style=for-the-badge">
@@ -25,7 +25,7 @@
  - Community Support
 
 ## Installation
-Python 3.10 or higher is required
+Python 3.10 or higher is required.
 ```
 pip install selfcord.py
 ```

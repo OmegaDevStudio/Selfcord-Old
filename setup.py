@@ -2,15 +2,17 @@ from setuptools import setup, find_packages
 from pathlib import Path
 this_directory = Path(__file__).parent
 if __name__ == "__main__":
+
     this_directory = Path(__file__).parent
     long_description = ( this_directory /"README.md").read_text()
     setup(
         name="selfcord.py",
         packages=find_packages(include=['selfcord', 'selfcord.api', 'selfcord.utils', 'selfcord.models', 'selfcord.api.voice']),
-        version="0.1.6",
+        version="0.1.7",
         description="A Discord API wrapper designed for selfbots!",
         readme="README.md",
-        author="Shell of OMEGA",
+        author="Shell",
+        extras_require={"voice": ["pynacl==1.5.0","opuslib==3.0.1"]},
         license="MIT",
         install_requires=["aiohttp==3.7.4.post0","aioconsole==0.3.3", "websockets==10.1", "requests"],
         setup_requires=['pytest-runner'],
