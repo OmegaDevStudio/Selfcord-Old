@@ -1,22 +1,34 @@
 from __future__ import annotations
+
 import asyncio
-import websockets
 import json
 import os
 import time
 import zlib
-from .events import EventHandler
-from .errors import ReconnectWebsocket
-from selfcord.models.client import Client
-import requests
 from traceback import format_exception
+
+import requests
+import websockets
+
+from selfcord.models.client import Client
+
 from ..utils import logging
+from .errors import ReconnectWebsocket
+from .events import EventHandler
 
 log = logging.getLogger("Gateway")
 
+
 class Activity:
     @staticmethod
-    def Game(name: str, details: str, state: str, buttons: dict, application_id: str, key: str) -> dict[str, int]:
+    def Game(
+        name: str,
+        details: str,
+        state: str,
+        buttons: dict,
+        application_id: str,
+        key: str,
+    ) -> dict[str, int]:
         """Method to generate activity dict for the "Playing ..." payload
 
         Args:
@@ -35,11 +47,12 @@ class Activity:
         type = 0
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
-        req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
+        req = requests.get(
+            f"https://discordapp.com/api/oauth2/applications/{application_id}/assets"
+        )
         for item in req.json():
-
-            if item['name'] == key:
-                key = item['id']
+            if item["name"] == key:
+                key = item["id"]
 
         if len(button_urls) == 0 or len(buttons) == 0:
             payload = {
@@ -67,14 +80,21 @@ class Activity:
                 "metadata": {
                     "button_urls": button_urls,
                 },
-                "created_at": int(time.time())
+                "created_at": int(time.time()),
             }
-
 
         return payload
 
     @staticmethod
-    def Stream(name: str, details: str, state: str, url: str, buttons: dict, application_id: str, key: str) -> dict[str, int] :
+    def Stream(
+        name: str,
+        details: str,
+        state: str,
+        url: str,
+        buttons: dict,
+        application_id: str,
+        key: str,
+    ) -> dict[str, int]:
         """Method to generate activity dict for the "Streaming ..." payload
 
         Args:
@@ -94,11 +114,12 @@ class Activity:
         type = 1
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
-        req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
+        req = requests.get(
+            f"https://discordapp.com/api/oauth2/applications/{application_id}/assets"
+        )
         for item in req.json():
-
-            if item['name'] == key:
-                key = item['id']
+            if item["name"] == key:
+                key = item["id"]
 
         if len(button_urls) == 0 or len(buttons) == 0:
             payload = {
@@ -111,7 +132,7 @@ class Activity:
                     "large_image": key,
                 },
                 "created_at": int(time.time()),
-                "url": url
+                "url": url,
             }
         else:
             payload = {
@@ -128,13 +149,20 @@ class Activity:
                 "metadata": {
                     "button_urls": button_urls,
                 },
-                "created_at": int(time.time())
+                "created_at": int(time.time()),
             }
 
         return payload
 
     @staticmethod
-    def Listen(name: str, details: str, state: str, buttons: dict, application_id: str, key: str ) -> dict[str, int]:
+    def Listen(
+        name: str,
+        details: str,
+        state: str,
+        buttons: dict,
+        application_id: str,
+        key: str,
+    ) -> dict[str, int]:
         """Method to generate activity dict for the "Listening ..." payload
 
         Args:
@@ -153,11 +181,12 @@ class Activity:
         type = 2
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
-        req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
+        req = requests.get(
+            f"https://discordapp.com/api/oauth2/applications/{application_id}/assets"
+        )
         for item in req.json():
-
-            if item['name'] == key:
-                key = item['id']
+            if item["name"] == key:
+                key = item["id"]
 
         if len(button_urls) == 0 or len(buttons) == 0:
             payload = {
@@ -185,13 +214,20 @@ class Activity:
                 "metadata": {
                     "button_urls": button_urls,
                 },
-                "created_at": int(time.time())
+                "created_at": int(time.time()),
             }
 
-
         return payload
+
     @staticmethod
-    def Watch(name: str, details: str, state: str, buttons: dict, application_id: str, key: str ) -> dict[str, int]:
+    def Watch(
+        name: str,
+        details: str,
+        state: str,
+        buttons: dict,
+        application_id: str,
+        key: str,
+    ) -> dict[str, int]:
         """Method to generate activity dict for the "Watching ..." payload
 
         Args:
@@ -212,11 +248,12 @@ class Activity:
         button_urls = [button for button in buttons.values()]
         buttons: list = [button for button in buttons.keys()]
 
-        req = requests.get(f"https://discordapp.com/api/oauth2/applications/{application_id}/assets")
+        req = requests.get(
+            f"https://discordapp.com/api/oauth2/applications/{application_id}/assets"
+        )
         for item in req.json():
-
-            if item['name'] == key:
-                key = item['id']
+            if item["name"] == key:
+                key = item["id"]
 
         if len(button_urls) == 0 or len(buttons) == 0:
             payload = {
@@ -244,63 +281,66 @@ class Activity:
                 "metadata": {
                     "button_urls": button_urls,
                 },
-                "created_at": int(time.time())
+                "created_at": int(time.time()),
             }
-
 
         return payload
 
+
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
-    from .http import http
     from zlib import _Decompress
 
+    from .http import http
+
+
 class gateway:
-    '''Discord Gateway instance, used to initialise gateway connections'''
+    """Discord Gateway instance, used to initialise gateway connections"""
 
-    DISPATCH           = 0
-    HEARTBEAT          = 1
-    IDENTIFY           = 2
-    PRESENCE           = 3
-    VOICE_STATE        = 4
-    VOICE_PING         = 5
-    RESUME             = 6
-    RECONNECT          = 7
-    REQUEST_MEMBERS    = 8
+    DISPATCH = 0
+    HEARTBEAT = 1
+    IDENTIFY = 2
+    PRESENCE = 3
+    VOICE_STATE = 4
+    VOICE_PING = 5
+    RESUME = 6
+    RECONNECT = 7
+    REQUEST_MEMBERS = 8
     INVALIDATE_SESSION = 9
-    HELLO              = 10
-    HEARTBEAT_ACK      = 11
-    GUILD_SYNC         = 12
+    HELLO = 10
+    HEARTBEAT_ACK = 11
+    GUILD_SYNC = 12
 
-    def __init__(self, http, debug=False):
+    def __init__(self, http: http, debug: bool = False):
         self.debug: bool = debug
         self.http: http = http
         self.zlib: _Decompress = zlib.decompressobj()
-        self.zlib_suffix: bytes = b'\x00\x00\xff\xff'
+        self.zlib_suffix: bytes = b"\x00\x00\xff\xff"
         self.last_ack: float = time.perf_counter()
         self.last_send: float = time.perf_counter()
-        self.latency = float('inf')
+        self.latency = float("inf")
         self.alive = False
 
     async def recv_msg(self):
-        '''
+        """
         Receives Message from gateway, encodes as json and does things depending on op code
-        '''
+        """
         item = await self.ws.recv()
         buffer = bytearray()
         buffer.extend(item)
-        if len(item) < 4 or item[-4:] != self.zlib_suffix: return
+        if len(item) < 4 or item[-4:] != self.zlib_suffix:
+            return
 
         if item:
-            item    = self.zlib.decompress(item)
-            item    = json.loads(item) # Get json message from gateway
+            item = self.zlib.decompress(item)
+            item = json.loads(item)  # Get json message from gateway
 
-            op      = item.get('op') # Op code
-            data    = item.get('d') # Data
-            event   = item.get('t') # The event
+            op = item.get("op")  # Op code
+            data = item.get("d")  # Data
+            event = item.get("t")  # The event
 
-
-            if  op == self.RECONNECT:
+            if op == self.RECONNECT:
                 await self.close()
                 log.error("Reconnect websocket")
 
@@ -311,7 +351,7 @@ class gateway:
 
             elif op == self.HELLO:
                 # Begins heartbeat and sends identify if this op is received
-                interval = data['heartbeat_interval'] / 1000.0
+                interval = data["heartbeat_interval"] / 1000.0
                 await self.identify()
                 asyncio.create_task(self.heartbeat(interval))
 
@@ -322,32 +362,39 @@ class gateway:
                 # If op is 0 it signifies a regular gateway event
                 # These events are discord events like message_create, role_create whatever.
 
-                handle = f'handle_{event.lower()}'
+                handle = f"handle_{event.lower()}"
 
+                if hasattr(
+                    self.handler, handle
+                ):  # If the event handler exists, so e.g handle_ready
+                    method = getattr(self.handler, handle)
 
-                if hasattr(self.handler, handle): # If the event handler exists, so e.g handle_ready
-                    method = getattr(self.handler,handle)
-
-                    val = await asyncio.gather(asyncio.create_task(method(data, self.user, self.http)), return_exceptions=True) # A background task is created to run the handler
+                    val = await asyncio.gather(
+                        asyncio.create_task(method(data, self.user, self.http)),
+                        return_exceptions=True,
+                    )  # A background task is created to run the handler
                     for item in val:
-                        if item == None: break
-                        else: await self.bot.emit('error', item)
+                        if item == None:
+                            break
+                        else:
+                            await self.bot.emit("error", item)
 
                     # asyncio.create_task(method(data, self.user, self.http))
                 # Handlers are all situated in events.py
 
-
     def roundup(self, n):
         import math
+
         return int(math.ceil(n / 100.0)) * 100
 
     def chunks(self, lst, n):
         for i in range(0, len(lst), 1):
-            if len(lst[:i+1]) > 3:
-                for i in range(i, len(lst), n): yield lst[i:i + n]
+            if len(lst[: i + 1]) > 3:
+                for i in range(i, len(lst), n):
+                    yield lst[i : i + n]
                 break
 
-            yield lst[:i+1]
+            yield lst[: i + 1]
 
     async def change_presence(self, status: str, afk: bool, activity: dict):
         """Change the clients current presence
@@ -359,11 +406,11 @@ class gateway:
         """
         payload = {
             "op": 3,
-            "d" : {
+            "d": {
                 "since": time.time(),
                 "activities": [activity],
                 "status": status.lower(),
-                "afk": afk
+                "afk": afk,
             },
         }
 
@@ -372,29 +419,29 @@ class gateway:
             log.debug("Began rich presence")
             log.info(f"{activity}")
 
-
-
     async def lazy_chunk(self, guild_id: str, channel_id: str, amount: int):
-        '''Sends lazy guild request to gather current online members
+        """Sends lazy guild request to gather current online members
 
         Args:
             guild_id (str): The guild id specified
             channel_id (str): The channel id specified
-        '''
+        """
 
         ranges = []
 
         for i in range(0, amount, 100):
-            ranges.append([i, self.roundup(i + (amount - i)) - 1]) if i + 99 > amount else ranges.append([i, i+99])
+            ranges.append(
+                [i, self.roundup(i + (amount - i)) - 1]
+            ) if i + 99 > amount else ranges.append([i, i + 99])
 
         for item in self.chunks(ranges, 3):
             payload = {
-                'op': 14,
-                'd': {
-                    'guild_id': guild_id,
-                    'typing': True,
-                    'channels': {channel_id:item}
-                }
+                "op": 14,
+                "d": {
+                    "guild_id": guild_id,
+                    "typing": True,
+                    "channels": {channel_id: item},
+                },
             }
 
             await self.send_json(payload)
@@ -403,100 +450,95 @@ class gateway:
             log.debug("Finished guild lazy chunking")
             log.info(f"Subscription to GUILD: {guild_id} with CHANNEL: {channel_id}")
 
-
     async def send_json(self, payload: dict):
-        '''Send json to the gateway
+        """Send json to the gateway
 
         Args:
             payload (dict): Valid payload to send to the gateway
-        '''
+        """
         await self.ws.send(json.dumps(payload))
 
     async def connect(self):
-        '''Connect to discord gateway
-        '''
-        self.ws = await websockets.connect('wss://gateway.discord.gg/?encoding=json&v=9&compress=zlib-stream', origin='https://discord.com', max_size=None)
+        """Connect to discord gateway"""
+        self.ws = await websockets.connect(
+            "wss://gateway.discord.gg/?encoding=json&v=9&compress=zlib-stream",
+            origin="https://discord.com",
+            max_size=None,
+        )
         self.alive = True
         if self.debug:
             log.debug("Established connection to Discord Gateway")
 
     async def close(self):
-        '''Close the connection to discord gateway
-        '''
-        self.alive= False
+        """Close the connection to discord gateway"""
+        self.alive = False
         await self.ws.close()
         if self.debug:
             log.debug("Closed connection to discord gateway")
 
     async def identify(self):
-        '''Identify to gateway, uses amazing mobile client spoof
-        '''
+        """Identify to gateway, uses amazing mobile client spoof"""
         payload = {
-            'op': 2,
-            'd': {
-                'token': self.token,
-                'properties': {
-                    '$os': 'android',
-                    '$browser': 'Discord Android',
-                    '$device': 'Discord Android',
-                    '$referrer': '',
-                    '$referring_domain': ''
+            "op": 2,
+            "d": {
+                "token": self.token,
+                "properties": {
+                    "$os": "android",
+                    "$browser": "Discord Android",
+                    "$device": "Discord Android",
+                    "$referrer": "",
+                    "$referring_domain": "",
                 },
-            }
+            },
         }
         await self.send_json(payload)
         if self.debug:
             log.debug("Sent identify payload")
             log.info(f"Idenitified with {self.token} under Discord Android")
 
-
-
     async def heartbeat(self, interval):
-        '''Heartbeat for gateway to maintain connection
+        """Heartbeat for gateway to maintain connection
 
         Args:
             interval (int): Interval between sends
-        '''
-        log.info(f'Hearbeat loop has began with the interval of {interval} seconds!')
-        heartbeatJSON = {
-            'op': 1,
-            'd': time.time()
-        }
+        """
+        log.info(f"Hearbeat loop has began with the interval of {interval} seconds!")
+        heartbeatJSON = {"op": 1, "d": time.time()}
         while True:
             await asyncio.sleep(interval)
             await self.send_json(heartbeatJSON)
             self.last_send = time.perf_counter()
             if self.debug:
-                log.debug('Sent heartbeat')
+                log.debug("Sent heartbeat")
                 log.info(f"Delay since last heartbeat {self.latency:0.2f}ms")
 
     async def heartbeat_ack(self):
-        '''Whenever heartbeat ack is sent, logs the time between last send of heartbeat json and receive of the ack
-        '''
+        """Whenever heartbeat ack is sent, logs the time between last send of heartbeat json and receive of the ack"""
         self.last_ack = time.perf_counter()
         self.latency = self.last_ack - self.last_send
 
     async def start(self, token: str, user: Client, bot):
-        '''Start discord gateway connection
+        """Start discord gateway connection
 
         Args:
             token (str): User token
             user (Client): User client
             bot (_type_): Bot class
-        '''
+        """
         self.handler = EventHandler(bot, self.http, self.debug)
         self.bot = bot
 
-        await self.bot.inbuilt_commands() # In built commands very cool
+        await self.bot.inbuilt_commands()  # In built commands very cool
 
         self.user = user
         self.token = token
 
         await self.connect()
         while self.alive:
-            try: await self.recv_msg()
+            try:
+                await self.recv_msg()
             except KeyboardInterrupt:
-                log.critical('Shutting down...')
+                log.critical("Shutting down...")
                 await self.close()
             except Exception as e:
                 error = "".join(format_exception(e, e, e.__traceback__))
@@ -521,17 +563,20 @@ class gateway:
                 "self_mute": False,
                 "self_deaf": False,
                 "self_video": True,
-            }
+            },
         }
         await self.send_json(payload)
         if self.debug:
             log.debug("Initiated video call")
             log.info(f"Began video call to GUILD: {guild} and CHANNEL: {channel}")
         if guild == None:
-            await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
+            await self.http.request(
+                method="post",
+                endpoint=f"/channels/{channel}/call/ring",
+                json={"recipients": None},
+            )
             if self.debug:
                 log.debug("Sent Ring")
-
 
     async def call(self, channel: str, guild=None):
         """Initiates a discord call
@@ -549,18 +594,20 @@ class gateway:
                 "self_mute": False,
                 "self_deaf": False,
                 "self_video": False,
-            }
+            },
         }
         await self.send_json(payload)
         if self.debug:
             log.debug("Initiated call")
             log.info(f"Began call to GUILD: {guild} and CHANNEL: {channel}")
         if guild == None:
-            await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
+            await self.http.request(
+                method="post",
+                endpoint=f"/channels/{channel}/call/ring",
+                json={"recipients": None},
+            )
             if self.debug:
                 log.debug("Sent Ring")
-
-
 
     async def stream_call(self, channel: str, guild=None):
         """Initiates a discord stream call
@@ -576,23 +623,23 @@ class gateway:
                 "guild_id": guild,
                 "channel_id": channel,
                 "preferred_region": "rotterdam",
-                "type": type
-            }
+                "type": type,
+            },
         }
         await self.send_json(payload)
         if self.debug:
             log.debug("Initiated call")
             log.info(f"Began call to GUILD: {guild} and CHANNEL: {channel}")
         if guild == None:
-
-            await self.http.request(method="post", endpoint=f"/channels/{channel}/call/ring",json={"recipients":None})
+            await self.http.request(
+                method="post",
+                endpoint=f"/channels/{channel}/call/ring",
+                json={"recipients": None},
+            )
 
             payload = {
                 "op": 22,
-                "d": {
-                    "stream_key": f"call:{channel}:{self.user.id}",
-                    "paused": False
-                }
+                "d": {"stream_key": f"call:{channel}:{self.user.id}", "paused": False},
             }
             if self.debug:
                 log.debug("Initiated streaming")
@@ -602,8 +649,8 @@ class gateway:
                 "op": 22,
                 "d": {
                     "stream_key": f"guild:{guild}:{channel}:{self.user.id}",
-                    "paused": False
-                }
+                    "paused": False,
+                },
             }
             if self.debug:
                 log.debug("Initiated streaming")
@@ -611,12 +658,8 @@ class gateway:
 
         await self.send_json(payload)
 
-
-
-
     async def leave_call(self):
-        """Leaves a discord call
-        """
+        """Leaves a discord call"""
         payload = {
             "op": 4,
             "d": {
@@ -625,7 +668,7 @@ class gateway:
                 "self_mute": False,
                 "self_deaf": False,
                 "self_video": False,
-            }
+            },
         }
         await self.send_json(payload)
         if self.debug:
@@ -635,19 +678,3 @@ class gateway:
             delattr(self.bot, "voice")
         if self.debug:
             log.info("Voice attribute for bot has been deleted")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

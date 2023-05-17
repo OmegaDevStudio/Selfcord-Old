@@ -1,11 +1,15 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
-    from ..bot import Bot
     from ..api.http import http
+    from ..bot import Bot
+
+
 class Emoji:
-    """Emoji Object
-    """
+    """Emoji Object"""
+
     def __init__(self, data: dict, bot: Bot, http: http) -> None:
         self.bot: Bot = bot
         self.http: http = http
@@ -28,9 +32,9 @@ class Emoji:
         self.animated = data.get("animated")
         self.guild_id = data.get("guild_id")
 
-
     async def delete(self):
-        """Deletes the Emoji Object
-        """
-        await self.http.request(method="delete", endpoint=f"/guilds/{self.guild_id}/emojis/{self.id}")
+        """Deletes the Emoji Object"""
+        await self.http.request(
+            method="delete", endpoint=f"/guilds/{self.guild_id}/emojis/{self.id}"
+        )
         del self

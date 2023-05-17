@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+
 class Webhook:
     def __init__(self, data: dict, bot, http) -> None:
         self.http = http
@@ -30,9 +31,14 @@ class Webhook:
         Args:
             content (str): Content of the message to send
         """
-        await self.http.request(method = "post", endpoint = f"/webhooks/{self.id}/{self.token}", json = {"content": content})
+        await self.http.request(
+            method="post",
+            endpoint=f"/webhooks/{self.id}/{self.token}",
+            json={"content": content},
+        )
 
     async def delete(self):
-        """Deletes the webhook object
-        """
-        await self.http.request(method = "delete", endpoint = f"/webhooks/{self.id}/{self.token}")
+        """Deletes the webhook object"""
+        await self.http.request(
+            method="delete", endpoint=f"/webhooks/{self.id}/{self.token}"
+        )

@@ -1,25 +1,28 @@
 from __future__ import annotations
+
 import inspect
 import re
 from collections import defaultdict
-from .logging import logging
 from traceback import format_exception
-from typing import Any, TYPE_CHECKING
-if TYPE_CHECKING:
-    from ..models import *
-    from ..bot import Bot
-    from ..api import *
+from typing import TYPE_CHECKING, Any
 
+from .logging import logging
+
+if TYPE_CHECKING:
+    from ..api import *
+    from ..bot import Bot
+    from ..models import *
 
 
 log = logging.getLogger("Commands")
 
+
 class Extension:
-    """Extension object. Discord.py equivalent of cogs, a helper system to help manage and organise code into multiple files
-    """
+    """Extension object. Discord.py equivalent of cogs, a helper system to help manage and organise code into multiple files"""
+
     def __init__(self, **kwargs):
         self.name: str | None = kwargs.get("name")
-        self.description: str | None = kwargs.get('description')
+        self.description: str | None = kwargs.get("description")
         self.ext: Extension | None = kwargs.get("ext")
         self._events = defaultdict(list)
         _events: defaultdict = self.ext._events
@@ -34,11 +37,9 @@ class Extension:
         _events.clear()
 
 
-
-
 class ExtensionCollection:
-    """Extension collection, where extensions are stored into. Utilised for Extender, Extensions as a whole. This is also used within help commands and command invocation.
-    """
+    """Extension collection, where extensions are stored into. Utilised for Extender, Extensions as a whole. This is also used within help commands and command invocation."""
+
     def __init__(self):
         self.extensions = {}
 
@@ -80,7 +81,7 @@ class ExtensionCollection:
         # Add extension to the collection
         self.extensions[ext.name] = ext
 
-    def get(self, alias: str) -> Extension | None :
+    def get(self, alias: str) -> Extension | None:
         """Get an extension
 
         Args:
@@ -98,27 +99,28 @@ class ExtensionCollection:
                 return extension
 
 
-
 class Command:
-    """Command Object pretty much
-    """
+    """Command Object pretty much"""
+
     def __init__(self, **kwargs):
         self.name: str | None = kwargs.get("name")
-        self.aliases: list[str] | None = [self.name] + kwargs.get('aliases', [])
-        self.description: str | None = kwargs.get('description')
+        self.aliases: list[str] | None = [self.name] + kwargs.get("aliases", [])
+        self.description: str | None = kwargs.get("description")
         self.func: function | None = kwargs.get("func")
         self.check: Any = inspect.signature(self.func).return_annotation
         self.signature = inspect.signature(self.func).parameters.items()
 
+
 class CommandCollection:
-    """Commands collection, where commands are stored into. Utilised for help commands and general command invocation.
-    """
+    """Commands collection, where commands are stored into. Utilised for help commands and general command invocation."""
+
     def __init__(self, **kwargs):
-        self.commands: dict[CommandCollection , function] = {}
-        self.recent_commands: dict[CommandCollection , function] = {}
+        self.commands: dict[CommandCollection, function] = {}
+        self.recent_commands: dict[CommandCollection, function] = {}
 
     def __len__(self):
         return len(self.commands)
+
     def __iter__(self):
         for cmd in self.commands.values():
             yield cmd
@@ -185,14 +187,12 @@ class CommandCollection:
             yield cmd
 
     def copy(self):
-        """Copy commands from recents to main collection
-        """
+        """Copy commands from recents to main collection"""
         self.commands.update(self.recent_commands)
         self.clear()
 
     def clear(self):
-        """Clear recents
-        """
+        """Clear recents"""
         self.recent_commands.clear()
 
     def get(self, alias) -> Command | None:
@@ -211,9 +211,11 @@ class CommandCollection:
         for command in self.commands:
             if alias in command.aliases:
                 return command
+
+
 class Event:
-    """Event object
-    """
+    """Event object"""
+
     def __init__(self, name: str, coro, ext: Extension) -> None:
         self.name: str = name
         self.coro = coro
@@ -221,20 +223,18 @@ class Event:
 
 
 class Extender:
-    """Extender subclass for extensions, used for implementing the decorators.
-    """
+    """Extender subclass for extensions, used for implementing the decorators."""
+
     commands = CommandCollection()
     _events: defaultdict = defaultdict(list)
-    def __init_subclass__(cls, name: str, description: str="") -> None:
+
+    def __init_subclass__(cls, name: str, description: str = "") -> None:
         super().__init_subclass__()
         cls.name = name
         cls.description = description
 
-
-
-
     @classmethod
-    def cmd(cls, description: str="", aliases: list[str]=[]):
+    def cmd(cls, description: str = "", aliases: list[str] = []):
         """Decorator to add commands for the bot
 
         Args:
@@ -252,7 +252,9 @@ class Extender:
             if not inspect.iscoroutinefunction(coro):
                 log.error("Not a coroutine")
             else:
-                cmd = Command(name=name, description=description, aliases=aliases, func=coro)
+                cmd = Command(
+                    name=name, description=description, aliases=aliases, func=coro
+                )
                 cls.commands.add(cmd)
 
             return cmd
@@ -279,8 +281,8 @@ class Extender:
                     return result
 
                 return wrapper
-        return decorator
 
+        return decorator
 
     @classmethod
     def add_cmd(cls, coro, description="", aliases=[]):
@@ -301,20 +303,19 @@ class Extender:
         if not inspect.iscoroutinefunction(coro):
             log.error("Not a coroutine")
         else:
-
-
-            cmd = Command(name=name, description=description, aliases=aliases, func=coro, ext=cls)
+            cmd = Command(
+                name=name, description=description, aliases=aliases, func=coro, ext=cls
+            )
             cls.commands.add(cmd)
 
 
 class Context:
-    """Context related for commands, and invocation
-    """
+    """Context related for commands, and invocation"""
+
     def __init__(self, bot, message, http) -> None:
         self.bot: Bot = bot
         self.message = message
         self.http = http
-
 
     @property
     def author(self) -> User:
@@ -325,7 +326,7 @@ class Context:
         return self.message.guild
 
     @property
-    def channel(self) -> Messageable | Voiceable :
+    def channel(self) -> Messageable | Voiceable:
         return self.message.channel
 
     @property
@@ -341,13 +342,9 @@ class Context:
                 if self.content.lower().startswith(self.prefix + alias):
                     return command
         for extension in self.bot.extensions:
-
             for command in extension.commands:
-
                 for alias in command.aliases:
-
                     if self.content.startswith(self.prefix + alias):
-
                         self.extension = extension.ext
                         return command
         return None
@@ -433,33 +430,24 @@ class Context:
         else:
             return args, kwargs
 
-
-
-
         for index, (name, param) in enumerate(signature):
             if name == "ctx" or name == "self":
                 continue
 
-
             if param.kind is param.POSITIONAL_OR_KEYWORD:
                 try:
-
                     arg: str | Any = self.convert(param, splitted.pop(0))
                     args.append(arg)
-                except:
+                except Exception:
                     pass
             if param.kind is param.VAR_KEYWORD:
-
                 for arg in splitted:
                     arg = self.convert(param, arg)
                     args.append(arg)
 
-
             if param.kind is param.KEYWORD_ONLY:
-
-                arg = self.convert(param, ' '.join(splitted))
+                arg = self.convert(param, " ".join(splitted))
                 kwargs[name] = arg
-
 
         for key in kwargs.copy():
             if not kwargs[key]:
@@ -467,12 +455,8 @@ class Context:
 
         return args, kwargs
 
-
-
-
     async def invoke(self):
-        """Used to actually run the command
-        """
+        """Used to actually run the command"""
         if self.command is None:
             return
         if not self.bot.userbot:
@@ -482,20 +466,15 @@ class Context:
             args, kwargs = await self.get_arguments()
             func = self.command.func
             if func.__code__.co_varnames[0] == "self":
-
                 args.insert(0, self.extension)
                 args.insert(1, self)
             else:
-
                 args.insert(0, self)
         try:
             await func(*args, **kwargs)
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
             log.error(f"Could not run command \n{error}")
-
-
-
 
     async def reply(self, content: str, tts=False) -> Message:
         """Helper function to reply to your own message containing the command
@@ -514,7 +493,7 @@ class Context:
             content (str): The message you would like to send
             tts (bool, optional): Whether message should be tts or not. Defaults to False.
         """
-        message: Message = await self.channel.send( content=content, tts=tts)
+        message: Message = await self.channel.send(content=content, tts=tts)
         return message
 
     async def spam(self, amount: int, content: str):
@@ -542,8 +521,3 @@ class Context:
         """
         message = await self.message.edit(content)
         return message
-
-
-
-
-

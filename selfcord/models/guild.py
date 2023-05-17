@@ -1,20 +1,23 @@
 from __future__ import annotations
-from .user import User
-from .channel import TextChannel, VoiceChannel, Category, Messageable
-from .role import Role
-from .emoji import Emoji
-from itertools import zip_longest
+
 import random
 from datetime import datetime, timedelta, timezone
+from itertools import zip_longest
 from typing import TYPE_CHECKING
+
+from .channel import Category, Messageable, TextChannel, VoiceChannel
+from .emoji import Emoji
+from .role import Role
+from .user import User
+
 if TYPE_CHECKING:
-    from ..bot import Bot
     from ..api import http
+    from ..bot import Bot
 
 
 class Guild:
-    """Guild Object
-    """
+    """Guild Object"""
+
     TEXTCHANNEL = 0
     VOICECHANNEL = 2
     CATEGORY = 4
@@ -44,20 +47,25 @@ class Guild:
         Args:
             data (dict): JSON data from gateway
         """
-        self.id = data.get('id')
-        self.name = data.get('name')
-        self.icon = data.get('icon')
-        self.region = data.get('region')
-        self.splash = data.get('splash')
-        self.mfa_level = data.get('mfa_level')
-        self.features = data.get('features')
+        self.id = data.get("id")
+        self.name = data.get("name")
+        self.icon = data.get("icon")
+        self.region = data.get("region")
+        self.splash = data.get("splash")
+        self.mfa_level = data.get("mfa_level")
+        self.features = data.get("features")
         self.member_count = data.get("member_count")
-        self.unavailable = data.get('unavailable')
-        self.verification_level = data.get('verification_level')
-        self.explicit_content_filter = data.get('explicit_content_filter')
-        self.owner_id = data.get('owner_id')
+        self.unavailable = data.get("unavailable")
+        self.verification_level = data.get("verification_level")
+        self.explicit_content_filter = data.get("explicit_content_filter")
+        self.owner_id = data.get("owner_id")
 
-        for (member, channel, role, emoji) in zip_longest(data.get('members'), data.get("channels"), data.get("roles"), data.get("emojis")):
+        for member, channel, role, emoji in zip_longest(
+            data.get("members"),
+            data.get("channels"),
+            data.get("roles"),
+            data.get("emojis"),
+        ):
             if member != None:
                 user = User(member, self.bot, self.http)
 
@@ -83,7 +91,7 @@ class Guild:
                     self.channels.append(channel)
 
             if role != None:
-                role = Role(role, self.bot, self.http, guild_id = self.id)
+                role = Role(role, self.bot, self.http, guild_id=self.id)
                 self.roles.append(role)
 
             if emoji != None:
@@ -97,7 +105,11 @@ class Guild:
         Args:
             user_id (str): User ID specified to ban
         """
-        await self.http.request(method="put", endpoint=f"/guilds/{self.id}/bans/{user_id}", json={"delete_message_days":"7"})
+        await self.http.request(
+            method="put",
+            endpoint=f"/guilds/{self.id}/bans/{user_id}",
+            json={"delete_message_days": "7"},
+        )
 
     async def kick(self, user_id: str):
         """Kicks a user from the guild
@@ -105,21 +117,31 @@ class Guild:
         Args:
             user_id (str): User ID specified to kick
         """
-        await self.http.request(method="delete", endpoint=f"/guilds/{self.id}/members/{user_id}")
+        await self.http.request(
+            method="delete", endpoint=f"/guilds/{self.id}/members/{user_id}"
+        )
 
     def utc_now(self):
         return datetime.now(timezone.utc)
 
-    async def timeout(self, user_id: str, hours: int=0, mins: int=0, seconds: int=0):
+    async def timeout(
+        self, user_id: str, hours: int = 0, mins: int = 0, seconds: int = 0
+    ):
         """Timeouts a user in the guild
 
         Args:
             user_id (str): User ID specified to timeout
         """
-        duration = self.utc_now() + timedelta(hours=hours, minutes=mins, seconds=seconds)
-        await self.http.request(method="patch", endpoint=f"/guilds/{self.id}/members/{user_id}", json={"communication_disabled_until": str(duration)})
+        duration = self.utc_now() + timedelta(
+            hours=hours, minutes=mins, seconds=seconds
+        )
+        await self.http.request(
+            method="patch",
+            endpoint=f"/guilds/{self.id}/members/{user_id}",
+            json={"communication_disabled_until": str(duration)},
+        )
 
-    async def txt_channel_create(self, name:str, parent_id: str=None):
+    async def txt_channel_create(self, name: str, parent_id: str = None):
         """Creates a Text Channel in the guild
 
         Args:
@@ -132,7 +154,9 @@ class Guild:
         if parent_id != None:
             payload.update({"parent_id": parent_id})
 
-        channel = await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json=payload)
+        channel = await self.http.request(
+            method="post", endpoint=f"/guilds/{self.id}/channels", json=payload
+        )
         return TextChannel(channel, self.bot, self.http)
 
     async def vc_channel_create(self, name: str):
@@ -141,7 +165,11 @@ class Guild:
         Args:
             name (str): Name of the channel
         """
-        channel = await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 2})
+        channel = await self.http.request(
+            method="post",
+            endpoint=f"/guilds/{self.id}/channels",
+            json={"name": f"{name}", "permission_overwrites": [], "type": 2},
+        )
         return VoiceChannel(channel, self.bot, self.http)
 
     async def role_create(self, name: str):
@@ -150,7 +178,9 @@ class Guild:
         Args:
             name (str): Name of the role
         """
-        role = await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/roles", json = {"name": f"{name}"})
+        role = await self.http.request(
+            method="post", endpoint=f"/guilds/{self.id}/roles", json={"name": f"{name}"}
+        )
         return Role(role, self.bot, self.http, guild_id=self.id)
 
     async def category_channel_create(self, name: str):
@@ -159,7 +189,11 @@ class Guild:
         Args:
             name (str): Name of the category
         """
-        channel = await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 4})
+        channel = await self.http.request(
+            method="post",
+            endpoint=f"/guilds/{self.id}/channels",
+            json={"name": f"{name}", "permission_overwrites": [], "type": 4},
+        )
         return Category(channel, self.bot, self.http)
 
     async def emoji_create(self, name: str, image_url: str):
@@ -170,7 +204,11 @@ class Guild:
             image_url (str): URL for an image
         """
         image = await self.http.encode_image(image_url)
-        emoji = await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/emojis", json= {"name": f"{name}", "image": image})
+        emoji = await self.http.request(
+            method="post",
+            endpoint=f"/guilds/{self.id}/emojis",
+            json={"name": f"{name}", "image": image},
+        )
         return Emoji(emoji, self.bot, self.http)
 
     async def get_members(self, channel_id: str):
@@ -181,7 +219,13 @@ class Guild:
         """
         await self.bot.gateway.lazy_chunk(self.id, channel_id, self.member_count)
 
-    async def edit(self, name: str=None, icon_url: str=None, banner_url: str=None, description: str=None):
+    async def edit(
+        self,
+        name: str = None,
+        icon_url: str = None,
+        banner_url: str = None,
+        description: str = None,
+    ):
         """Edits attributes for a guild
 
         Args:
@@ -192,24 +236,29 @@ class Guild:
         """
         fields = {}
         if name != None:
-            fields['name'] = name
+            fields["name"] = name
 
         if description != None:
-            fields['description'] = description
+            fields["description"] = description
 
         if icon_url != None:
             data = await self.http.encode_image(icon_url)
-            fields['icon'] = data
+            fields["icon"] = data
 
         if banner_url != None:
             data = await self.http.encode_image(banner_url)
-            fields['banner'] = data
+            fields["banner"] = data
 
-
-        await self.http.request(method = "patch", endpoint = f"/guilds/{self.id}", headers={"origin":"https://discord.com", "referer":f"https://discord.com/channels/{self.id}/{random.choice(self.channels)}"},json=fields)
+        await self.http.request(
+            method="patch",
+            endpoint=f"/guilds/{self.id}",
+            headers={
+                "origin": "https://discord.com",
+                "referer": f"https://discord.com/channels/{self.id}/{random.choice(self.channels)}",
+            },
+            json=fields,
+        )
 
     async def delete(self):
-        """Deletes the Guild Object
-        """
-        await self.http.request(method = "delete", endpoint = f"/guilds/{self.id}")
-
+        """Deletes the Guild Object"""
+        await self.http.request(method="delete", endpoint=f"/guilds/{self.id}")

@@ -1,11 +1,14 @@
 from __future__ import annotations
-from .user import User
+
 import asyncio
 import urllib
 
+from .user import User
+
+
 class Message:
-    """Message Object
-    """
+    """Message Object"""
+
     def __init__(self, data, bot, http) -> None:
         self.bot = bot
         self.channel = None
@@ -42,9 +45,10 @@ class Message:
         self.guild = self.bot.get_guild(self.guild_id)
 
     async def delete(self):
-        """Delete the Message Object
-        """
-        await self.http.request(method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}")
+        """Delete the Message Object"""
+        await self.http.request(
+            method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}"
+        )
 
     async def edit(self, content: str) -> Message:
         """Edits the specified message
@@ -53,12 +57,27 @@ class Message:
             content (str): Content to edit message to.
         """
         if self.guild_id != None:
-            resp = await self.http.request(method="patch", endpoint=f"/channels/{self.channel_id}/messages/{self.id}", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.channel_id}/{self.guild_id}"}, json={"content":content})
-            resp.update({"guild_id" : self.guild_id})
+            resp = await self.http.request(
+                method="patch",
+                endpoint=f"/channels/{self.channel_id}/messages/{self.id}",
+                headers={
+                    "origin": "https://discord.com",
+                    "referer": f"https://discord.com/channels/{self.channel_id}/{self.guild_id}",
+                },
+                json={"content": content},
+            )
+            resp.update({"guild_id": self.guild_id})
         else:
-            resp = await self.http.request(method="patch", endpoint=f"/channels/{self.channel_id}/messages/{self.id}", headers={"origin": "https://discord.com", "referer": f"https://discord.com/channels/{self.channel_id}"}, json={"content":content})
+            resp = await self.http.request(
+                method="patch",
+                endpoint=f"/channels/{self.channel_id}/messages/{self.id}",
+                headers={
+                    "origin": "https://discord.com",
+                    "referer": f"https://discord.com/channels/{self.channel_id}",
+                },
+                json={"content": content},
+            )
         return Message(resp, self.bot, self.http)
-
 
     async def react(self, emoji: str):
         """React to a message with an emoji
@@ -67,10 +86,8 @@ class Message:
             emoji (str): The emoji
         """
         raw_reaction = urllib.parse.urlencode({"emoji": emoji}).split("emoji=")[1]
-        await self.http.request(method="put", endpoint=f"/channels/{self.channel_id}/messages/{self.id}/reactions/{raw_reaction}/%40me?location=Message&burst=false", headers={"referer": f"https://discord.com/channels/@me/{self.channel_id}"})
-
-
-
-
-
-
+        await self.http.request(
+            method="put",
+            endpoint=f"/channels/{self.channel_id}/messages/{self.id}/reactions/{raw_reaction}/%40me?location=Message&burst=false",
+            headers={"referer": f"https://discord.com/channels/@me/{self.channel_id}"},
+        )

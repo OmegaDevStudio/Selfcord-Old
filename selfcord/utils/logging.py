@@ -1,11 +1,12 @@
 import logging
-
 import logging.config
 
-logging.config.dictConfig({
-    'version': 1,
-    'disable_existing_loggers': True,
-})
+logging.config.dictConfig(
+    {
+        "version": 1,
+        "disable_existing_loggers": True,
+    }
+)
 
 logging.getLogger("websockets.client").disabled = True
 logging.getLogger("urllib3.connectionpool").disabled = True
@@ -20,11 +21,13 @@ FORMATS = {
     logging.CRITICAL: "\33[31m{message}\33[0m",
 }
 
+
 class CustomFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         log_fmt = FORMATS[record.levelno]
         formatter = logging.Formatter(log_fmt, style="{", datefmt="%H:%M:%S")
         return formatter.format(record)
+
 
 handler = logging.StreamHandler()
 handler.setFormatter(CustomFormatter())
