@@ -4,6 +4,13 @@ import re
 from collections import defaultdict
 from .logging import logging
 from traceback import format_exception
+from typing import Any, TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..models import *
+    from ..bot import Bot
+    from ..api import *
+
+
 
 log = logging.getLogger("Commands")
 
@@ -13,10 +20,10 @@ class Extension:
     def __init__(self, **kwargs):
         self.name: str | None = kwargs.get("name")
         self.description: str | None = kwargs.get('description')
-        self.ext = kwargs.get("ext")
+        self.ext: Extension | None = kwargs.get("ext")
         self._events = defaultdict(list)
-        _events = self.ext._events
-        commands = self.ext.commands
+        _events: defaultdict = self.ext._events
+        commands: CommandCollection = self.ext.commands
         self.commands = CommandCollection()
         for cmd in commands.recents():
             setattr(cmd, "ext", self.ext)
@@ -73,7 +80,7 @@ class ExtensionCollection:
         # Add extension to the collection
         self.extensions[ext.name] = ext
 
-    def get(self, alias: str) -> Extension:
+    def get(self, alias: str) -> Extension | None :
         """Get an extension
 
         Args:
@@ -96,19 +103,19 @@ class Command:
     """Command Object pretty much
     """
     def __init__(self, **kwargs):
-        self.name = kwargs.get("name")
-        self.aliases = [self.name] + kwargs.get('aliases', [])
-        self.description = kwargs.get('description')
-        self.func = kwargs.get("func")
-        self.check = inspect.signature(self.func).return_annotation
+        self.name: str | None = kwargs.get("name")
+        self.aliases: list[str] | None = [self.name] + kwargs.get('aliases', [])
+        self.description: str | None = kwargs.get('description')
+        self.func: function | None = kwargs.get("func")
+        self.check: Any = inspect.signature(self.func).return_annotation
         self.signature = inspect.signature(self.func).parameters.items()
 
 class CommandCollection:
     """Commands collection, where commands are stored into. Utilised for help commands and general command invocation.
     """
     def __init__(self, **kwargs):
-        self.commands = {}
-        self.recent_commands = {}
+        self.commands: dict[CommandCollection , function] = {}
+        self.recent_commands: dict[CommandCollection , function] = {}
 
     def __len__(self):
         return len(self.commands)
@@ -188,7 +195,7 @@ class CommandCollection:
         """
         self.recent_commands.clear()
 
-    def get(self, alias) -> Command:
+    def get(self, alias) -> Command | None:
         """Get a specific command from the collection
 
         Args:
@@ -207,18 +214,18 @@ class CommandCollection:
 class Event:
     """Event object
     """
-    def __init__(self, name, coro, ext) -> None:
-        self.name = name
+    def __init__(self, name: str, coro, ext: Extension) -> None:
+        self.name: str = name
         self.coro = coro
-        self.ext = ext
+        self.ext: Extension = ext
 
 
 class Extender:
     """Extender subclass for extensions, used for implementing the decorators.
     """
     commands = CommandCollection()
-    _events = defaultdict(list)
-    def __init_subclass__(cls, name: str =None, description: str="") -> None:
+    _events: defaultdict = defaultdict(list)
+    def __init_subclass__(cls, name: str, description: str="") -> None:
         super().__init_subclass__()
         cls.name = name
         cls.description = description
@@ -304,29 +311,29 @@ class Context:
     """Context related for commands, and invocation
     """
     def __init__(self, bot, message, http) -> None:
-        self.bot = bot
+        self.bot: Bot = bot
         self.message = message
         self.http = http
 
 
     @property
-    def author(self):
+    def author(self) -> User:
         return self.message.author
 
     @property
-    def guild(self):
+    def guild(self) -> Guild:
         return self.message.guild
 
     @property
-    def channel(self):
+    def channel(self) -> Messageable | Voiceable :
         return self.message.channel
 
     @property
-    def content(self):
+    def content(self) -> str:
         return self.message.content
 
     @property
-    def command(self):
+    def command(self) -> function | None:
         if self.prefix is None:
             return None
         for command in self.bot.commands:
@@ -346,7 +353,7 @@ class Context:
         return None
 
     @property
-    def alias(self):
+    def alias(self) -> str | None:
         for command in self.bot.commands:
             for alias in command.aliases:
                 if self.content.lower().startswith(self.prefix + alias.lower()):
@@ -360,13 +367,13 @@ class Context:
         return None
 
     @property
-    def prefix(self):
+    def prefix(self) -> str | None:
         for prefix in self.bot.prefixes:
             if self.content.startswith(prefix):
                 return prefix
 
     @property
-    def command_content(self):
+    def command_content(self) -> str | None:
         """The content minus the prefix and command name, essentially the args
 
         Returns:
@@ -380,7 +387,7 @@ class Context:
         except:
             return None
 
-    def get_converter(self, param):
+    def get_converter(self, param) -> type[str] | Any | None:
         if param.annotation is param.empty:
             return str
         if callable(param.annotation):
@@ -388,7 +395,7 @@ class Context:
         else:
             log.error("Parameter annotation must be callable")
 
-    def convert(self, param, value):
+    def convert(self, param, value) -> str | Any:
         """Attempts to turn x value in y value, using get_converter func for the values
 
         Args:
@@ -407,8 +414,8 @@ class Context:
         Returns:
             _type_: _description_
         """
-        args = []
-        kwargs = {}
+        args: list[Any] = []
+        kwargs: dict[Any, Any] = {}
 
         if self.command.signature is not None:
             signature = self.command.signature
@@ -437,7 +444,7 @@ class Context:
             if param.kind is param.POSITIONAL_OR_KEYWORD:
                 try:
 
-                    arg = self.convert(param, splitted.pop(0))
+                    arg: str | Any = self.convert(param, splitted.pop(0))
                     args.append(arg)
                 except:
                     pass
@@ -490,24 +497,24 @@ class Context:
 
 
 
-    async def reply(self, content: str, tts=False):
+    async def reply(self, content: str, tts=False) -> Message:
         """Helper function to reply to your own message containing the command
 
         Args:
             content (str): The message you would like to send
             tts (bool, optional): Whether message should be tts or not. Defaults to False.
         """
-        message = await self.channel.reply(self.message, content, tts)
+        message: Message = await self.channel.reply(self.message, content, tts)
         return message
 
-    async def send(self, content: str, tts=False):
+    async def send(self, content: str, tts=False) -> Message:
         """Helper function to send message to the current channel
 
         Args:
             content (str): The message you would like to send
             tts (bool, optional): Whether message should be tts or not. Defaults to False.
         """
-        message = await self.channel.send( content=content, tts=tts)
+        message: Message = await self.channel.send( content=content, tts=tts)
         return message
 
     async def spam(self, amount: int, content: str):
@@ -519,7 +526,7 @@ class Context:
         """
         await self.channel.spam(amount, content)
 
-    async def purge(self, amount: int=None):
+    async def purge(self, amount: int = 0):
         """Helper function to purge messages in the current channel, uses asyncio gather.
 
         Args:
@@ -527,7 +534,7 @@ class Context:
         """
         await self.channel.purge(amount)
 
-    async def edit(self, content: str):
+    async def edit(self, content: str) -> Message:
         """Helper function to edit the message you sent
 
         Args:

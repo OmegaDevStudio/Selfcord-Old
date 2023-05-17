@@ -46,7 +46,7 @@ class Message:
         """
         await self.http.request(method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}")
 
-    async def edit(self, content: str):
+    async def edit(self, content: str) -> Message:
         """Edits the specified message
 
         Args:

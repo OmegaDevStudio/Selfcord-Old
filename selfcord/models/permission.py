@@ -3,7 +3,7 @@ class Permission:
     """Permission Object
     """
 
-    def __init__(self, data) -> None:
+    def __init__(self, data: int) -> None:
         self.perms = {
             "CREATE_INSTANT_INVITE": 0x1,
             "KICK_MEMBERS": 0x2,

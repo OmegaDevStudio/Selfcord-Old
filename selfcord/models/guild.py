@@ -1,13 +1,17 @@
 from __future__ import annotations
 from .user import User
-from .channel import TextChannel, VoiceChannel, Category
+from .channel import TextChannel, VoiceChannel, Category, Messageable
 from .role import Role
 from .emoji import Emoji
 from itertools import zip_longest
-from aiohttp import ClientSession
-from base64 import b64encode
 import random
 from datetime import datetime, timedelta, timezone
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..bot import Bot
+    from ..api import http
+
+
 class Guild:
     """Guild Object
     """
@@ -22,13 +26,13 @@ class Guild:
     GUILD_DIRECTORY = 14
     GUILD_FORUM = 15
 
-    def __init__(self, data, bot, http) -> None:
-        self.roles = []
-        self.emojis = []
-        self.members = []
-        self.channels = []
-        self.http = http
-        self.bot = bot
+    def __init__(self, data: dict, bot: Bot, http: http) -> None:
+        self.roles: list[Role] = []
+        self.emojis: list[Emoji] = []
+        self.members: list[User] = []
+        self.channels: list[Messageable] = []
+        self.http: http = http
+        self.bot: Bot = bot
         self._update(data)
 
     def __str__(self) -> str:
@@ -79,7 +83,7 @@ class Guild:
                     self.channels.append(channel)
 
             if role != None:
-                role = Role(role, self.http, guild_id = self.id)
+                role = Role(role, self.bot, self.http, guild_id = self.id)
                 self.roles.append(role)
 
             if emoji != None:
@@ -106,7 +110,7 @@ class Guild:
     def utc_now(self):
         return datetime.now(timezone.utc)
 
-    async def timeout(self, user_id: str, hours=0, mins=0, seconds=0):
+    async def timeout(self, user_id: str, hours: int=0, mins: int=0, seconds: int=0):
         """Timeouts a user in the guild
 
         Args:
@@ -125,10 +129,11 @@ class Guild:
         payload = {"name": name}
         payload.update({"permission_overwrites": []})
         payload.update({"type": 0})
-        if parent_id:
+        if parent_id != None:
             payload.update({"parent_id": parent_id})
 
-        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json=payload)
+        channel = await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json=payload)
+        return TextChannel(channel, self.bot, self.http)
 
     async def vc_channel_create(self, name: str):
         """Creates a voice channel in the guild
@@ -136,7 +141,8 @@ class Guild:
         Args:
             name (str): Name of the channel
         """
-        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 2})
+        channel = await self.http.request(method="post", endpoint=f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 2})
+        return VoiceChannel(channel, self.bot, self.http)
 
     async def role_create(self, name: str):
         """Creates a role in the guild
@@ -144,15 +150,17 @@ class Guild:
         Args:
             name (str): Name of the role
         """
-        await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/roles", json = {"name": f"{name}"})
+        role = await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/roles", json = {"name": f"{name}"})
+        return Role(role, self.bot, self.http, guild_id=self.id)
 
-    async def category_channel_create(self, name):
+    async def category_channel_create(self, name: str):
         """Creates a category in the guild
 
         Args:
             name (str): Name of the category
         """
-        await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 4})
+        channel = await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/channels", json={"name": f"{name}", "permission_overwrites": [], "type": 4})
+        return Category(channel, self.bot, self.http)
 
     async def emoji_create(self, name: str, image_url: str):
         """Creates an emoji in the guild
@@ -162,7 +170,8 @@ class Guild:
             image_url (str): URL for an image
         """
         image = await self.http.encode_image(image_url)
-        await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/emojis", json= {"name": f"{name}", "image": image})
+        emoji = await self.http.request(method = "post", endpoint = f"/guilds/{self.id}/emojis", json= {"name": f"{name}", "image": image})
+        return Emoji(emoji, self.bot, self.http)
 
     async def get_members(self, channel_id: str):
         """Get guild members for a guild via chunking

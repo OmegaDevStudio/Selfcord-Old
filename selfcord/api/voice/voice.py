@@ -18,6 +18,10 @@ import io
 # import ffmpeg
 from ...utils import logging
 from traceback import format_exception
+from typing import Any, TYPE_CHECKING
+if TYPE_CHECKING:
+    from ...bot import Bot
+    from ..http import http
 
 log = logging.getLogger("Voice")
 
@@ -38,16 +42,16 @@ class Voice:
     HEARTBEAT = 8
 
 
-    def __init__(self, session_id: str, token: str, endpoint: str, server_id: str, bot, debug=False) -> None:
-        self.session_id = session_id
-        self.token = token
-        self.endpoint = endpoint
-        self.server_id = server_id
-        self.bot = bot
+    def __init__(self, session_id: str, token: str, endpoint: str, server_id: str, bot: Bot, debug=False) -> None:
+        self.session_id: str = session_id
+        self.token: str = token
+        self.endpoint: str = endpoint
+        self.server_id: str = server_id
+        self.bot: Bot = bot
         self.alive = False
         self.mode = "xsalsa20_poly1305"
         self.sequence = 0
-        self.debug = debug
+        self.debug: bool = debug
         self.timestamp = 0
 
 
@@ -75,7 +79,7 @@ class Voice:
             await self.handle_description(data)
 
     async def handle_description(self, data: dict):
-        self.secret_key: list[int] = data.get("secret_key")
+        self.secret_key: list[Any] = data.get("secret_key")
         if self.debug:
             log.debug("Finished session description event")
             log.info(f"Gathered Secret Key: {self.secret_key}")

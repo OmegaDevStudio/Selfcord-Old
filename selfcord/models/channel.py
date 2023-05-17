@@ -5,20 +5,25 @@ from .user import User
 from .webhook import Webhook
 import asyncio
 from ..utils import logging
-from selfcord.models import message
+
 from traceback import format_exception
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..bot import Bot
+    from ..api.http import http
+    from ..models.permission import Permission
 
 log = logging.getLogger("Channel")
 
 class Messageable:
     """Parent class specific for those classes that include a textchat for sending messages.
     """
-    def __init__(self, http, bot) -> None:
-        self.http = http
-        self.bot = bot
+    def __init__(self, http: http, bot: Bot) -> None:
+        self.http: http = http
+        self.bot: Bot = bot
 
 
-    async def history(self) -> list[Message]:
+    async def history(self) -> list[Message] | None:
         """
         Get channel message history.
 
@@ -47,7 +52,7 @@ class Messageable:
 
         return messages
 
-    async def purge(self, amount: int = None) -> None:
+    async def purge(self, amount: int = 0) -> None:
         """
         Delete a number of messages, starting from the most recent.
 
@@ -63,7 +68,7 @@ class Messageable:
             if str(msg.author.id) == str(self.bot.user.id):
                 msgs.append(msg)
 
-        if amount != None:
+        if amount != 0:
             for i in range(0, len(msgs[:amount]), 3):
                 await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i + 3]))
         else:
@@ -151,10 +156,10 @@ class Messageable:
 class Voiceable(Messageable):
     """Parent class specific for those classes that include a voice chat, or call functionality
     """
-    def __init__(self, http, bot) -> None:
+    def __init__(self, http: http, bot: Bot) -> None:
         super().__init__(http, bot)
-        self.http = http
-        self.bot = bot
+        self.http: http = http
+        self.bot: Bot = bot
 
     async def video_call(self):
         """Initiates a video call on the specified channel
@@ -233,12 +238,12 @@ class TextChannel(Messageable):
         }
     """
 
-    def __init__(self, data, bot, http) -> None:
+    def __init__(self, data, bot: Bot, http: http) -> None:
         super().__init__(http, bot)
-        self.permissions = []
-        self.webhooks = []
-        self.http = http
-        self.bot = bot
+        self.permissions: list[Permission] = []
+        self.webhooks: list[Webhook] = []
+        self.http: http = http
+        self.bot: Bot = bot
         self._update(data)
 
     def __str__(self) -> str:
@@ -339,10 +344,10 @@ class VoiceChannel(Voiceable, Messageable):
     """Voice Channel Object
     """
 
-    def __init__(self, data, bot, http) -> None:
+    def __init__(self, data: dict, bot: Bot, http: http) -> None:
         super().__init__(http, bot)
-        self.permissions = []
-        self.webhooks = []
+        self.permissions: list[Permission] = []
+        self.webhooks: list[Webhook] = []
         self.http = http
         self.bot = bot
         self._update(data)
@@ -409,10 +414,10 @@ class Category:
     """Category Object
     """
 
-    def __init__(self, data, bot, http) -> None:
-        self.bot = bot
-        self.http = http
-        self.permissions = []
+    def __init__(self, data: dict, bot: Bot, http: http) -> None:
+        self.bot: Bot = bot
+        self.http: http = http
+        self.permissions: list[Permission] = []
         self._update(data)
 
     def __str__(self) -> str:
@@ -441,10 +446,10 @@ class DMChannel(Voiceable, Messageable):
     """DM Channel Object
     """
 
-    def __init__(self, data, bot, http) -> None:
+    def __init__(self, data: dict, bot: Bot, http: http) -> None:
         super().__init__(http, bot)
-        self.http = http
-        self.bot = bot
+        self.http: http = http
+        self.bot: Bot = bot
         self._update(data)
 
     def __str__(self) -> str:
@@ -474,11 +479,11 @@ class GroupChannel(Voiceable, Messageable):
     """Group Channel Object
     """
 
-    def __init__(self, data, bot, http) -> None:
+    def __init__(self, data: dict, bot: Bot, http: http) -> None:
         super().__init__(http, bot)
         self.recipients = []
-        self.http = http
-        self.bot = bot
+        self.http: http = http
+        self.bot: Bot = bot
         self._update(data)
 
     def __str__(self) -> str:

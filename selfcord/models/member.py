@@ -1,10 +1,13 @@
 from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from .role import Role
 
 class Member:
     """Member Object
     """
     def __init__(self, UserPayload: dict) -> None:
-        self.roles = []
+        self.roles: list[Role] = []
 
         self._update(UserPayload)
 
@@ -12,7 +15,7 @@ class Member:
         return f"""{self.name}#{self.discriminator}"""
 
 
-    def _update(self, data):
+    def _update(self, data: dict):
         """Updater method intended to create the attributes for the object
 
         Args:

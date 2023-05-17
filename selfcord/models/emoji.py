@@ -1,11 +1,14 @@
 from __future__ import annotations
-
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..bot import Bot
+    from ..api.http import http
 class Emoji:
     """Emoji Object
     """
-    def __init__(self, data, bot, http) -> None:
-        self.bot = bot
-        self.http = http
+    def __init__(self, data: dict, bot: Bot, http: http) -> None:
+        self.bot: Bot = bot
+        self.http: http = http
         self._update(data)
 
     def __str__(self) -> str:

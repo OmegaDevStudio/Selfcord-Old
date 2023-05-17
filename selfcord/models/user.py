@@ -1,12 +1,16 @@
 from __future__ import annotations
 from base64 import b64encode
 import datetime
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..bot import Bot
+    from ..api.http import http
 
 
 class Profile:
-    def __init__(self, UserPayload: dict, bot, http) -> None:
-        self.bot = bot
-        self.http = http
+    def __init__(self, UserPayload: dict, bot: Bot, http: http) -> None:
+        self.bot: Bot = bot
+        self.http: http = http
 
         self.__update(UserPayload)
 
@@ -63,10 +67,10 @@ class Connected_Account:
 class User:
     """User Object
     """
-    def __init__(self, UserPayload: dict, bot, http) -> None:
-        self.bot = bot
+    def __init__(self, UserPayload: dict, bot: Bot, http: http) -> None:
+        self.bot: Bot = bot
 
-        self.http = http
+        self.http: http = http
         self._update(UserPayload)
 
     def __str__(self):

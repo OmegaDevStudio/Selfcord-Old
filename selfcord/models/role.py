@@ -1,12 +1,16 @@
 from __future__ import annotations
 from .permission import Permission
-
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from ..bot import Bot
+    from ..api.http import http
 class Role:
     """Role Object
     """
-    def __init__(self, data: dict, http, **kwargs) -> None:
+    def __init__(self, data: dict, bot: Bot, http: http, **kwargs) -> None:
         self.guild_id = kwargs.get("guild_id")
-        self.http = http
+        self.http: http = http
+        self.bot: Bot = bot
         self._update(data)
 
     def _update(self, data):

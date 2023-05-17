@@ -1,18 +1,24 @@
 from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from .guild import Guild
+    from .channel import Voiceable
+    from .user import User
+    from .message import Message
 
 class Client:
     """Client Object
     """
     def __init__(self, UserPayload: dict) -> None:
 
-        self.guilds = []
-        self.private_channels = []
-        self.friends = []
-        self.messages = []
-        self.deleted_messages = []
+        self.guilds: list[Guild] = []
+        self.private_channels: list[Voiceable] = []
+        self.friends: list[User] = []
+        self.messages: list[Message] = []
+        self.deleted_messages: list[Message] = []
         self._update(UserPayload)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"""{self.name}#{self.discriminator}"""
 
 

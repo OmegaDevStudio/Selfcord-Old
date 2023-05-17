@@ -15,3 +15,4 @@ docs-sphinx
 selfcord.py.egg-info
 fake_docs/
 songs/
+.mypy_cache/

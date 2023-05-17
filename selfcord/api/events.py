@@ -2,10 +2,13 @@ from __future__ import annotations
 from time import perf_counter
 from ..models.role import Role
 from ..models import User, Client, Guild, TextChannel, VoiceChannel, DMChannel, GroupChannel, Message
-from aioconsole import aprint
 import asyncio
 from .voice import Voice
 from ..utils import logging
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from .http import http
+    from ..bot import Bot
 
 log = logging.getLogger("Event")
 
@@ -15,11 +18,11 @@ class EventHandler:
     '''
     def __init__(self, bot, http, debug=False):
         self._events = {}
-        self.http    = http
-        self.bot     = bot
-        self.debug = debug
+        self.http:    http = http
+        self.bot:      Bot = bot
+        self.debug:   bool = debug
 
-    async def handle_ready(self, data: dict, user: Client, http):
+    async def handle_ready(self, data: dict, user: Client, http: http):
         """Handles what happens when the ready event is fired, when the bot first connects
 
         Args:
@@ -42,7 +45,7 @@ class EventHandler:
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit('ready', perf_counter() - self.bot.t1)
 
-    async def handle_guild_create(self, data: dict, user: Client, http):
+    async def handle_guild_create(self, data: dict, user: Client, http: http):
         """Handles what happens when a guild is created
 
         Args:
@@ -57,7 +60,7 @@ class EventHandler:
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit('guild_create', guild)
 
-    async def handle_message_create(self, data: dict, user: Client, http):
+    async def handle_message_create(self, data: dict, user: Client, http: http):
         """Handles what happens when a message is created, or sent
         Args:
             data (dict): JSON data from gateway
@@ -81,7 +84,7 @@ class EventHandler:
                     if message.content.startswith(prefix): await self.bot.process_commands(message)
 
 
-    async def handle_message_delete(self, data: dict, user: Client, http):
+    async def handle_message_delete(self, data: dict, user: Client, http: http):
         """Handles what happens when a message is deleted. Very little data will be logged if the message is not in the bots cache.
 
         Args:
@@ -117,7 +120,7 @@ class EventHandler:
             message = deleted_message(data)
             await self.bot.emit('message_delete', message)
 
-    async def handle_channel_create(self, channel: dict, user: Client, http):
+    async def handle_channel_create(self, channel: dict, user: Client, http: http):
         """Handles what happens when a channel is created
 
         Args:
@@ -154,7 +157,7 @@ class EventHandler:
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit('channel_create', channel)
 
-    async def handle_guild_member_list_update(self, data: dict, user: Client, http):
+    async def handle_guild_member_list_update(self, data: dict, user: Client, http: http):
         """Handles what happens when a member chunk payload is received
 
         Args:
@@ -197,7 +200,7 @@ class EventHandler:
 
 
 
-    async def handle_channel_delete(self, data, user: Client, http):
+    async def handle_channel_delete(self, data, user: Client, http: http):
         """Handles what happens when a channel is deleted
 
         Args:
@@ -231,7 +234,7 @@ class EventHandler:
                         return
 
 
-    async def handle_guild_role_create(self, role, user: Client, http):
+    async def handle_guild_role_create(self, role, user: Client, http: http):
         """Handles what happens when a role is created
 
         Args:
@@ -243,12 +246,12 @@ class EventHandler:
 
         for guild in self.user.guilds:
             if role.get('guild_id') == guild.id:
-                role = Role(role, self.http, guild_id=guild.id)
+                role = Role(role, self.bot, self.http, guild_id=guild.id)
                 guild.roles.append(role)
 
         await self.bot.emit('role_create', role)
 
-    async def handle_guild_role_delete(self, role: dict, user: Client, http):
+    async def handle_guild_role_delete(self, role: dict, user: Client, http: http):
         """Handles what happens when a role is deleted
 
         Args:
@@ -267,7 +270,7 @@ class EventHandler:
                         return
 
 
-    async def handle_voice_state_update(self, data: dict, user: Client, http):
+    async def handle_voice_state_update(self, data: dict, user: Client, http: http):
         """Handles the voice state updating
 
         Args:
@@ -278,7 +281,7 @@ class EventHandler:
         if data['channel_id'] != None:
             self.session_id = data['session_id']
 
-    async def handle_presence_update(self, data: dict, user: Client, http):
+    async def handle_presence_update(self, data: dict, user: Client, http: http):
         """Handles the presence updating
 
         Args:
@@ -318,7 +321,7 @@ class EventHandler:
 
         await self.bot.emit('presence_update', user, status, last_modified, client_status, activities)
 
-    async def handle_voice_server_update(self, data: dict, user: Client, http):
+    async def handle_voice_server_update(self, data: dict, user: Client, http: http):
         """Handles the voice server updating
 
         Args:

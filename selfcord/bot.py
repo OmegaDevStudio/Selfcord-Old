@@ -1,38 +1,39 @@
 from __future__ import annotations
 import asyncio
-import json
 from .api import gateway, http, Activity
 import inspect
 from .models import Client, TextChannel, GroupChannel, DMChannel, VoiceChannel, Guild, User
 from collections import defaultdict
-from aioconsole import aprint, aexec
+from aioconsole import aexec
 import time
 from .utils import Command, CommandCollection, Context, ExtensionCollection, Extension, Event, logging
 import random
 import contextlib
 from traceback import format_exception
 import io
-from functools import partial
 import importlib
 import aiohttp
-
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from .api.http import http
+    from .api.gateway import gateway
 
 log = logging.getLogger("Bot")
 class Bot:
     def __init__(self, debug: bool = False, prefixes: list = ["s!"], inbuilt_help=True, userbot=False, eval=False) -> None:
-        self.inbuilt_help= inbuilt_help
-        self.debug = debug
+        self.inbuilt_help: bool= inbuilt_help
+        self.debug: bool = debug
         self.token = None
-        self.http = http(debug)
-        self.t1 = time.perf_counter()
-        self.gateway = gateway(self.http, self.debug)
+        self.http: http = http(debug)
+        self.t1: float = time.perf_counter()
+        self.gateway: gateway = gateway(self.http, self.debug)
         self._events = defaultdict(list)
         self.commands = CommandCollection()
-        self.prefixes = prefixes if isinstance(prefixes, list) else [prefixes]
+        self.prefixes: list[str] = prefixes if isinstance(prefixes, list) else [prefixes]
         self.extensions = ExtensionCollection()
         self.user = None
-        self.eval = eval
-        self.userbot = userbot
+        self.eval: bool = eval
+        self.userbot: bool = userbot
 
 
     def run(self, token: str):

@@ -250,10 +250,14 @@ class Activity:
 
         return payload
 
-
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from .http import http
+    from zlib import _Decompress
 
 class gateway:
-    ''' OP CODES '''
+    '''Discord Gateway instance, used to initialise gateway connections'''
+
     DISPATCH           = 0
     HEARTBEAT          = 1
     IDENTIFY           = 2
@@ -269,12 +273,12 @@ class gateway:
     GUILD_SYNC         = 12
 
     def __init__(self, http, debug=False):
-        self.debug = debug
-        self.http = http
-        self.zlib = zlib.decompressobj()
-        self.zlib_suffix = b'\x00\x00\xff\xff'
-        self.last_ack = time.perf_counter()
-        self.last_send = time.perf_counter()
+        self.debug: bool = debug
+        self.http: http = http
+        self.zlib: _Decompress = zlib.decompressobj()
+        self.zlib_suffix: bytes = b'\x00\x00\xff\xff'
+        self.last_ack: float = time.perf_counter()
+        self.last_send: float = time.perf_counter()
         self.latency = float('inf')
         self.alive = False
 
