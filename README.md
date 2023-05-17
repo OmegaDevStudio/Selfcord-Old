@@ -14,8 +14,6 @@
 <img src="https://img.shields.io/badge/documentation-green?logo=gitbook&style=for-the-badge">
 </a>
 </div>
-![https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fastronomer.ullaakut.eu%2Fshields%3Fowner%3DShell1010%26name%3DSelfcord&style=flat]
-
 
 ## Feautres
 
