@@ -320,6 +320,7 @@ class gateway:
         self.last_ack: float = time.perf_counter()
         self.last_send: float = time.perf_counter()
         self.latency = float("inf")
+        self.resume_url = None
         self.alive = False
 
     async def recv_msg(self):
@@ -339,9 +340,9 @@ class gateway:
             op = item.get("op")  # Op code
             data = item.get("d")  # Data
             event = item.get("t")  # The event
-
+            s = item.get("s")
             if op == self.RECONNECT:
-                await self.close()
+                await self.reconnect(s)
                 log.error("Reconnect websocket")
 
             elif op == self.INVALIDATE_SESSION:
@@ -445,6 +446,7 @@ class gateway:
             }
 
             await self.send_json(payload)
+            await asyncio.sleep(2.0)
 
         if self.debug:
             log.debug("Finished guild lazy chunking")
@@ -457,6 +459,18 @@ class gateway:
             payload (dict): Valid payload to send to the gateway
         """
         await self.ws.send(json.dumps(payload))
+
+    async def reconnect(self, seq: int):
+        """Reconnect to discord gateway"""
+        print(self.bot.resume_url)
+        self.ws = await websockets.connect(
+            f"{self.bot.resume_url}?encoding=json&v=9&compress=zlib-stream"
+        )
+        payload = {
+            "op": 6,
+            "d": {"token": self.token, "session_id": self.bot.session_id, "seq": seq},
+        }
+        await self.send_json(payload)
 
     async def connect(self):
         """Connect to discord gateway"""

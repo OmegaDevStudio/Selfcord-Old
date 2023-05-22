@@ -1,4 +1,10 @@
+from __future__ import annotations
+
+import time
+from itertools import zip_longest
 from typing import TYPE_CHECKING
+
+from aioconsole import aprint
 
 if TYPE_CHECKING:
     from selfcord.api.http import http
@@ -6,12 +12,41 @@ if TYPE_CHECKING:
 
 
 class Search:
+    """Search object returned from Application command search"""
+
     def __init__(
         self, application_commands: dict, prev_cursor: str, next_cursor: str
     ) -> None:
-        self.commands = application_commands
-        self.prev_cursor = prev_cursor
-        self.next_cursor = next_cursor
+        self.commands: list[SlashCommand] = [
+            SlashCommand(command) for command in application_commands
+        ]
+        self.prev_cursor: str = prev_cursor
+        self.next_cursor: str = next_cursor
+
+
+class Option:
+    def __init__(self, data: dict) -> None:
+        self.name = data["name"]
+        self.type = data["type"]
+        self.description = data["description"]
+        self.options: list[Option] | None = (
+            [Option(option) for option in data.get("options")]
+            if data.get("options") is not None
+            else None
+        )
+        self.required = data.get("required")
+        self.raw_data = data
+        self.value: str = None
+
+    def __str__(self):
+        return f"{self.name}"
+
+    def __iter__(self):
+        if self.options is not None:
+            for option in self.options:
+                yield option
+        else:
+            yield None
 
 
 class SlashCommand:
@@ -19,37 +54,121 @@ class SlashCommand:
         self.id: str = data["id"]
         self.name: str = data["name"]
         self.type: int = data["type"]
-        self.options: list[SlashCommand] = data.get("options")
-        self.guild_id = data.get("guild_id")
-        self.target_id = data.get("target_id")
+        self.version: str = data["version"]
+        self.raw_data: str = data
+        self.options: list[Option] | None = (
+            [Option(option) for option in data.get("options")]
+            if data.get("options") is not None
+            else None
+        )
+        self.guild_id: str | None = data.get("guild_id")
+        self.target_id: str | None = data.get("target_id")
+
+    def __iter__(self):
+        if self.options is not None:
+            for option in self.options:
+                yield option
+        else:
+            yield None
+
+    def __str__(self):
+        return f"{self.name}"
+
+    def __eq__(self, other):
+        return self.id == other.id
 
 
 class InteractionUtil:
     """Utility class intended for interactions"""
 
     def __init__(self, bot: Bot, http: http):
-        self.bot = bot
-        self.http = http
+        self.bot: Bot = bot
+        self.http: http = http
 
     async def interaction_search(
         self,
         query: str,
-        type: int,
         channel_id: str,
+        type: int = 1,
+        cursor: str = None,
         bot_id: str = None,
         command_id: str = None,
-    ):
-        endpoint = f"/channels/{channel_id}/application-commands/search?type={type}&query={query}&limit=7"
+    ) -> Search:
+        """Search for interactions within a specific guild channel, you can specify certain parameters
+
+        Args:
+            query (str): Query to search for
+            channel_id (str): Channel ID to search within
+            type (int): Type of command to search for
+            bot_id (str): Specify what bot specifically to search for
+            command_id (str): Specify a command id to search for, to view options
+
+        Returns:
+            Search object
+        """
+
+        endpoint = (
+            f"/channels/{channel_id}/application-commands/search?query={query}&limit=7"
+        )
+        endpoint += f"&type={type}"
+        if cursor is not None:
+            endpoint += f"&cursor={cursor}"
         if command_id is not None:
             endpoint += f"&command_id={command_id}"
         if bot_id is not None:
             endpoint += f"&application_id={bot_id}"
-        await self.http.request("get", endpoint)
+        data = await self.http.request("get", endpoint)
+        return Search(
+            data["application_commands"],
+            data["cursor"]["previous"],
+            data["cursor"]["next"],
+        )
+
+    async def trigger_slash(
+        self,
+        command: SlashCommand,
+        channel_id: str,
+        bot_id: str,
+        value: list[str] | None = None,
+        option: list[Option] | None = None,
+        guild_id: str | None = None,
+    ):
+        payload = {
+            "type": 2,
+            "application_id": bot_id,
+            "channel_id": channel_id,
+            "nonce": f"{int(time.time())}",
+            "session_id": self.bot.session_id,
+        }
+        if guild_id is not None:
+            payload.update({"guild_id": guild_id})
+
+        data = {
+            "version": command.version,
+            "id": command.id,
+            "name": command.name,
+            "type": command.type,
+            "options": [],
+            "application_command": command.raw_data,
+        }
+        if option is not None:
+            dic = {"options": []}
+            for opt, value in zip_longest(option, value):
+                dic["options"].append(
+                    {
+                        "name": opt.name,
+                        "type": opt.type,
+                        "value": value,
+                    }
+                )
+
+            data.update(dic)
+        payload.update(data)
 
 
 class Interaction:
     """Base interaction class to trigger and manipulate slash commands"""
 
     def __init__(self, bot: Bot, http: http):
-        self.bot = bot
-        self.http = http
+        self.bot: Bot = bot
+        self.http: http = http

@@ -16,6 +16,9 @@ class Profile:
 
         self.__update(UserPayload)
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def __update(self, data: dict):
         """Updater method intended to create the attributes for the object
 

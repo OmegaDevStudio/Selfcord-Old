@@ -15,10 +15,24 @@ import aiohttp
 from aioconsole import aexec
 
 from .api import Activity, gateway, http
-from .models import (Client, DMChannel, GroupChannel, Guild, TextChannel, User,
-                     VoiceChannel)
-from .utils import (Command, CommandCollection, Context, Event, Extension,
-                    ExtensionCollection, logging)
+from .models import (
+    Client,
+    DMChannel,
+    GroupChannel,
+    Guild,
+    TextChannel,
+    User,
+    VoiceChannel,
+)
+from .utils import (
+    Command,
+    CommandCollection,
+    Context,
+    Event,
+    Extension,
+    ExtensionCollection,
+    logging,
+)
 
 if TYPE_CHECKING:
     from .api.gateway import gateway
@@ -28,19 +42,31 @@ log = logging.getLogger("Bot")
 
 
 class Bot:
+    """Bot instance as entry point to interact with the bot
+
+    Args:
+        debug (bool): Whether to start the bot in debug mode, defaults to False.
+        prefixes (list[str]): Prefixes for the bot, defaults to s!.
+        inbuilt_help (bool): Whether the inbuilt help command should be enabled, defaults to True.
+        userbot (bool): Whether the bot should be a userbot rather than selfbot, defaults to False.
+        eval (bool): Whether to have the eval command as default, defaults to False.
+    """
+
     def __init__(
         self,
         debug: bool = False,
-        prefixes: list = ["s!"],
-        inbuilt_help=True,
-        userbot=False,
-        eval=False,
+        prefixes: list[str] = ["s!"],
+        inbuilt_help: bool = True,
+        userbot: bool = False,
+        eval: bool = False,
     ) -> None:
         self.inbuilt_help: bool = inbuilt_help
         self.debug: bool = debug
         self.token = None
         self.http: http = http(debug)
         self.t1: float = time.perf_counter()
+        self.session_id = None
+        self.resume_url = None
         self.gateway: gateway = gateway(self.http, self.debug)
         self._events = defaultdict(list)
         self.commands = CommandCollection()

@@ -4,6 +4,7 @@ import asyncio
 import random
 from base64 import b64encode
 from traceback import format_exception
+from typing import TYPE_CHECKING
 
 import aiohttp
 from aiohttp import ClientSession
@@ -143,6 +144,7 @@ class http:
                                 f"Attempted to send request to URL: {url} PAYLOAD: {args} {kwargs}"
                             )
                         log.error(f"{json} -- {resp.status}")
+                        break
 
                     elif resp.status == 403:
                         json = await resp.json()
@@ -174,10 +176,18 @@ class http:
                         try:
                             json = await resp.json()
                             log.error(f"Error Response: {json}")
+                            break
                         except Exception as e:
                             error = "".join(format_exception(e, e, e.__traceback__))
                             log.error(f"Unable to log response: \n{error}")
-                        log.error(f"{json} -- {resp.status}")
+                            break
+                        try:
+                            text = await resp.text()
+                            log.error(f"{text} -- {resp.status}")
+                            break
+                        except:
+                            log.error(f"{resp.status}")
+                            break
         try:
             if resp.headers["set-cookie"]:
                 dcf = resp.headers["set-cookie"].split("__dcfduid=")[0].split(";")[0]

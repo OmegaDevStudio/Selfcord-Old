@@ -23,6 +23,9 @@ class Client:
     def __str__(self) -> str:
         return f"""{self.name}#{self.discriminator}"""
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def _update(self, data):
         """Updater method intended to create the attributes for the object
 

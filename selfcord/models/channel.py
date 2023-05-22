@@ -130,7 +130,7 @@ class Messageable:
             - tts(bool) : Specify whether message is text-to-speech or not
 
         Returns:
-            No return value.
+            Message object.
         """
         if hasattr(self, "guild_id"):
             resp = await self.http.request(
@@ -166,7 +166,7 @@ class Messageable:
             tts (bool, optional): Specify whether message is text-to-speech or not. Defaults to False.
 
         Returns:
-            No return value.
+            Message object.
         """
         if hasattr(self, "guild_id"):
             resp = await self.http.request(
@@ -296,6 +296,9 @@ class TextChannel(Messageable):
     def __str__(self) -> str:
         return f"{self.name}"
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def _update(self, data: dict):
         """Updater method intended to create the attributes for the object
 
@@ -413,6 +416,9 @@ class VoiceChannel(Voiceable, Messageable):
     def __str__(self) -> str:
         return f"{self.name}"
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def _update(self, data: dict):
         """Updater method intended to create the attributes for the object
 
@@ -480,6 +486,9 @@ class Category:
     def __str__(self) -> str:
         return f"{self.name}"
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def _update(self, data: dict):
         """Updater method intended to create the attributes for the object
 
@@ -509,6 +518,9 @@ class DMChannel(Voiceable, Messageable):
 
     def __str__(self) -> str:
         return f"{self.recipient}"
+
+    def __eq__(self, other):
+        return self.id == other.id
 
     def _update(self, data: dict):
         """Updater method intended to create the attributes for the object
@@ -541,6 +553,9 @@ class GroupChannel(Voiceable, Messageable):
 
     def __str__(self) -> str:
         return f"{self.name}"
+
+    def __eq__(self, other):
+        return self.id == other.id
 
     def _update(self, data: dict):
         """Updater method intended to create the attributes for the object

@@ -344,7 +344,7 @@ class Context:
         for extension in self.bot.extensions:
             for command in extension.commands:
                 for alias in command.aliases:
-                    if self.content.startswith(self.prefix + alias):
+                    if self.content.lower().split(" ")[0] == self.prefix + alias:
                         self.extension = extension.ext
                         return command
         return None

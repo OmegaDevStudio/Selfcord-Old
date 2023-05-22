@@ -18,6 +18,9 @@ class Emoji:
     def __str__(self) -> str:
         return f"{self.name}"
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def _update(self, data: dict):
         """Updater method intended to create the attributes for the object
 

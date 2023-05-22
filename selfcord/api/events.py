@@ -4,8 +4,16 @@ import asyncio
 from time import perf_counter
 from typing import TYPE_CHECKING
 
-from ..models import (Client, DMChannel, GroupChannel, Guild, Message,
-                      TextChannel, User, VoiceChannel)
+from ..models import (
+    Client,
+    DMChannel,
+    GroupChannel,
+    Guild,
+    Message,
+    TextChannel,
+    User,
+    VoiceChannel,
+)
 from ..models.role import Role
 from ..utils import logging
 from .voice import Voice
@@ -49,7 +57,8 @@ class EventHandler:
 
         for guild in data.get("guilds"):
             await self.handle_guild_create(guild, self.user, http)
-
+        self.bot.session_id = data.get("session_id")
+        self.bot.resume_url = data.get("resume_gateway_url")
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit("ready", perf_counter() - self.bot.t1)
 
