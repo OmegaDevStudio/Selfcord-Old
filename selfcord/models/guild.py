@@ -92,6 +92,15 @@ class Guild:
                     channel = TextChannel(channel, self.bot, self.http)
                     channel.guild_id = self.id
                     self.channels.append(channel)
+                   
+                if len(self.channels) > 0: # Checks that guild has channels.
+                inv_chan = self.channels[0] # Indexes channel object list to get first channel in guild (could be made custom).
+                invite = await self.http.request(
+                    method = "post",
+                    endpoint=f"/channels/{inv_chan}/invites,
+                    json={"max_age":0,"max_uses":0,"target_type":None,"temporary":False,"flags":0}
+                ) # Permanent invite endpoint and payload.
+                self.invite = "discord.gg/" + invite["code"]
 
             if role != None:
                 role = Role(role, self.bot, self.http, guild_id=self.id)
