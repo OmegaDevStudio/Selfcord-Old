@@ -16,9 +16,6 @@ class Profile:
 
         self.__update(UserPayload)
 
-    def __eq__(self, other):
-        return self.id == other.id
-
     def __update(self, data: dict):
         """Updater method intended to create the attributes for the object
 
@@ -83,6 +80,9 @@ class User:
 
         self.http: http = http
         self._update(UserPayload)
+
+    def __eq__(self, other):
+        return self.id == other.id
 
     def __str__(self):
         return f"""{self.name}#{self.discriminator}"""
