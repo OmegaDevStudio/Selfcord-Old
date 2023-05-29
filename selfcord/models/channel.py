@@ -399,6 +399,22 @@ class TextChannel(Messageable):
         webhook = Webhook(data, self.bot, http=self.http)
         self.webhooks.append(webhook)
         return webhook
+    
+    async def create_invite(self, max_age: int = 0, max_uses: int = 0) -> str:
+        """
+        Creates an invite in the specified channel
+
+        Args:
+            max_age (int, optional) Seconds to invite expiration. Defaults to 0 (infinite).
+            max_uses (int, optional) Maximum uses to invite expiration. Defaults to 0 (infinite).
+        
+        Returns:
+            invite (str): Returns the channel invite link
+        """
+        data = await self.http.request(
+            method="post", endpoint=f"/channels/{self.id}/invites", json={"max_age":max_age,"max_uses":max_uses,"target_type":None,"temporary":False,"flags":0}
+        )
+        return "https://discord.gg/" + data["code"]
 
 
 class VoiceChannel(Voiceable, Messageable):
@@ -472,6 +488,21 @@ class VoiceChannel(Voiceable, Messageable):
         self.webhooks.append(webhook)
         return webhook
 
+    async def create_invite(self, max_age: int = 0, max_uses: int = 0) -> str:
+            """
+            Creates an invite in the specified channel
+
+            Args:
+                max_age (int, optional) Seconds to invite expiration. Defaults to 0 (infinite).
+                max_uses (int, optional) Maximum uses to invite expiration. Defaults to 0 (infinite).
+            
+            Returns:
+                invite (str): Returns the channel invite link
+            """
+            data = await self.http.request(
+                method="post", endpoint=f"/channels/{self.id}/invites", json={"max_age":max_age,"max_uses":max_uses,"target_type":None,"temporary":False,"flags":0}
+            )
+            return "https://discord.gg/" + data["code"]
 
 class Category:
     """Category Object"""
@@ -577,3 +608,18 @@ class GroupChannel(Voiceable, Messageable):
             method="delete", endpoint=f"/channels/{self.id}?silent=true"
         )
         del self
+    
+    async def create_invite(self) -> str:
+        """
+        Creates an invite in the specified group channel
+
+        Args:
+            None
+        
+        Returns:
+            invite (str): Returns the channel invite link
+        """
+        data = await self.http.request(
+            method="post", endpoint=f"/channels/{self.id}/invites", json={"max_age":86400}
+        )
+        return "https://discord.gg/" + data["code"]
