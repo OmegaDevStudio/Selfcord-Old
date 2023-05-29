@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import time
 from time import perf_counter
 from typing import TYPE_CHECKING
 
@@ -114,6 +115,7 @@ class EventHandler:
         id = data.get("id")
         for message in self.user.messages:
             if message.id == id:
+                setattr(message, "deleted_time", time.time())
                 await self.bot.emit("message_delete", message)
                 self.user.deleted_messages.append(message)
                 self.user.messages.remove(message)
@@ -135,6 +137,7 @@ class EventHandler:
                     self.guild_id = data.get("guild_id")
                     self.channel = None
                     self.guild = None
+                    self.deleted_time = time.time()
 
             message = deleted_message(data)
             await self.bot.emit("message_delete", message)

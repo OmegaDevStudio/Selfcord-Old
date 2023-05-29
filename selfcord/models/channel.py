@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import time
 from traceback import format_exception
 from typing import TYPE_CHECKING
 

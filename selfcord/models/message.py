@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import time
 import urllib
 
 from .user import User
@@ -46,7 +47,7 @@ class Message:
         self.embeds = data.get("embeds")
         self.content = data.get("content")
         self.components = data.get("components")
-
+        self.timestamp = time.time()
         self.channel_id = data.get("channel_id")
 
         attachments = data.get("attachments")
