@@ -5,16 +5,8 @@ import time
 from time import perf_counter
 from typing import TYPE_CHECKING
 
-from ..models import (
-    Client,
-    DMChannel,
-    GroupChannel,
-    Guild,
-    Message,
-    TextChannel,
-    User,
-    VoiceChannel,
-)
+from ..models import (Client, DMChannel, GroupChannel, Guild, Message,
+                      TextChannel, User, VoiceChannel)
 from ..models.role import Role
 from ..utils import logging
 from .voice import Voice
@@ -119,7 +111,7 @@ class EventHandler:
                 await self.bot.emit("message_delete", message)
                 self.user.deleted_messages.append(message)
                 self.user.messages.remove(message)
-        else:
+        else:  # type: ignore
 
             class deleted_message:
                 def __init__(self, data) -> None:
