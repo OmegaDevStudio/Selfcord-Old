@@ -6,6 +6,15 @@ import urllib
 from .user import User
 
 
+class Attachment:
+    def __init__(self, data) -> None:
+        self.proxy_url = data.get("proxy_url")
+        self.url = data.get("url")
+        self.name = data.get("filename")
+        self.size = data.get("size")
+        self.id = data.get("id")
+
+
 class Message:
     """Message Object"""
 
@@ -40,7 +49,8 @@ class Message:
 
         self.channel_id = data.get("channel_id")
 
-        self.attachments = data.get("attachments")
+        attachments = data.get("attachments")
+        self.attachments = [Attachment(atch) for atch in attachments]
         self.guild_id = data.get("guild_id")
 
         self.channel = self.bot.get_channel(self.channel_id)
