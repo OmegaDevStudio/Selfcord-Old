@@ -20,6 +20,9 @@ from .models import (
     DMChannel,
     GroupChannel,
     Guild,
+    InteractionUtil,
+    Search,
+    SlashCommand,
     TextChannel,
     User,
     VoiceChannel,
@@ -360,6 +363,46 @@ class Bot:
             error = "".join(format_exception(e, e, e.__traceback__))
             log.error(f"Failed to load extension events\n{error}")
 
+    async def trigger_slash(
+        self,
+        command: SlashCommand,
+        channel_id: str,
+        bot_id: str,
+        value: list[str] | None = None,
+        option: list[Option] | None = None,
+        guild_id: str | None = None,
+    ):
+        interaction = InteractionUtil(self, self.http)
+        await interaction.trigger_slash(
+            command, channel_id, bot_id, value, option, guild_id
+        )
+
+    async def interaction_search(
+        self,
+        query: str,
+        channel_id: str,
+        type: int = 1,
+        cursor: str = None,
+        bot_id: str = None,
+        command_id: str = None,
+    ) -> Search:
+        """Search for interactions within a specific guild channel, you can specify certain parameters
+
+        Args:
+            query (str): Query to search for
+            channel_id (str): Channel ID to search within
+            type (int): Type of command to search for
+            bot_id (str): Specify what bot specifically to search for
+            command_id (str): Specify a command id to search for, to view options
+
+        Returns:
+            Search object
+        """
+        interaction = InteractionUtil(self, self.http)
+        return await interaction.interaction_search(
+            query, channel_id, type, cursor, bot_id, command_id
+        )
+
     def get_channel(self, channel_id: str):
         """
         Function to help retrieve channel from bot cache
@@ -413,7 +456,10 @@ class Bot:
         self, name: str, icon_url: str = None, template: str = "2TffvPucqHkN"
     ):
         """Creates a guild"""
-        image = await self.http.encode_image(icon_url)
+        if icon_url is not None:
+            image = await self.http.encode_image(icon_url)
+        else:
+            image = None
         await self.http.request(
             method="post",
             endpoint=f"/guilds",

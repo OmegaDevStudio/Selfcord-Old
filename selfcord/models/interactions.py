@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import random
+import string
 import time
 from itertools import zip_longest
 from typing import TYPE_CHECKING
@@ -164,11 +166,12 @@ class InteractionUtil:
 
             data.update(dic)
         payload.update(data)
-
-
-class Interaction:
-    """Base interaction class to trigger and manipulate slash commands"""
-
-    def __init__(self, bot: Bot, http: http):
-        self.bot: Bot = bot
-        self.http: http = http
+        randstr = "".join(random.sample(string.ascii_letters + string.digits, k=16))
+        boundary_val = f"----WebkitFormBoundary{randstr}"
+        req_data = f'--{boundary_val}\r\nContent-Disposition: form-data; name="payload_json"\r\n\r\n{payload}\r\n--{boundary_val}'
+        await self.http.request(
+            "post",
+            "/interactions",
+            headers={"content-type": f"multipart/form-data; boundary={boundary_val}"},
+            data=req_data,
+        )

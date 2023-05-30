@@ -53,6 +53,9 @@ class Guild:
         self.id = data.get("id")
         self.name = data.get("name")
         self.icon = data.get("icon")
+        self.icon_url = (
+            f"https://cdn.discordapp.com/icons/{self.id}/{self.icon}.webp?size=96"
+        )
         self.region = data.get("region")
         self.splash = data.get("splash")
         self.mfa_level = data.get("mfa_level")
