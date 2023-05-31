@@ -21,6 +21,7 @@ from .models import (
     GroupChannel,
     Guild,
     InteractionUtil,
+    Option,
     Search,
     SlashCommand,
     TextChannel,

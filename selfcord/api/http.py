@@ -112,7 +112,13 @@ class http:
             "TE": "trailers",
         }
 
-        async with ClientSession(headers=headers) as session:
+        async with ClientSession(
+            timeout=aiohttp.ClientTimeout(
+                total=10000, connect=10000, sock_read=10000, sock_connect=10000
+            ),
+            connector=aiohttp.TCPConnector(limit=0, limit_per_host=0, ttl_dns_cache=300,)
+            headers=headers,
+        ) as session:
             request = getattr(session, method)
             while True:
                 async with request(url, *args, **kwargs) as resp:

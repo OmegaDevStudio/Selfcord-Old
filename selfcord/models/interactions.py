@@ -135,11 +135,12 @@ class InteractionUtil:
         option: list[Option] | None = None,
         guild_id: str | None = None,
     ):
+        nonce = int(time.time())
         payload = {
             "type": 2,
             "application_id": bot_id,
             "channel_id": channel_id,
-            "nonce": f"{int(time.time())}",
+            "nonce": nonce,
             "session_id": self.bot.session_id,
         }
         if guild_id is not None:
@@ -152,6 +153,7 @@ class InteractionUtil:
             "type": command.type,
             "options": [],
             "application_command": command.raw_data,
+            "attachments": [],
         }
         if option is not None:
             dic = {"options": []}
@@ -165,10 +167,10 @@ class InteractionUtil:
                 )
 
             data.update(dic)
-        payload.update(data)
+        payload.update({"data": data})
         randstr = "".join(random.sample(string.ascii_letters + string.digits, k=16))
         boundary_val = f"----WebkitFormBoundary{randstr}"
-        req_data = f'--{boundary_val}\r\nContent-Disposition: form-data; name="payload_json"\r\n\r\n{payload}\r\n--{boundary_val}'
+        req_data = f'--{boundary_val}\r\nContent-Disposition: form-data; name="payload_json"\r\n\r\n{payload}\r\n--{boundary_val}--'
         await self.http.request(
             "post",
             "/interactions",
