@@ -462,7 +462,6 @@ class gateway:
 
     async def reconnect(self, seq: int):
         """Reconnect to discord gateway"""
-        print(self.bot.resume_url)
         self.ws = await websockets.connect(
             f"{self.bot.resume_url}?encoding=json&v=9&compress=zlib-stream"
         )

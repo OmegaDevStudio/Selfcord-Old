@@ -7,8 +7,16 @@ from typing import TYPE_CHECKING
 
 from aioconsole import aprint
 
-from ..models import (Client, DMChannel, GroupChannel, Guild, Message,
-                      TextChannel, User, VoiceChannel)
+from ..models import (
+    Client,
+    DMChannel,
+    GroupChannel,
+    Guild,
+    Message,
+    TextChannel,
+    User,
+    VoiceChannel,
+)
 from ..models.role import Role
 from ..utils import logging
 from .voice import Voice
@@ -320,7 +328,6 @@ class EventHandler:
 
     async def handle_call_create(self, data: dict, user: Client, http: http):
         channel = self.bot.get_channel(data["channel_id"])
-        print(channel.name)
         region = data.get("region")
         if isinstance(channel, DMChannel):
             users = channel.recipient

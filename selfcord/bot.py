@@ -369,7 +369,7 @@ class Bot:
         command: SlashCommand,
         channel_id: str,
         bot_id: str,
-        value: list[str] | None = None,
+        value: list[str | None] | None = None,
         option: list[Option] | None = None,
         guild_id: str | None = None,
     ):

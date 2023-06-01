@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import random
 import string
 import time
@@ -131,7 +132,7 @@ class InteractionUtil:
         command: SlashCommand,
         channel_id: str,
         bot_id: str,
-        value: list[str] | None = None,
+        value: list[str | None] | None = None,
         option: list[Option] | None = None,
         guild_id: str | None = None,
     ):
@@ -155,22 +156,32 @@ class InteractionUtil:
             "application_command": command.raw_data,
             "attachments": [],
         }
+        if value is not None:
+            last_val = value[-1]
         if option is not None:
             dic = {"options": []}
-            for opt, value in zip_longest(option, value):
-                dic["options"].append(
-                    {
-                        "name": opt.name,
-                        "type": opt.type,
-                        "value": value,
-                    }
-                )
+            last_opt = option[-1]
+            for index, (opt, value) in enumerate(zip_longest(option, value)):
+                if index == 0:
+                    if value is None:
+                        dic["options"].append(
+                            {"name": opt.name, "type": opt.type, "options": []}
+                        )
+                    else:
+                        dic["options"].append(
+                            {"name": opt.name, "type": opt.type, "value": value}
+                        )
+                elif value is not None:
+                    for opten in dic["options"]:
+                        opten["options"].append(
+                            {"name": opt.name, "type": opt.type, "value": value}
+                        )
 
             data.update(dic)
         payload.update({"data": data})
         randstr = "".join(random.sample(string.ascii_letters + string.digits, k=16))
         boundary_val = f"----WebkitFormBoundary{randstr}"
-        req_data = f'--{boundary_val}\r\nContent-Disposition: form-data; name="payload_json"\r\n\r\n{payload}\r\n--{boundary_val}--'
+        req_data = f'--{boundary_val}\r\nContent-Disposition: form-data; name="payload_json"\r\n\r\n{json.dumps(payload)}\r\n--{boundary_val}--'
         await self.http.request(
             "post",
             "/interactions",
