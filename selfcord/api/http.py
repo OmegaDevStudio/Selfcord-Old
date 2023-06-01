@@ -116,7 +116,9 @@ class http:
             timeout=aiohttp.ClientTimeout(
                 total=10000, connect=10000, sock_read=10000, sock_connect=10000
             ),
-            connector=aiohttp.TCPConnector(limit=0, limit_per_host=0, ttl_dns_cache=300,)
+            connector=aiohttp.TCPConnector(
+                limit=0, limit_per_host=0, ttl_dns_cache=300
+            ),
             headers=headers,
         ) as session:
             request = getattr(session, method)

@@ -5,6 +5,8 @@ import time
 from time import perf_counter
 from typing import TYPE_CHECKING
 
+from aioconsole import aprint
+
 from ..models import (Client, DMChannel, GroupChannel, Guild, Message,
                       TextChannel, User, VoiceChannel)
 from ..models.role import Role
@@ -305,6 +307,31 @@ class EventHandler:
                         await self.bot.emit("role_delete", role)
                         guild.roles.remove(role)
                         return
+
+    async def handle_call_update(self, data: dict, user: Client, http: http):
+        channel = self.bot.get_channel(data["channel_id"])
+        region = data.get("region")
+        if isinstance(channel, DMChannel):
+            users = channel.recipient
+        elif isinstance(channel, GroupChannel):
+            users = channel.recipients
+
+        await self.bot.emit("call_update", channel, users, region)
+
+    async def handle_call_create(self, data: dict, user: Client, http: http):
+        channel = self.bot.get_channel(data["channel_id"])
+        print(channel.name)
+        region = data.get("region")
+        if isinstance(channel, DMChannel):
+            users = channel.recipient
+        elif isinstance(channel, GroupChannel):
+            users = channel.recipients
+
+        await self.bot.emit("call_create", channel, users, region)
+
+    async def handle_call_delete(self, data: dict, user: Client, http: http):
+        channel = self.bot.get_channel(data["channel_id"])
+        await self.bot.emit("call_delete", channel)
 
     async def handle_voice_state_update(self, data: dict, user: Client, http: http):
         """Handles the voice state updating
