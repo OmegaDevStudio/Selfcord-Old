@@ -24,37 +24,48 @@ class Messageable:
         self.http: http = http
         self.bot: Bot = bot
 
-    async def history(self) -> list[Message] | None:
+    async def history(self, amount: int = 100) -> list[Message] | None:
         """
         Get channel message history.
 
         Args:
-            No arguments required
+            amount(int) : Amount of messages to gather. Default is 100.
 
         Returns:
             messages(list) : List of messages from the channel.
             None : If client does not have view permission for the channel or no data found
         """
         messages = []
-        data = await self.http.request(
-            method="get", endpoint=f"/channels/{self.id}/messages?limit=100"
-        )
+        if amount >= 100:
+            data = await self.http.request(
+                method="get", endpoint=f"/channels/{self.id}/messages?limit=100"
+            )
+        else:
+            data = await self.http.request(
+                method="get", endpoint=f"/channels/{self.id}/messages?limit={amount + 5}"
+            )
+
         if data is None:
             return None
 
         for msg in data:
             messages.append(Message(msg, self.bot, self.http))
         while True:
+            
+
             data = await self.http.request(
                 method="get",
                 endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}",
             )
+            
             if len(data) > 0:
                 for msg in data:
                     messages.append(Message(msg, self.bot, self.http))
             else:
                 break
-
+            if len(messages) >= amount:
+                break
+            
         return messages
 
     async def purge(self, amount: int = 0) -> None:
@@ -67,12 +78,14 @@ class Messageable:
         Returns:
             No return value
         """
-        messages = await self.history()
+        messages = await self.history(amount)
+        if messages is None:
+            return
         msgs = []
         for msg in messages:
             if str(msg.author.id) == str(self.bot.user.id):
                 msgs.append(msg)
-
+        
         if amount != 0:
             for i in range(0, len(msgs[:amount]), 3):
                 await asyncio.gather(
@@ -81,22 +94,20 @@ class Messageable:
                         for message in msgs[:amount][i : i + 3]
                     )
                 )
-        else:
-            for i in range(0, len(msgs), 3):
-                await asyncio.gather(
-                    *(
-                        asyncio.create_task(message.delete())
-                        for message in msgs[i : i + 3]
-                    )
-                )
+                await asyncio.sleep(0.3)
+            return
 
-    #            for i in range(0, len(msgs[:amount]), 2):
-    #                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[:amount][i:i + 2]))
-    #                await asyncio.sleep(0.2)
-    #        else:
-    #            for i in range(0, len(msgs), 2):
-    #                await asyncio.gather(*(asyncio.create_task(message.delete()) for message in msgs[i:i + 2]))
-    #                await asyncio.sleep(0.2)
+            
+        for i in range(0, len(msgs), 3):
+            await asyncio.gather(
+                *(
+                    asyncio.create_task(message.delete())
+                    for message in msgs[i : i + 3]
+                )
+            )
+            await asyncio.sleep(0.3)
+
+
 
     async def spam(self, amount: int, content: str, tts=False) -> None:
         """
