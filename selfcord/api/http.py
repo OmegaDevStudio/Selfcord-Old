@@ -125,7 +125,7 @@ class http:
             while True:
                 async with request(url, *args, **kwargs) as resp:
                     if self.debug:
-                        log.debug(f"Sent Request URL: {url} Payload: {args} {kwargs}")
+                        log.debug(f"Sent Request Method: {method} URL: {url} Payload: {args} {kwargs}")
 
                     if resp.status == 429:
                         try:
@@ -147,10 +147,6 @@ class http:
 
                     elif resp.status == 401:
                         json = await resp.json()
-                        if self.debug:
-                            log.info(
-                                f"Attempted to send request to URL: {url} PAYLOAD: {args} {kwargs}"
-                            )
                         log.error(f"{json} -- {resp.status}")
                         break
 
