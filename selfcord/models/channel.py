@@ -74,7 +74,7 @@ class Messageable:
                 msgs.append(msg)
 
         if amount != 0:
-            for i in range(0, len(msgs[:amount]), 3):
+            for i in range(0, len(reversed(msgs[:amount])), 3):
                 await asyncio.gather(
                     *(
                         asyncio.create_task(message.delete())
@@ -82,7 +82,7 @@ class Messageable:
                     )
                 )
         else:
-            for i in range(0, len(msgs), 3):
+            for i in range(0, len(reversed(msgs)), 3):
                 await asyncio.gather(
                     *(
                         asyncio.create_task(message.delete())

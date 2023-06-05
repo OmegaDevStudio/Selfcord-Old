@@ -322,6 +322,7 @@ class gateway:
         self.latency = float("inf")
         self.resume_url = None
         self.alive = False
+        self.fired = False
 
     async def recv_msg(self):
         """
@@ -334,7 +335,12 @@ class gateway:
             return
 
         if item:
-            item = self.zlib.decompress(item)
+            if self.fired:
+                log.info(f"{item}")
+            try:
+                item = self.zlib.decompress(item)
+            except Exception:
+                pass
             item = json.loads(item)  # Get json message from gateway
 
             op = item.get("op")  # Op code
@@ -342,7 +348,9 @@ class gateway:
             event = item.get("t")  # The event
             s = item.get("s")
             if op == self.RECONNECT:
+                await self.close()
                 await self.reconnect(s)
+                self.fired = True
                 log.error("Reconnect websocket")
 
             elif op == self.INVALIDATE_SESSION:

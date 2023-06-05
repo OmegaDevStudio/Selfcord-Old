@@ -461,7 +461,7 @@ class Bot:
             image = await self.http.encode_image(icon_url)
         else:
             image = None
-        await self.http.request(
+        json = await self.http.request(
             method="post",
             endpoint=f"/guilds",
             headers={
@@ -475,6 +475,7 @@ class Bot:
             log.info(
                 f"Created Guild NAME: {name} TEMPLATE: {template} ICON: {icon_url}"
             )
+        return Guild(json, self, self.http)
 
     async def add_friend(self, user_id: str):
         """
