@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import time
 import urllib
+from itertools import zip_longest
 
 from .user import User
 
@@ -40,7 +41,6 @@ class Message:
         """
         self.tts = data.get("tts")
         self.referenced_message = data.get("referenced_message")
-        self.mentions = data.get("mentions")
         self.author = User(data.get("author"), self.bot, self.http)
         self.id = data.get("id")
         self.flags = data.get("flags")
@@ -51,7 +51,13 @@ class Message:
         self.channel_id = data.get("channel_id")
 
         attachments = data.get("attachments")
-        self.attachments = [Attachment(atch) for atch in attachments]
+        self.attachments = []
+        self.mentions = []
+        for mention, atch in zip_longest(data.get("mentions"), attachments):
+            if atch is not None:
+                self.attachments.append(Attachment(atch))
+            if mention is not None:
+                self.mentions.append(User(mention, self.bot, self.http))
         self.guild_id = data.get("guild_id")
 
         self.channel = self.bot.get_channel(self.channel_id)

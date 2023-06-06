@@ -146,7 +146,6 @@ class InteractionUtil:
         }
         if guild_id is not None:
             payload.update({"guild_id": guild_id})
-
         data = {
             "version": command.version,
             "id": command.id,
@@ -156,11 +155,8 @@ class InteractionUtil:
             "application_command": command.raw_data,
             "attachments": [],
         }
-        if value is not None:
-            last_val = value[-1]
         if option is not None:
             dic = {"options": []}
-            last_opt = option[-1]
             for index, (opt, value) in enumerate(zip_longest(option, value)):
                 if index == 0:
                     if value is None:
