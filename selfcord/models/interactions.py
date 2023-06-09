@@ -46,8 +46,7 @@ class Option:
 
     def __iter__(self):
         if self.options is not None:
-            for option in self.options:
-                yield option
+            yield from self.options
         else:
             yield None
 
@@ -69,8 +68,7 @@ class SlashCommand:
 
     def __iter__(self):
         if self.options is not None:
-            for option in self.options:
-                yield option
+            yield from self.options
         else:
             yield None
 
@@ -145,7 +143,7 @@ class InteractionUtil:
             "session_id": self.bot.session_id,
         }
         if guild_id is not None:
-            payload.update({"guild_id": guild_id})
+            payload["guild_id"] = guild_id
         data = {
             "version": command.version,
             "id": command.id,
@@ -173,8 +171,8 @@ class InteractionUtil:
                             {"name": opt.name, "type": opt.type, "value": value}
                         )
 
-            data.update(dic)
-        payload.update({"data": data})
+            data |= dic
+        payload["data"] = data
         randstr = "".join(random.sample(string.ascii_letters + string.digits, k=16))
         boundary_val = f"----WebkitFormBoundary{randstr}"
         req_data = f'--{boundary_val}\r\nContent-Disposition: form-data; name="payload_json"\r\n\r\n{json.dumps(payload)}\r\n--{boundary_val}--'

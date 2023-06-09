@@ -93,15 +93,15 @@ class EventHandler:
 
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit("message", message)
-        if not self.bot.userbot:
-            if message.author.id == self.bot.user.id:
-                for prefix in self.bot.prefixes:
-                    # Attempts to invoke the command if has prefix and from the user
-                    if message.content.startswith(prefix):
-                        await self.bot.process_commands(message)
-        else:
+        if self.bot.userbot:
             for prefix in self.bot.prefixes:
                 # Attempts to invoke the command if has prefix
+                if message.content.startswith(prefix):
+                    await self.bot.process_commands(message)
+
+        elif message.author.id == self.bot.user.id:
+            for prefix in self.bot.prefixes:
+                # Attempts to invoke the command if has prefix and from the user
                 if message.content.startswith(prefix):
                     await self.bot.process_commands(message)
 
@@ -153,32 +153,29 @@ class EventHandler:
             http (http): HTTP instance
         """
         self.user = user
-        if channel.get("type") == 0:
+        if channel.get("type") == 0 or channel.get("type") not in [1, 2, 3]:
             id = channel.get("guild_id")
             for guild in self.user.guilds:
                 if guild.id == id:
                     channel = TextChannel(channel, self.bot, self.http)
                     guild.channels.append(channel)
 
-        elif channel.get("type") == 1:
+        elif channel.get("type") != 0 and channel.get("type") == 1:
             self.user.private_channels.append(DMChannel(channel, self.bot, http))
 
-        elif channel.get("type") == 2:
+        elif (
+            channel.get("type") != 0
+            and channel.get("type") != 1
+            and channel.get("type") == 2
+        ):
             id = channel.get("guild_id")
             for guild in self.user.guilds:
                 if guild.id == id:
                     channel = VoiceChannel(channel, self.bot, self.http)
                     guild.channels.append(channel)
 
-        elif channel.get("type") == 3:
-            self.user.private_channels.append(GroupChannel(channel, self.bot, http))
-
         else:
-            id = channel.get("guild_id")
-            for guild in self.user.guilds:
-                if guild.id == id:
-                    channel = TextChannel(channel, self.bot, self.http)
-                    guild.channels.append(channel)
+            self.user.private_channels.append(GroupChannel(channel, self.bot, http))
 
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit("channel_create", channel)
@@ -359,24 +356,24 @@ class EventHandler:
             user (Client): The client instance
             http (http): HTTP instance
         """
-        PLAYING = 0
-        STREAMING = 1
         LISTENING = 2
-        WATCHING = 3
         CUSTOM = 4
 
         last_modified = data.get("last_modified")
         status = data.get("status")
         check = data.get("user").get("username")
-        if check != None:
-            user = User(data.get("user"), self.bot, self.http)
-        else:
+        if check is None:
             user = data.get("user").get("id")
 
+        else:
+            user = User(data.get("user"), self.bot, self.http)
         client_status = data.get("client_status")
         activity = data.get("activities")
         activities = []
         if activity != None:
+            PLAYING = 0
+            STREAMING = 1
+            WATCHING = 3
             for activity in activity:
                 type = activity.get("type")
                 if type == PLAYING:
@@ -403,10 +400,10 @@ class EventHandler:
         """
         self.token = data["token"]
         self.endpoint = data["endpoint"]
-        if data["guild_id"] != None:
-            self.server_id = data["guild_id"]
-        else:
+        if data["guild_id"] is None:
             self.server_id = data["channel_id"]
+        else:
+            self.server_id = data["guild_id"]
         await asyncio.sleep(1)
         self.voice = Voice(
             self.session_id,
