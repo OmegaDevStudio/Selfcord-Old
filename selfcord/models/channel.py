@@ -35,7 +35,6 @@ class Messageable:
             messages(list) : List of messages from the channel.
             None : If client does not have view permission for the channel or no data found
         """
-        messages = []
         if amount >= 100:
             data = await self.http.request(
                 method="get", endpoint=f"/channels/{self.id}/messages?limit=100"
@@ -48,8 +47,7 @@ class Messageable:
         if data is None:
             return None
 
-        for msg in data:
-            messages.append(Message(msg, self.bot, self.http))
+        messages = [Message(msg, self.bot, self.http) for msg in data]
         while True:
             
 
@@ -57,15 +55,13 @@ class Messageable:
                 method="get",
                 endpoint=f"/channels/{self.id}/messages?limit=100&before={data[-1]['id']}",
             )
-            
-            if len(data) > 0:
-                for msg in data:
-                    messages.append(Message(msg, self.bot, self.http))
-            else:
+
+            if len(data) <= 0:
                 break
+            messages.extend(Message(msg, self.bot, self.http) for msg in data)
             if len(messages) >= amount:
                 break
-            
+
         return messages
 
     async def purge(self, amount: int = 0) -> None:
@@ -81,11 +77,7 @@ class Messageable:
         messages = await self.history(amount)
         if messages is None:
             return
-        msgs = []
-        for msg in messages:
-            if str(msg.author.id) == str(self.bot.user.id):
-                msgs.append(msg)
-        
+        msgs = [msg for msg in messages if str(msg.author.id) == str(self.bot.user.id)]
         if amount != 0:
             for i in range(0, len(msgs[:amount]), 3):
                 await asyncio.gather(
@@ -97,7 +89,7 @@ class Messageable:
                 await asyncio.sleep(0.3)
             return
 
-            
+
         for i in range(0, len(msgs), 3):
             await asyncio.gather(
                 *(
@@ -126,7 +118,7 @@ class Messageable:
             await asyncio.gather(
                 *(
                     asyncio.create_task(self.send(tts=tts, content=content))
-                    for amoun in amount[i : i + 3]
+                    for _ in amount[i : i + 3]
                 )
             )
             await asyncio.sleep(0.3)

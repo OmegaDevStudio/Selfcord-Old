@@ -44,8 +44,7 @@ class ExtensionCollection:
         self.extensions = {}
 
     def __iter__(self):
-        for cmd in self.extensions.values():
-            yield cmd
+        yield from self.extensions.values()
 
     def _is_already_registered(self, ext: Extension) -> bool:
         """Whether the specified Extension is already registered
@@ -57,10 +56,7 @@ class ExtensionCollection:
             bool: True or False
         """
         for extension in self.extensions.values():
-            if ext.name == extension:
-                return True
-            else:
-                return False
+            return ext.name == extension
         else:
             return False
 
@@ -75,7 +71,7 @@ class ExtensionCollection:
             ValueError: A name or alias is already registered
         """
         if not isinstance(ext, Extension):
-            log.error(f"ext is not an Extension or subclass of Extension")
+            log.error("ext is not an Extension or subclass of Extension")
         if self._is_already_registered(ext):
             log.error("Name or Alias is already registered")
         # Add extension to the collection
@@ -122,8 +118,7 @@ class CommandCollection:
         return len(self.commands)
 
     def __iter__(self):
-        for cmd in self.commands.values():
-            yield cmd
+        yield from self.commands.values()
 
     def _is_already_registered(self, cmd: Command) -> bool:
         """Whether the specified Command is already registered
@@ -136,10 +131,7 @@ class CommandCollection:
         """
         for command in self.commands.values():
             for alias in cmd.aliases:
-                if alias in command.aliases:
-                    return True
-                else:
-                    return False
+                return alias in command.aliases
             else:
                 return False
         else:
@@ -183,8 +175,7 @@ class CommandCollection:
         Yields:
             Generator: [Command]
         """
-        for cmd in self.recent_commands.values():
-            yield cmd
+        yield from self.recent_commands.values()
 
     def copy(self):
         """Copy commands from recents to main collection"""
@@ -376,7 +367,7 @@ class Context:
         Returns:
             str: String of content
         """
-        if self.alias == None:
+        if self.alias is None:
             return
         try:
             cut = len(self.prefix + self.alias)
@@ -416,22 +407,21 @@ class Context:
 
         if self.command.signature is not None:
             signature = self.command.signature
-        if self.command_content != "":
-            splitted = self.command_content.split(" ")[1:]
-
-            for index, item in enumerate(splitted):
-                user_regex = re.findall(r"<@[0-9]{18,19}>", item)
-                if len(user_regex) > 0:
-                    x = re.findall(r"[0-9]{18,19}", item)
-                    if len(x) > 0:
-                        val = x[0]
-                        splitted[index] = val
-                break
-        else:
+        if self.command_content == "":
             return args, kwargs
 
+        splitted = self.command_content.split(" ")[1:]
+
+        for index, item in enumerate(splitted):
+            user_regex = re.findall(r"<@[0-9]{18,19}>", item)
+            if len(user_regex) > 0:
+                x = re.findall(r"[0-9]{18,19}", item)
+                if len(x) > 0:
+                    val = x[0]
+                    splitted[index] = val
+            break
         for index, (name, param) in enumerate(signature):
-            if name == "ctx" or name == "self":
+            if name in ["ctx", "self"]:
                 continue
 
             if param.kind is param.POSITIONAL_OR_KEYWORD:

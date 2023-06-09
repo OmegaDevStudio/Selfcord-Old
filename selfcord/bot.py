@@ -98,10 +98,8 @@ class Bot:
                 log.debug("Started Bot")
                 log.info(f"Logged in as {self.user}")
 
-        try:
+        with contextlib.suppress(KeyboardInterrupt):
             asyncio.run(runner())
-        except KeyboardInterrupt:
-            pass
 
     @property
     def latency(self):
@@ -128,7 +126,7 @@ class Bot:
                     for ext in self.extensions:
                         msg += f"[ {ext.name} ] : [ {ext.description} ]\n"
 
-                    msg += f"```"
+                    msg += "```"
                     return await ctx.reply(f"{msg}")
 
                 else:
@@ -142,7 +140,7 @@ class Bot:
                                 if command.ext == ext.ext:
                                     msg += f". {command.name}: {command.description}\n"
 
-                            msg += f"```"
+                            msg += "```"
                             return await ctx.reply(f"{msg}")
                     else:
                         for cmd in self.commands:
@@ -156,12 +154,12 @@ class Bot:
                                 args = inspect.signature(cmd.func)
                                 msg += f"\n[ Example Usage ] :\n[ {self.prefixes[0]}{cmd.aliases[0]}"
                                 for arg in args.parameters.keys():
-                                    if arg == "self" or arg == "ctx":
+                                    if arg in ["self", "ctx"]:
                                         continue
                                     msg += f" <{arg}>"
-                                msg += f" ]"
+                                msg += " ]"
 
-                                msg += f"```"
+                                msg += "```"
                                 return await ctx.reply(f"{msg}")
                         for ext in self.extensions:
                             for cmd in ext.commands:
@@ -177,12 +175,12 @@ class Bot:
                                     args = inspect.signature(cmd.func)
                                     msg += f"\n[ Example Usage ] :\n[ {self.prefixes[0]}{cmd.aliases[0]}"
                                     for arg in args.parameters.keys():
-                                        if arg == "self" or arg == "ctx":
+                                        if arg in ["self", "ctx"]:
                                             continue
                                         msg += f" <{arg}>"
-                                    msg += f" ]"
+                                    msg += " ]"
 
-                                    msg += f"```"
+                                    msg += "```"
                                     return await ctx.reply(f"{msg}")
 
         if self.eval:
@@ -238,7 +236,7 @@ class Bot:
         Args:
             event (str): The event name
         """
-        on_event = "on_{}".format(event)
+        on_event = f"on_{event}"
 
         # try:
         if hasattr(self, on_event):
@@ -450,20 +448,16 @@ class Bot:
 
         data = await self.http.request(method="get", endpoint=f"/users/{user_id}")
 
-        user = User(data, bot=self, http=self.http)
-        return user
+        return User(data, bot=self, http=self.http)
 
     async def create_guild(
         self, name: str, icon_url: str = None, template: str = "2TffvPucqHkN"
     ):
         """Creates a guild"""
-        if icon_url is not None:
-            image = await self.http.encode_image(icon_url)
-        else:
-            image = None
+        image = None if icon_url is None else await self.http.encode_image(icon_url)
         json = await self.http.request(
             method="post",
-            endpoint=f"/guilds",
+            endpoint="/guilds",
             headers={
                 "origin": "https://discord.com",
                 "referer": "https://discord.com/channels/@me",
@@ -509,7 +503,7 @@ class Bot:
         if accent != None:
             fields["accent"] = accent
         await self.http.request(
-            method="patch", endpoint=f"/users/@me/profile", json=fields
+            method="patch", endpoint="/users/@me/profile", json=fields
         )
         if self.debug:
             log.debug("Finished Edit profile")

@@ -45,8 +45,8 @@ class Activity:
             dict[str, int]: Dict for the activity object for payload
         """
         type = 0
-        button_urls = [button for button in buttons.values()]
-        buttons: list = [button for button in buttons.keys()]
+        button_urls = list(buttons.values())
+        buttons: list = list(buttons.keys())
         req = requests.get(
             f"https://discordapp.com/api/oauth2/applications/{application_id}/assets"
         )
@@ -54,8 +54,8 @@ class Activity:
             if item["name"] == key:
                 key = item["id"]
 
-        if len(button_urls) == 0 or len(buttons) == 0:
-            payload = {
+        return (
+            {
                 "name": name,
                 "details": details,
                 "state": state,
@@ -66,8 +66,8 @@ class Activity:
                 "type": type,
                 "created_at": int(time.time()),
             }
-        else:
-            payload = {
+            if not button_urls or not buttons
+            else {
                 "name": name,
                 "details": details,
                 "type": type,
@@ -82,8 +82,7 @@ class Activity:
                 },
                 "created_at": int(time.time()),
             }
-
-        return payload
+        )
 
     @staticmethod
     def Stream(
@@ -112,8 +111,8 @@ class Activity:
             dict[str, int]: Dict for the activity object for payload
         """
         type = 1
-        button_urls = [button for button in buttons.values()]
-        buttons: list = [button for button in buttons.keys()]
+        button_urls = list(buttons.values())
+        buttons: list = list(buttons.keys())
         req = requests.get(
             f"https://discordapp.com/api/oauth2/applications/{application_id}/assets"
         )
@@ -121,8 +120,8 @@ class Activity:
             if item["name"] == key:
                 key = item["id"]
 
-        if len(button_urls) == 0 or len(buttons) == 0:
-            payload = {
+        return (
+            {
                 "name": name,
                 "details": details,
                 "type": type,
@@ -134,8 +133,8 @@ class Activity:
                 "created_at": int(time.time()),
                 "url": url,
             }
-        else:
-            payload = {
+            if not button_urls or not buttons
+            else {
                 "name": name,
                 "details": details,
                 "type": type,
@@ -151,8 +150,7 @@ class Activity:
                 },
                 "created_at": int(time.time()),
             }
-
-        return payload
+        )
 
     @staticmethod
     def Listen(
@@ -179,8 +177,8 @@ class Activity:
             dict[str, int]: Dict for the activity object for payload
         """
         type = 2
-        button_urls = [button for button in buttons.values()]
-        buttons: list = [button for button in buttons.keys()]
+        button_urls = list(buttons.values())
+        buttons: list = list(buttons.keys())
         req = requests.get(
             f"https://discordapp.com/api/oauth2/applications/{application_id}/assets"
         )
@@ -188,8 +186,8 @@ class Activity:
             if item["name"] == key:
                 key = item["id"]
 
-        if len(button_urls) == 0 or len(buttons) == 0:
-            payload = {
+        return (
+            {
                 "name": name,
                 "details": details,
                 "state": state,
@@ -200,8 +198,8 @@ class Activity:
                 "type": type,
                 "created_at": int(time.time()),
             }
-        else:
-            payload = {
+            if not button_urls or not buttons
+            else {
                 "name": name,
                 "details": details,
                 "type": type,
@@ -216,8 +214,7 @@ class Activity:
                 },
                 "created_at": int(time.time()),
             }
-
-        return payload
+        )
 
     @staticmethod
     def Watch(
@@ -245,8 +242,8 @@ class Activity:
         """
         type = 3
 
-        button_urls = [button for button in buttons.values()]
-        buttons: list = [button for button in buttons.keys()]
+        button_urls = list(buttons.values())
+        buttons: list = list(buttons.keys())
 
         req = requests.get(
             f"https://discordapp.com/api/oauth2/applications/{application_id}/assets"
@@ -255,8 +252,8 @@ class Activity:
             if item["name"] == key:
                 key = item["id"]
 
-        if len(button_urls) == 0 or len(buttons) == 0:
-            payload = {
+        return (
+            {
                 "name": name,
                 "details": details,
                 "state": state,
@@ -267,8 +264,8 @@ class Activity:
                 "type": type,
                 "created_at": int(time.time()),
             }
-        else:
-            payload = {
+            if not button_urls or not buttons
+            else {
                 "name": name,
                 "details": details,
                 "type": type,
@@ -283,8 +280,7 @@ class Activity:
                 },
                 "created_at": int(time.time()),
             }
-
-        return payload
+        )
 
 
 from typing import TYPE_CHECKING
@@ -383,7 +379,7 @@ class gateway:
                         return_exceptions=True,
                     )  # A background task is created to run the handler
                     for item in val:
-                        if item == None:
+                        if item is None:
                             break
                         else:
                             await self.bot.emit("error", item)
@@ -590,7 +586,7 @@ class gateway:
         if self.debug:
             log.debug("Initiated video call")
             log.info(f"Began video call to GUILD: {guild} and CHANNEL: {channel}")
-        if guild == None:
+        if guild is None:
             await self.http.request(
                 method="post",
                 endpoint=f"/channels/{channel}/call/ring",
@@ -621,7 +617,7 @@ class gateway:
         if self.debug:
             log.debug("Initiated call")
             log.info(f"Began call to GUILD: {guild} and CHANNEL: {channel}")
-        if guild == None:
+        if guild is None:
             await self.http.request(
                 method="post",
                 endpoint=f"/channels/{channel}/call/ring",
@@ -651,7 +647,7 @@ class gateway:
         if self.debug:
             log.debug("Initiated call")
             log.info(f"Began call to GUILD: {guild} and CHANNEL: {channel}")
-        if guild == None:
+        if guild is None:
             await self.http.request(
                 method="post",
                 endpoint=f"/channels/{channel}/call/ring",

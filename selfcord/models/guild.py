@@ -79,23 +79,17 @@ class Guild:
 
             if channel != None:
                 type = channel.get("type")
-                if type == self.TEXTCHANNEL:
+                if type == self.TEXTCHANNEL or type not in [
+                    self.VOICECHANNEL,
+                    self.CATEGORY,
+                ]:
                     channel = TextChannel(channel, self.bot, self.http)
-                    channel.guild_id = self.id
-                    self.channels.append(channel)
                 elif type == self.VOICECHANNEL:
                     channel = VoiceChannel(channel, self.bot, self.http)
-                    channel.guild_id = self.id
-                    self.channels.append(channel)
-                elif type == self.CATEGORY:
-                    channel = Category(channel, self.bot, self.http)
-                    channel.guild_id = self.id
-                    self.channels.append(channel)
                 else:
-                    channel = TextChannel(channel, self.bot, self.http)
-                    channel.guild_id = self.id
-                    self.channels.append(channel)
-
+                    channel = Category(channel, self.bot, self.http)
+                channel.guild_id = self.id
+                self.channels.append(channel)
             if role != None:
                 role = Role(role, self.bot, self.http, guild_id=self.id)
                 self.roles.append(role)
@@ -154,11 +148,9 @@ class Guild:
             name (str): Name of the channel
             parent_id (str, optional): ID of the category. Defaults to None.
         """
-        payload = {"name": name}
-        payload.update({"permission_overwrites": []})
-        payload.update({"type": 0})
+        payload = {"name": name, "permission_overwrites": [], "type": 0}
         if parent_id != None:
-            payload.update({"parent_id": parent_id})
+            payload["parent_id"] = parent_id
 
         channel = await self.http.request(
             method="post", endpoint=f"/guilds/{self.id}/channels", json=payload
