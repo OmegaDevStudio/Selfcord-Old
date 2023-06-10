@@ -65,12 +65,13 @@ class Guild:
         self.verification_level = data.get("verification_level")
         self.explicit_content_filter = data.get("explicit_content_filter")
         self.owner_id = data.get("owner_id")
-
+        members, channels, roles, emojis = (data.get("members") if data.get("members") is not None else [], data.get("channels") if data.get("channels") is not None else [],data.get("roles") if data.get("roles") is not None else [], data.get("emojis") if data.get("emojis") is not None else [])
+        
         for member, channel, role, emoji in zip_longest(
-            data.get("members"),
-            data.get("channels"),
-            data.get("roles"),
-            data.get("emojis"),
+            members,
+            channels,
+            roles,
+            emojis
         ):
             if member != None:
                 user = User(member, self.bot, self.http)

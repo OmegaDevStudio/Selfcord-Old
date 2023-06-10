@@ -95,7 +95,6 @@ class http:
             dict: Data, json data
         """
         url = self.base_url + endpoint
-
         headers = {
             "cookie": f"{self.cookie}",
             "authorization": self.token,
@@ -103,12 +102,16 @@ class http:
             "Content-Type": "application/json",
             "X-Super-Properties": self.xproperties,
             "X-Discord-Locale": "en-GB",
+            "X-context-properties": "eyJsb2NhdGlvbiI6Ikludml0ZSBCdXR0b24gRW1iZWQiLCJsb2NhdGlvbl9ndWlsZF9pZCI6bnVsbCwibG9jYXRpb25fY2hhbm5lbF9pZCI6IjEwOTkwOTMxODEyNTUxNDM1MjUiLCJsb2NhdGlvbl9jaGFubmVsX3R5cGUiOjEsImxvY2F0aW9uX21lc3NhZ2VfaWQiOiIxMTE2NTE0MDMyODk2MTgwMjU0In0=",
+            "connection": "keep-alive",
             "Sec-Fetch-Dest": "empty",
             "Sec-Fetch-Mode": "cors",
             "Sec-Fetch-Site": "same-origin",
             "origin": "https://discord.com",
+            "DNT": "1",
             "x-debug-options": "logGatewayEvents,logOverlayEvents,logAnalyticsEvents,bugReporterEnabled",
             "x-fingerprint": self.fingerprint,
+            "x-discord-timezone": "Europe/London",
             "TE": "trailers",
         }
 

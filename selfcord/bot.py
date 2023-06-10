@@ -15,28 +15,11 @@ import aiohttp
 from aioconsole import aexec
 
 from .api import Activity, gateway, http
-from .models import (
-    Client,
-    DMChannel,
-    GroupChannel,
-    Guild,
-    InteractionUtil,
-    Option,
-    Search,
-    SlashCommand,
-    TextChannel,
-    User,
-    VoiceChannel,
-)
-from .utils import (
-    Command,
-    CommandCollection,
-    Context,
-    Event,
-    Extension,
-    ExtensionCollection,
-    logging,
-)
+from .models import (Client, DMChannel, GroupChannel, Guild, InteractionUtil,
+                     Option, Search, SlashCommand, TextChannel, User,
+                     VoiceChannel)
+from .utils import (Command, CommandCollection, Context, Event, Extension,
+                    ExtensionCollection, logging)
 
 if TYPE_CHECKING:
     from .api.gateway import gateway
@@ -200,7 +183,7 @@ class Bot:
 
                 try:
                     with contextlib.redirect_stdout(io.StringIO()) as f:
-                        await aexec(code)
+                        await aexec(source=code, local=globals() )
                         result = f"```{f.getvalue()}\n```"
                 except Exception as e:
                     error = "".join(format_exception(e, e, e.__traceback__))
@@ -564,6 +547,21 @@ class Bot:
         else:
             log.error("Recipient ID not specified")
 
+    async def join_guild(self, code: str) -> Guild | None:
+        """Helper function to join guilds
+        
+        Args:
+            code (str): Invite Code
+        Returns:
+            Guild object | None
+        """
+        data = await self.http.request("post", f"/invites/{code}", json = {
+            "session_id": f"{self.session_id}"
+        }
+        )
+        if data is not None:
+            return Guild(data['guild'], self, self.http)
+        return None
     async def redeem_nitro(self, code: str):
         """Helper function to redeem nitro
 

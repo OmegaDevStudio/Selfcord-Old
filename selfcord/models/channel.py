@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import random
 from traceback import format_exception
 from typing import TYPE_CHECKING
 
@@ -23,6 +24,11 @@ class Messageable:
     def __init__(self, http: http, bot: Bot) -> None:
         self.http: http = http
         self.bot: Bot = bot
+
+    @property
+    def make_nonce(self):
+        """Generate pseudorandom number."""
+        return str(random.randint(0, 100000000))
 
     async def history(self, amount: int = 100) -> list[Message] | None:
         """
@@ -150,7 +156,7 @@ class Messageable:
                     "origin": "https://discord.com",
                     "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}",
                 },
-                json={"content": content, "tts": tts},
+                json={"content": content, "tts": tts, "nonce": f"{self.make_nonce}"},
             )
             resp.update({"guild_id": self.guild_id})
 
@@ -162,7 +168,7 @@ class Messageable:
                     "origin": "https://discord.com",
                     "referer": f"https://discord.com/channels/{self.id}",
                 },
-                json={"content": content, "tts": tts},
+                json={"content": content, "tts": tts, "nonce": f"{self.make_nonce}"},
             )
 
         return Message(resp, self.bot, self.http)
@@ -189,13 +195,10 @@ class Messageable:
                 json={
                     "content": content,
                     "tts": tts,
+                    "nonce": self.make_nonce,
                     "message_reference": {
                         "channel_id": f"{self.id}",
                         "message_id": f"{message.id}",
-                    },
-                    "allowed_mentions": {
-                        "parse": ["users", "roles", "everyone"],
-                        "replied_user": False,
                     },
                 },
             )
@@ -211,14 +214,11 @@ class Messageable:
                 json={
                     "content": content,
                     "tts": tts,
+                    "nonce": self.make_nonce,
                     "message_reference": {
                         "channel_id": f"{self.id}",
                         "message_id": f"{message.id}",
-                    },
-                    "allowed_mentions": {
-                        "parse": ["users", "roles", "everyone"],
-                        "replied_user": False,
-                    },
+                    }, 
                 },
             )
         return Message(resp, self.bot, self.http)
