@@ -473,6 +473,7 @@ class gateway:
         self.ws = await websockets.connect(
             f"{self.bot.resume_url}?encoding=json&v=9&compress=zlib-stream"
         )
+        self.alive = True
         payload = {
             "op": 6,
             "d": {"token": self.token, "session_id": self.bot.session_id, "seq": seq},
@@ -566,7 +567,7 @@ class gateway:
                 await self.bot.emit("error", error)
                 if self.debug:
                     log.error(f"Websocket Unexpectedly closed\n{error}")
-                await self.close()
+                # await self.close()
 
     async def video_call(self, channel: str, guild=None):
         """Initiates a discord video call
