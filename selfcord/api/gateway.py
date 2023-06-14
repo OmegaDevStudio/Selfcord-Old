@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import asyncio
 import json
-import os
 import time
 import zlib
 from traceback import format_exception
@@ -13,7 +12,6 @@ import websockets
 from selfcord.models.client import Client
 
 from ..utils import logging
-from .errors import ReconnectWebsocket
 from .events import EventHandler
 
 log = logging.getLogger("Gateway")
@@ -563,7 +561,7 @@ class gateway:
                 await self.bot.emit("error", error)
                 if self.debug:
                     log.error(f"Websocket Unexpectedly closed\n{error}")
-                # await self.close()
+                await self.close()
 
     async def video_call(self, channel: str, guild=None):
         """Initiates a discord video call
