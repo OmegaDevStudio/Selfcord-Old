@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import time
 import zlib
 from traceback import format_exception
@@ -12,6 +13,7 @@ import websockets
 from selfcord.models.client import Client
 
 from ..utils import logging
+from .errors import ReconnectWebsocket
 from .events import EventHandler
 
 log = logging.getLogger("Gateway")

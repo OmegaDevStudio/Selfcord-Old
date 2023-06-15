@@ -8,6 +8,51 @@ if TYPE_CHECKING:
     from ..api.http import http
     from ..bot import Bot
 
+class UserFlags:
+    FLAGS = {
+        "staff" : 1,
+        "partner" : 2,
+        "hypesquad" : 4,
+        "bug_hunter" : 8,
+        "mfa_sms" : 16,
+        "premium_promo_dismissed" : 32,
+        "hypesquad_bravery" : 64,
+        "hypesquad_brilliance" : 128,
+        "hypesquad_balance" : 256,
+        "early_supporter" : 512,
+        "team_user" : 1024,
+        "system" : 4096,
+        "has_unread_urgent_messages" : 8192,
+        "bug_hunter_level_2" : 16384,
+        "verified_bot" : 65536,
+        "verified_bot_developer" : 131072,
+        "discord_certified_moderator" : 262144,
+        "bot_http_interactions" : 524288,
+        "spammer" : 1048576,
+        "disabled_nitro" : 2097152,
+        "active_developer" : 4194304,
+        "higher_ratelimits" : 8589934592,
+        "deleted" : 17179869184,
+        "deleted_sus_activity" : 34359738368,
+        "self_deleted" : 68719476736,
+        "premium_discriminator" : 137438953472,
+        "used_desktop_client" : 274877906944,
+        "used_web_client" : 549755813888,
+        "used_mobile_client" : 1099511627776,
+        "disabled" : 2199023255552,
+        "verified" : 8796093022208,
+        "quarantined" : 17592186044416,
+        "collaborator_staff" : 1125899906842624,
+        "restricted_collaborator" : 2251799813685248,
+    }
+
+    @classmethod
+    def calculate_flags(cls, flag_value: int):
+        return [
+            key
+            for key, value in cls.FLAGS.items()
+            if (flag_value & value) == value
+        ]
 
 class Profile:
     def __init__(self, UserPayload: dict, bot: Bot, http: http) -> None:
@@ -107,6 +152,24 @@ class User:
         """
         return str(b64encode(self.id.encode("utf-8")), "utf-8")
 
+    @property
+    def flags(self) -> list[str]:
+        """Returns the flags of the user as a string
+        
+        Returns:
+            list[str]: The flags
+        """
+        return UserFlags.calculate_flags(self.raw_flags)
+
+    @property
+    def public_flags(self) -> list[str]:
+        """Returns the public flags of the user as a string
+        
+        Returns:
+            list[str]: The flags
+        """
+        return UserFlags.calculate_flags(self.raw_public_flags)
+
     def _update(self, data):
         """Updater method intended to create the attributes for the object
 
@@ -119,7 +182,6 @@ class User:
         self.avatar = data.get("avatar")
         self.banner = data.get("banner")
         self.accent_colour = data.get("accent_color")
-        self.public_flags = data.get("public_flags")
         self.bot_acc = data.get("bot")
         self.avatar_url = (
             f"https://cdn.discordapp.com/avatars/{self.id}/{self.avatar}.png?size=4096"
@@ -132,6 +194,8 @@ class User:
             else None
         )
         self.system = data.get("system")
+        self.raw_flags = data.get("flags") if data.get("flags") is not None else 0
+        self.raw_public_flags = data.get("public_flags") if data.get("public_flags") is not None else 0
 
     async def create_dm(self):
         """Create a dm for the user"""
