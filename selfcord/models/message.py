@@ -70,12 +70,17 @@ class Message:
             method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}"
         )
 
-    async def edit(self, content: str) -> Message:
+    async def edit(self, content: str, file_paths: list[str] = []) -> Message:
         """Edits the specified message
 
         Args:
             content (str): Content to edit message to.
         """
+        json = { "content":  content }
+        if file_paths != []:
+            vals = await self.channel.upload_image(file_paths)
+            json |= {"attachments" : vals}
+
         if self.guild_id is None:
             resp = await self.http.request(
                 method="patch",
@@ -84,7 +89,7 @@ class Message:
                     "origin": "https://discord.com",
                     "referer": f"https://discord.com/channels/{self.channel_id}",
                 },
-                json={"content": content},
+                json=json,
             )
         else:
             resp = await self.http.request(
@@ -94,7 +99,7 @@ class Message:
                     "origin": "https://discord.com",
                     "referer": f"https://discord.com/channels/{self.channel_id}/{self.guild_id}",
                 },
-                json={"content": content},
+                json=json,
             )
             resp.update({"guild_id": self.guild_id})
         return Message(resp, self.bot, self.http)

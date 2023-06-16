@@ -335,8 +335,8 @@ class gateway:
                 log.info(f"{item}")
             try:
                 item = self.zlib.decompress(item)
-            except Exception:
-                pass
+            except Exception as e:
+                log.error(f"Could not decompress\n{e}")
             item = json.loads(item)  # Get json message from gateway
 
             op = item.get("op")  # Op code
@@ -634,6 +634,7 @@ class gateway:
             channel (str): Channel ID
             guild (str, optional): Guild ID. Defaults to None.
         """
+        await self.call(channel, guild)
         type = "guild" if guild != None else "call"
         payload = {
             "op": 18,

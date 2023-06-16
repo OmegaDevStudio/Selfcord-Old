@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import random
 from traceback import format_exception
 from typing import TYPE_CHECKING
+
+import aiofiles
+import aiohttp
 
 from ..utils import logging
 from .message import Message
@@ -70,6 +74,32 @@ class Messageable:
 
         return messages
 
+    async def upload_image(self, paths: list[str]) -> list[dict[str, int | str]]:
+        files = []
+        id = 0
+        for path in paths:
+            async with aiofiles.open(path, "rb") as f:
+                file = await f.read()
+                size = len(file)
+                name = os.path.basename(path)
+            files.append({"file_size" : size, "filename": f"{name}", "id": id})
+            id += 1
+        json = await self.http.request("post", f"/channels/{self.id}/attachments", json={"files": files})
+        items = []
+        for key, atch in enumerate(json['attachments']):
+            upload_url = atch['upload_url']
+            id = atch['id']
+            upload_filename = atch['upload_filename']
+            async with aiohttp.ClientSession() as session:
+                async with aiofiles.open(paths[key], "rb") as f:
+                    file = await f.read()
+                async with session.put(upload_url, data=file): 
+                    pass
+            items.append({"uploaded_filename": upload_filename, "filename": os.path.basename(upload_filename) , "id": id})
+        return items
+
+        
+
     async def purge(self, amount: int = 0) -> None:
         """
         Delete a number of messages, starting from the most recent.
@@ -107,7 +137,7 @@ class Messageable:
 
 
 
-    async def spam(self, amount: int, content: str, tts=False) -> None:
+    async def spam(self, amount: int, content: str, file_paths: list[str] = [], tts=False) -> None:
         """
         Send multiple of the same message.
 
@@ -123,13 +153,13 @@ class Messageable:
         for i in range(0, len(amount), 3):
             await asyncio.gather(
                 *(
-                    asyncio.create_task(self.send(tts=tts, content=content))
+                    asyncio.create_task(self.send(tts=tts, content=content, file_paths=file_paths))
                     for _ in amount[i : i + 3]
                 )
             )
             await asyncio.sleep(0.3)
 
-    async def send(self, content=None, tts=False) -> Message:
+    async def send(self, content=None, file_paths: list[str] = [], tts=False) -> Message:
         """
         Send a message to the text channel.
 
@@ -140,6 +170,11 @@ class Messageable:
         Returns:
             Message object.
         """
+        json = {"content": content, "nonce": self.make_nonce, "tts": tts}
+        if file_paths != []:
+            vals = await self.upload_image(file_paths)
+            json |= {"attachments" : vals}
+
         if hasattr(self, "guild_id"):
             resp = await self.http.request(
                 method="post",
@@ -148,7 +183,7 @@ class Messageable:
                     "origin": "https://discord.com",
                     "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}",
                 },
-                json={"content": content, "tts": tts, "nonce": f"{self.make_nonce}"},
+                json=json
             )
             resp.update({"guild_id": self.guild_id})
 
@@ -160,12 +195,12 @@ class Messageable:
                     "origin": "https://discord.com",
                     "referer": f"https://discord.com/channels/{self.id}",
                 },
-                json={"content": content, "tts": tts, "nonce": f"{self.make_nonce}"},
+                json=json
             )
 
         return Message(resp, self.bot, self.http)
 
-    async def reply(self, message: str, content=None, tts=False) -> Message:
+    async def reply(self, message: Message, content: str, file_paths: list[str] = [], tts=False) -> Message:
         """Reply to a specific message
 
         Args:
@@ -176,6 +211,20 @@ class Messageable:
         Returns:
             Message object.
         """
+        json = {
+            "content": content,
+            "tts": tts,
+            "nonce": self.make_nonce,
+            "message_reference": {
+                "channel_id": f"{self.id}",
+                "message_id": f"{message.id}",
+            },
+        }
+
+        if file_paths != []:
+            vals = await self.upload_image(file_paths)
+            json |= {"attachments" : vals}
+
         if hasattr(self, "guild_id"):
             resp = await self.http.request(
                 method="post",
@@ -184,15 +233,7 @@ class Messageable:
                     "origin": "https://discord.com",
                     "referer": f"https://discord.com/channels/{self.guild_id}/{self.id}",
                 },
-                json={
-                    "content": content,
-                    "tts": tts,
-                    "nonce": self.make_nonce,
-                    "message_reference": {
-                        "channel_id": f"{self.id}",
-                        "message_id": f"{message.id}",
-                    },
-                },
+                json=json
             )
             resp.update({"guild_id": self.guild_id})
         else:
@@ -203,15 +244,7 @@ class Messageable:
                     "origin": "https://discord.com",
                     "referer": f"https://discord.com/channels/{self.id}",
                 },
-                json={
-                    "content": content,
-                    "tts": tts,
-                    "nonce": self.make_nonce,
-                    "message_reference": {
-                        "channel_id": f"{self.id}",
-                        "message_id": f"{message.id}",
-                    }, 
-                },
+                json=json
             )
         return Message(resp, self.bot, self.http)
 
@@ -333,7 +366,7 @@ class TextChannel(Messageable):
         """
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
         del self
-
+    
     async def edit(
         self,
         name: str = None,

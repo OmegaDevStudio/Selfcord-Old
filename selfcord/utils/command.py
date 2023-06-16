@@ -466,34 +466,34 @@ class Context:
             error = "".join(format_exception(e, e, e.__traceback__))
             log.error(f"Could not run command \n{error}")
 
-    async def reply(self, content: str, tts=False) -> Message:
+    async def reply(self, content: str, file_paths: list[str] = [], tts=False) -> Message:
         """Helper function to reply to your own message containing the command
 
         Args:
             content (str): The message you would like to send
             tts (bool, optional): Whether message should be tts or not. Defaults to False.
         """
-        message: Message = await self.channel.reply(self.message, content, tts)
+        message: Message = await self.channel.reply(self.message, content, file_paths, tts)
         return message
 
-    async def send(self, content: str, tts=False) -> Message:
+    async def send(self, content: str, file_paths: list[str] = [], tts=False) -> Message:
         """Helper function to send message to the current channel
 
         Args:
             content (str): The message you would like to send
             tts (bool, optional): Whether message should be tts or not. Defaults to False.
         """
-        message: Message = await self.channel.send(content=content, tts=tts)
+        message: Message = await self.channel.send(content=content, file_paths=file_paths, tts=tts)
         return message
 
-    async def spam(self, amount: int, content: str):
+    async def spam(self, amount: int, content: str, file_paths: list[str] = [], tts: bool = False):
         """Helper function to spam messages in the current channel (uses asyncio.gather !!!!)
 
         Args:
             amount (int): Amount of messages to spam
             content (str): The message you would like to send
         """
-        await self.channel.spam(amount, content)
+        await self.channel.spam(amount, content, file_paths, tts)
 
     async def purge(self, amount: int = 0):
         """Helper function to purge messages in the current channel, uses asyncio gather.
@@ -503,11 +503,11 @@ class Context:
         """
         await self.channel.purge(amount)
 
-    async def edit(self, content: str) -> Message:
+    async def edit(self, content: str, file_paths: list[str] = []) -> Message:
         """Helper function to edit the message you sent
 
         Args:
             content (str): Content to edit to
         """
-        message = await self.message.edit(content)
+        message = await self.message.edit(content, file_paths)
         return message
