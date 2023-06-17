@@ -22,6 +22,15 @@ class Webhook:
         self.channel_id = data.get("channel_id")
         self.name = data.get("name")
         self.avatar = data.get("avatar")
+
+        if self.avatar is not None:
+            if self.avatar.startswith("a_"):
+                self.avatar_url = f"https://cdn.discordapp.com/avatars/{self.id}/{self.avatar}.gif?size=4096"
+            else:
+                self.avatar_url = f"https://cdn.discordapp.com/avatars/{self.id}/{self.avatar}.png?size=4096"
+        else:
+            self.avatar_url = None
+
         self.token = data.get("token")
         self.application_id = data.get("application_id")
         self.webhook_url = f"https://discord.com/api/webhooks/{self.id}/{self.token}"

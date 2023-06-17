@@ -34,7 +34,7 @@ class Messageable:
         """Generate pseudorandom number."""
         return str(random.randint(0, 100000000))
 
-    async def history(self, amount: int = 100) -> list[Message] | None:
+    async def history(self, amount: int = 100, user: bool = False) -> list[Message] | None:
         """
         Get channel message history.
 
@@ -56,8 +56,14 @@ class Messageable:
 
         if data is None:
             return None
-
-        messages = [Message(msg, self.bot, self.http) for msg in data]
+        if not user:
+            messages = [Message(msg, self.bot, self.http) for msg in data]
+        else:
+            messages = []
+            for msg in data:
+                msg = Message(msg, self.bot, self.http)
+                if msg.author == self.bot.user:
+                    messages.append(msg)
         while True:
             
 
@@ -68,7 +74,13 @@ class Messageable:
 
             if len(data) <= 0:
                 break
-            messages.extend(Message(msg, self.bot, self.http) for msg in data)
+            if not user:
+                messages.extend(Message(msg, self.bot, self.http) for msg in data)
+            else:
+                for msg in data:
+                    msg = Message(msg, self.bot, self.http)
+                    if msg.author == self.bot.user:
+                        messages.append(msg)
             if len(messages) >= amount:
                 break
 
@@ -84,7 +96,9 @@ class Messageable:
                 name = os.path.basename(path)
             files.append({"file_size" : size, "filename": f"{name}", "id": id})
             id += 1
+
         json = await self.http.request("post", f"/channels/{self.id}/attachments", json={"files": files})
+
         items = []
         for key, atch in enumerate(json['attachments']):
             upload_url = atch['upload_url']
@@ -110,10 +124,9 @@ class Messageable:
         Returns:
             No return value
         """
-        messages = await self.history(amount)
-        if messages is None:
+        msgs = await self.history(amount, user=True)
+        if msgs is None:
             return
-        msgs = [msg for msg in messages if str(msg.author.id) == str(self.bot.user.id)]
         if amount != 0:
             for i in range(0, len(msgs[:amount]), 3):
                 await asyncio.gather(
@@ -122,10 +135,12 @@ class Messageable:
                         for message in msgs[:amount][i : i + 3]
                     )
                 )
-                await asyncio.sleep(0.3)
+                await asyncio.sleep(0.4)
             return
 
-
+        msgs = await self.history(100, user=True)
+        if msgs is None:
+            return
         for i in range(0, len(msgs), 3):
             await asyncio.gather(
                 *(
@@ -133,7 +148,7 @@ class Messageable:
                     for message in msgs[i : i + 3]
                 )
             )
-            await asyncio.sleep(0.3)
+            await asyncio.sleep(0.4)
 
 
 

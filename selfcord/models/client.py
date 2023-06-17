@@ -37,6 +37,23 @@ class Client:
         self.discriminator = data.get("discriminator")
         self.avatar = data.get("avatar")
         self.banner = data.get("banner")
+
+        if self.avatar is not None:
+            if self.avatar.startswith("a_"):
+                self.avatar_url = f"https://cdn.discordapp.com/avatars/{self.id}/{self.avatar}.gif?size=4096"
+            else:
+                self.avatar_url = f"https://cdn.discordapp.com/avatars/{self.id}/{self.avatar}.png?size=4096"
+        else:
+            self.avatar_url = None
+
+        if self.banner is not None:
+            if self.banner.startswith("a_"):
+                self.banner_url = f"https://cdn.discordapp.com/banners/{self.id}/{self.banner}.gif?size=4096"
+            else:
+                self.banner_url = f"https://cdn.discordapp.com/banners/{self.id}/{self.banner}.png?size=4096"
+        else:
+            self.banner_url = None
+
         self.bio = data.get("bio")
         self.email = data.get("email")
         self.phone = data.get("phone")

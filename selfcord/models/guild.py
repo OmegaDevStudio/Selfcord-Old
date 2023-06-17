@@ -53,9 +53,14 @@ class Guild:
         self.id = data.get("id")
         self.name = data.get("name")
         self.icon = data.get("icon")
-        self.icon_url = (
-            f"https://cdn.discordapp.com/icons/{self.id}/{self.icon}.webp?size=96"
-        )
+        if self.icon is not None:
+            if self.icon.startswith("a_"):
+                self.icon_url = f"https://cdn.discordapp.com/icons/{self.id}/{self.icon}.gif?size=4096"
+            else:
+                self.icon_url = f"https://cdn.discordapp.com/icons/{self.id}/{self.icon}.png?size=4096"
+        else:
+            self.icon_url = None
+
         self.region = data.get("region")
         self.splash = data.get("splash")
         self.mfa_level = data.get("mfa_level")
