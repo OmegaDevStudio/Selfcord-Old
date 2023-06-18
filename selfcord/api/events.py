@@ -7,16 +7,8 @@ from typing import TYPE_CHECKING
 
 from aioconsole import aprint
 
-from ..models import (
-    Client,
-    DMChannel,
-    GroupChannel,
-    Guild,
-    Message,
-    TextChannel,
-    User,
-    VoiceChannel,
-)
+from ..models import (Client, DMChannel, GroupChannel, Guild, Message,
+                      TextChannel, User, VoiceChannel)
 from ..models.role import Role
 from ..utils import logging
 from .voice import Voice
@@ -423,3 +415,48 @@ class EventHandler:
             log.info(
                 f"Created voice attribute with Session ID: {self.session_id} Endpoint: {self.endpoint}"
             )
+
+    async def handle_relationship_add(self, data: dict, user: Client, http: http):
+        """Handles relationships being added
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
+        types = {
+            "NONE": 0,
+            "FRIEND": 1,
+            "BLOCKED": 2,
+            "PENDING_INCOMING": 3,
+            "PENDING_OUTGOING": 4,
+        }
+        user = User(data.get("user"), self.bot, self.http)
+        since = data.get("since")
+        for type, value in types.items():
+            if data.get("type") == value:
+                rs_type = type
+        await self.bot.emit("relationship_add", user, rs_type, since)
+
+    async def handle_relationship_remove(self, data: dict, user: Client, http: http):
+        """Handles relationships being removed
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
+        types = {
+            "NONE": 0,
+            "FRIEND": 1,
+            "BLOCKED": 2,
+            "PENDING_INCOMING": 3,
+            "PENDING_OUTGOING": 4,
+        }
+
+        id = data['id']
+        since = data['since']
+        for type, value in types.items():
+            if data.get("type") == value:
+                rs_type = type
+        await self.bot.emit("relationship_remove", id, rs_type, since)
