@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import socket
 import struct
 import time
 
+import ujson
 import websockets
 from aioconsole import aprint
 
@@ -80,7 +80,7 @@ class Voice:
         """
         Receives Message from websocket, encodes as json and runs tasks
         """
-        item = json.loads(await self.ws.recv())
+        item = ujson.loads(await self.ws.recv())
         op = item.get("op")  # Op code
         data = item.get("d")  # Data
         if op == self.READY:
@@ -211,7 +211,7 @@ class Voice:
         Args:
             payload (dict): Valid payload to send to the gateway
         """
-        await self.ws.send(json.dumps(payload))
+        await self.ws.send(ujson.dumps(payload))
 
     async def close(self):
         """Close the connection to websocket"""

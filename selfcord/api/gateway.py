@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import os
 import time
 import zlib
 from traceback import format_exception
 
 import requests
+import ujson
 import websockets
 
 from selfcord.models.client import Client
@@ -337,7 +337,7 @@ class gateway:
                 item = self.zlib.decompress(item)
             except Exception as e:
                 log.error(f"Could not decompress\n{e}")
-            item = json.loads(item)  # Get json message from gateway
+            item = ujson.loads(item)  # Get json message from gateway
 
             op = item.get("op")  # Op code
             data = item.get("d")  # Data
@@ -464,7 +464,7 @@ class gateway:
         Args:
             payload (dict): Valid payload to send to the gateway
         """
-        await self.ws.send(json.dumps(payload))
+        await self.ws.send(ujson.dumps(payload))
 
     async def reconnect(self, seq: int):
         """Reconnect to discord gateway"""

@@ -7,6 +7,7 @@ from traceback import format_exception
 from typing import TYPE_CHECKING
 
 import aiohttp
+import ujson
 from aiohttp import ClientSession
 
 from ..models import Client, User
@@ -50,7 +51,7 @@ class http:
 
     async def get_cookie(self):
         """Gather cookie for user upon client start"""
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(json_serialize=ujson.dumps) as session:
             async with session.get(
                 "https://discord.com",
                 headers={
@@ -116,6 +117,7 @@ class http:
         }
 
         async with ClientSession(
+            json_serialize=ujson.dumps,
             timeout=aiohttp.ClientTimeout(
                 total=10000, connect=10000, sock_read=10000, sock_connect=10000
             ),

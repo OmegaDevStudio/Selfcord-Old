@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-import json
 import random
 import string
 import time
 from itertools import zip_longest
 from typing import TYPE_CHECKING
 
+import ujson
 from aioconsole import aprint
 
 if TYPE_CHECKING:
@@ -175,7 +175,7 @@ class InteractionUtil:
         payload["data"] = data
         randstr = "".join(random.sample(string.ascii_letters + string.digits, k=16))
         boundary_val = f"----WebkitFormBoundary{randstr}"
-        req_data = f'--{boundary_val}\r\nContent-Disposition: form-data; name="payload_json"\r\n\r\n{json.dumps(payload)}\r\n--{boundary_val}--'
+        req_data = f'--{boundary_val}\r\nContent-Disposition: form-data; name="payload_json"\r\n\r\n{ujson.dumps(payload)}\r\n--{boundary_val}--'
         await self.http.request(
             "post",
             "/interactions",
