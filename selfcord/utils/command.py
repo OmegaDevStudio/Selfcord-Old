@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import inspect
 import re
+import shlex
 from collections import defaultdict
 from traceback import format_exception
 from typing import TYPE_CHECKING, Any
@@ -409,8 +410,12 @@ class Context:
             signature = self.command.signature
         if self.command_content == "":
             return args, kwargs
-
-        splitted = self.command_content.split(" ")[1:]
+        if self.command_content == None:
+            return args, kwargs
+        sh = shlex.shlex(self.command_content[1:], posix=False)
+        sh.whitespace = " "
+        sh.whitespace_split = True
+        splitted = list(sh)
 
         for index, item in enumerate(splitted):
             user_regex = re.findall(r"<@[0-9]{18,19}>", item)
@@ -431,6 +436,10 @@ class Context:
                 except Exception:
                     pass
             if param.kind is param.VAR_KEYWORD:
+                for arg in splitted:
+                    arg = self.convert(param, arg)
+                    args.append(arg)
+            if param.kind is param.VAR_POSITIONAL:
                 for arg in splitted:
                     arg = self.convert(param, arg)
                     args.append(arg)

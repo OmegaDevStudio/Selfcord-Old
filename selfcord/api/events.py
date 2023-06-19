@@ -270,7 +270,7 @@ class EventHandler:
                         guild.channels.remove(channel)
                         return
 
-    async def handle_guild_role_create(self, role, user: Client, http: http):
+    async def handle_guild_role_create(self, role: dict, user: Client, http: http):
         """Handles what happens when a role is created
 
         Args:

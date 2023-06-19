@@ -12,7 +12,7 @@ from traceback import format_exception
 from typing import TYPE_CHECKING
 
 import aiohttp
-from aioconsole import aexec
+from aioconsole import aexec, aprint
 
 from .api import Activity, gateway, http
 from .models import (Client, DMChannel, GroupChannel, Guild, InteractionUtil,
@@ -178,7 +178,6 @@ class Bot:
             async def eval(ctx, *, code):
                 """Runs python code via exec, intended for experienced usage. This can be DANGEROUS if you do not know what you are doing, use with caution."""
                 code = clean_code(code)
-
                 try:
                     with contextlib.redirect_stdout(io.StringIO()) as f:
                         await aexec(source=code, local=globals() )
