@@ -522,7 +522,7 @@ class gateway:
         Args:
             interval (int): Interval between sends
         """
-        log.info(f"Hearbeat loop has began with the interval of {interval} seconds!")
+        log.info(f"Heartbeat loop has begun with the interval of {interval} seconds!")
         heartbeatJSON = {"op": 1, "d": time.time()}
         while True:
             await asyncio.sleep(interval)
