@@ -81,11 +81,9 @@ class Bot:
                 log.info("Started Bot")
                 log.info(f"Logged in as {self.user}")
 
-        try:
-            asyncio.run(runner())
-        except KeyboardInterrupt:
-            """asyncio.run loop already handles KeyboardInterrupt for us."""
-            pass
+        
+        asyncio.run(runner())
+        
 
     @property
     def latency(self):
