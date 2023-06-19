@@ -25,7 +25,7 @@ if TYPE_CHECKING:
     from .api.gateway import gateway
     from .api.http import http
 
-log = logging.getLogger("Bot")
+log = logging.getLogger()
 
 
 class Bot:
@@ -78,7 +78,7 @@ class Bot:
             self.user = Client(data)
             await self.gateway.start(token, self.user, self)
             if self.debug:
-                log.debug("Started Bot")
+                log.info("Started Bot")
                 log.info(f"Logged in as {self.user}")
 
         try:
