@@ -475,24 +475,24 @@ class Context:
             error = "".join(format_exception(e, e, e.__traceback__))
             log.error(f"Could not run command \n{error}")
 
-    async def reply(self, content: str, file_paths: list[str] = [], tts=False) -> Message:
+    async def reply(self, content: str, file_paths: list[str] = [], delete_after: int | None = None, tts=False) -> Message:
         """Helper function to reply to your own message containing the command
 
         Args:
             content (str): The message you would like to send
             tts (bool, optional): Whether message should be tts or not. Defaults to False.
         """
-        message: Message = await self.channel.reply(self.message, content, file_paths, tts)
+        message: Message = await self.channel.reply(self.message, content, file_paths, delete_after, tts)
         return message
 
-    async def send(self, content: str, file_paths: list[str] = [], tts=False) -> Message:
+    async def send(self, content: str, file_paths: list[str] = [], delete_after: int | None = None, tts=False) -> Message:
         """Helper function to send message to the current channel
 
         Args:
             content (str): The message you would like to send
             tts (bool, optional): Whether message should be tts or not. Defaults to False.
         """
-        message: Message = await self.channel.send(content=content, file_paths=file_paths, tts=tts)
+        message: Message = await self.channel.send(content=content, file_paths=file_paths, delete_after=delete_after, tts=tts)
         return message
 
     async def spam(self, amount: int, content: str, file_paths: list[str] = [], tts: bool = False):

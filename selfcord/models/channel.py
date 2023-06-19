@@ -111,8 +111,11 @@ class Messageable:
                     pass
             items.append({"uploaded_filename": upload_filename, "filename": os.path.basename(upload_filename) , "id": id})
         return items
+    
+    async def delayed_delete(self, message: Message, time: int):
+        await asyncio.sleep(time)
+        await message.delete()
 
-        
 
     async def purge(self, amount: int = 0) -> None:
         """
@@ -174,7 +177,7 @@ class Messageable:
             )
             await asyncio.sleep(0.3)
 
-    async def send(self, content=None, file_paths: list[str] = [], tts=False) -> Message:
+    async def send(self, content=None, file_paths: list[str] = [], delete_after: int | None = None, tts=False) -> Message:
         """
         Send a message to the text channel.
 
@@ -212,10 +215,12 @@ class Messageable:
                 },
                 json=json
             )
+        if delete_after is not None:
+            asyncio.create_task(self.delayed_delete(Message(resp, self.bot, self.http), delete_after))
 
         return Message(resp, self.bot, self.http)
 
-    async def reply(self, message: Message, content: str, file_paths: list[str] = [], tts=False) -> Message:
+    async def reply(self, message: Message, content: str, file_paths: list[str] = [], delete_after: int | None = None, tts=False) -> Message:
         """Reply to a specific message
 
         Args:
@@ -261,6 +266,8 @@ class Messageable:
                 },
                 json=json
             )
+        if delete_after is not None:
+            asyncio.create_task(self.delayed_delete(Message(resp, self.bot, self.http), delete_after))
         return Message(resp, self.bot, self.http)
 
 

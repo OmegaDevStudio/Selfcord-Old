@@ -70,7 +70,7 @@ class Message:
             method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}"
         )
 
-    async def edit(self, content: str, file_paths: list[str] = []) -> Message:
+    async def edit(self, content: str, file_paths: list[str] = [], delete_after: int | None = None) -> Message:
         """Edits the specified message
 
         Args:
@@ -102,6 +102,8 @@ class Message:
                 json=json,
             )
             resp.update({"guild_id": self.guild_id})
+        if delete_after is not None:
+            asyncio.create_task(self.channel.delayed_delete(Message(resp, self.bot, self.http), delete_after))
         return Message(resp, self.bot, self.http)
 
     async def react(self, emoji: str):
