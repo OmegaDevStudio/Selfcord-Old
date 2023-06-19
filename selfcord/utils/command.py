@@ -512,11 +512,11 @@ class Context:
         """
         await self.channel.purge(amount)
 
-    async def edit(self, content: str, file_paths: list[str] = []) -> Message:
+    async def edit(self, content: str, file_paths: list[str] = [], delete_after: int | None = None) -> Message:
         """Helper function to edit the message you sent
 
         Args:
             content (str): Content to edit to
         """
-        message = await self.message.edit(content, file_paths)
+        message = await self.message.edit(content, file_paths, delete_after)
         return message
