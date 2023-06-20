@@ -5,12 +5,15 @@ import contextlib
 import importlib
 import inspect
 import io
+import os
 import random
 import time
 from collections import defaultdict
 from traceback import format_exception
 from typing import TYPE_CHECKING
+from urllib.parse import urlparse
 
+import aiofiles
 import aiohttp
 from aioconsole import aexec, aprint
 
@@ -291,21 +294,71 @@ class Bot:
 
         asyncio.create_task(context.invoke())
 
-    async def load_extension(self, name: str):
+    async def load_extension(self, name: str | None = None, url: str | None = None, dir: str | None = None):
         """
         Load various extensions/plugins/cogs if any.
 
         Args:
             name (str): Name of the extension to load
+            url (str): URL you want to load
+            dir (str): Directory you want to load
 
         Raises:
             ModuleNotFoundError: If you suck and don't know the name of what you want to load
         """
+        if name is None and url is None:
+            return
+        if url is not None:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as resp:
+                    text = await resp.text()
+
+            if dir is None:
+                path = os.path.basename(urlparse(url).path)
+
+                if path.endswith(".py"):
+                    if os.path.exists(path):
+                        log.error(f"Path already exists. {path}")
+                        return
+
+                    lines = text.splitlines()
+                    async with aiofiles.open(path, "a+") as f:
+                        for line in lines:
+                            await f.write(f"{line}\n")
+
+                    name = f"{os.path.basename(urlparse(url).path)[:-3]}"
+
+                else:
+                    log.error(f"{path} is not a python file")
+                    return
+
+            else:
+                path = f"{dir}/{os.path.basename(urlparse(url).path)}"
+                
+                if path.endswith(".py"):
+                    if os.path.exists(path):
+                        log.error(f"Path already exists. {path}")
+                        return
+                    os.makedirs(dir)
+                    lines = text.splitlines()
+                    async with aiofiles.open(path, "a+") as f:
+                        for line in lines:
+                            await f.write(f"{line}\n")
+
+                    name = f"{dir}.{os.path.basename(urlparse(url).path)[:-3]}"
+
+                else:
+                    log.error(f"{path} is not a python file")
+                    return
+
+                
+                
         try:
             name = importlib.util.resolve_name(name, None)
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
             log.error(f"Could not resolve extension name\n{error}")
+            return
 
         spec = importlib.util.find_spec(name)
 
@@ -316,11 +369,13 @@ class Bot:
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
             log.error(f"Spec could not be loaded\n{error}")
+            return
         try:
             ext = getattr(lib, "Ext")
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
             log.error(f"Extension does not exist\n{error}")
+            return
 
         # Creates an Extension - ext in this case refers to the Ext class used for initialisation
         ext = Extension(
@@ -343,6 +398,7 @@ class Bot:
         except Exception as e:
             error = "".join(format_exception(e, e, e.__traceback__))
             log.error(f"Failed to load extension events\n{error}")
+            return
 
     async def trigger_slash(
         self,
