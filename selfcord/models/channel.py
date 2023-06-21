@@ -86,8 +86,9 @@ class Messageable:
                 
         json = await self.http.request("get", url)
         total = json.get("total_results")
-        messages = json['messages'][0] if json.get("messages") is not None else []
-        messages = [Message(msg, self.bot, self.http) for msg in messages]
+        messages = json['messages']if json.get("messages") is not None else []
+        
+        messages = [Message(msg, self.bot, self.http) for msgs in messages for msg in msgs]
         return total, messages
         
 
@@ -191,8 +192,10 @@ class Messageable:
             while True:
                 if len(msgs) >= total:
                     break
-                total, new_msgs = await self.search(author=self.bot.user.id, offset=len(msgs))
+                _, new_msgs = await self.search(author=self.bot.user.id, offset=len(msgs))
                 msgs += new_msgs
+                if len(new_msgs) == 0:
+                    break
 
             for i in range(0, len(msgs), 3):
                 await asyncio.gather(
@@ -206,8 +209,10 @@ class Messageable:
             while True:
                 if len(msgs) >= amount:
                     break
-                total, new_msgs = await self.search(author=self.bot.user.id, offset=len(msgs))
+                _, new_msgs = await self.search(author=self.bot.user.id, offset=len(msgs))
                 msgs += new_msgs
+                if len(new_msgs) == 0:
+                    break
             for i in range(0, len(msgs), 3):
                 await asyncio.gather(
                     *(
