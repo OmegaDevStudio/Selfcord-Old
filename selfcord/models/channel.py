@@ -77,7 +77,7 @@ class Messageable:
         for key, value in params.items():
             if value is not None:
                 index += 1
-                param = f"{key}=={value}"
+                param = f"{key}={value}"
                 if index == 1:
                     param = "?" + param
                 else:
@@ -184,11 +184,17 @@ class Messageable:
         Returns:
             No return value
         """
-        msgs = await self.history(amount, user=True)
-        if msgs is None:
+        total, msgs = await self.search(author=self.bot.user.id)
+        if total == 0:
             return
-        if amount != 0:
-            for i in range(0, len(msgs[:amount]), 3):
+        if amount == 0:
+            while True:
+                if len(msgs) >= total:
+                    break
+                total, new_msgs = await self.search(author=self.bot.user.id, offset=len(msgs))
+                msgs += new_msgs
+
+            for i in range(0, len(msgs), 3):
                 await asyncio.gather(
                     *(
                         asyncio.create_task(message.delete())
@@ -196,20 +202,25 @@ class Messageable:
                     )
                 )
                 await asyncio.sleep(0.4)
-            return
-
-        msgs = await self.history(100, user=True)
-        if msgs is None:
-            return
-        for i in range(0, len(msgs), 3):
-            await asyncio.gather(
-                *(
-                    asyncio.create_task(message.delete())
-                    for message in msgs[i : i + 3]
+        else:
+            while True:
+                if len(msgs) >= amount:
+                    break
+                total, new_msgs = await self.search(author=self.bot.user.id, offset=len(msgs))
+                msgs += new_msgs
+            for i in range(0, len(msgs), 3):
+                await asyncio.gather(
+                    *(
+                        asyncio.create_task(message.delete())
+                        for message in msgs[:amount][i : i + 3]
+                    )
                 )
-            )
-            await asyncio.sleep(0.4)
+                await asyncio.sleep(0.4)
 
+
+
+
+        
 
 
     async def spam(self, amount: int, content: str, file_paths: list[str] = [], tts=False) -> None:
