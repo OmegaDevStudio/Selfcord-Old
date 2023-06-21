@@ -50,3 +50,4 @@ class Session:
             password: Your password
         """
         await self.http.request("post", "/auth/sessions/logout", json={"session_id_hashes": [self.hash], "password": password})
+        del self
