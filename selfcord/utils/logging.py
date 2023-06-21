@@ -1,13 +1,6 @@
 import logging
 import logging.config
 
-logging.config.dictConfig(
-    {
-        "version": 1,
-        "disable_existing_loggers": True,
-    }
-)
-
 logging.getLogger("websockets.client").disabled = True
 logging.getLogger("urllib3.connectionpool").disabled = True
 

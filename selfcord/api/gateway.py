@@ -381,10 +381,9 @@ class gateway:
                     for item in val:
                         if item is None:
                             break
-                        else:
-                            error = "".join(format_exception(item, item, item.__traceback__))
-                            log.error(f"Error occurred when handling events\n {error}")
-                            await self.bot.emit("error", item)
+                        error = "".join(format_exception(item, item, item.__traceback__))
+                        log.error(f"Error occurred when handling events\n {error}")
+                        await self.bot.emit("error", item)
 
                     # asyncio.create_task(method(data, self.user, self.http))
                 # Handlers are all situated in events.py

@@ -433,8 +433,8 @@ class Context:
                 try:
                     arg: str | Any = self.convert(param, splitted.pop(0))
                     args.append(arg)
-                except Exception:
-                    pass
+                except Exception as e:
+                    log.error(e)
             if param.kind is param.VAR_KEYWORD:
                 for arg in splitted:
                     arg = self.convert(param, arg)

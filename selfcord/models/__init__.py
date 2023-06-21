@@ -8,5 +8,6 @@ from .member import Member
 from .message import Message
 from .permission import Permission
 from .role import Role
+from .sessions import Event_Session, Session
 from .user import Connected_Account, Profile, User
 from .webhook import Webhook

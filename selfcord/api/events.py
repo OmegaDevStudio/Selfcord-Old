@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING
 
 from aioconsole import aprint
 
+from selfcord.models.sessions import Event_Session
+
 from ..models import (Client, DMChannel, GroupChannel, Guild, Message,
                       TextChannel, User, VoiceChannel)
 from ..models.role import Role
@@ -437,6 +439,20 @@ class EventHandler:
             if data.get("type") == value:
                 rs_type = type
         await self.bot.emit("relationship_add", user, rs_type, since)
+    
+    async def handle_sessions_replace(self, data: list[dict], user: Client, http: http):
+        """Handles sessions being created/removed. Used to log initial data.
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
+    
+        sessions = [Event_Session(session, self.bot, self.http) for session in data]
+        await self.bot.emit("session", sessions)
+        
+
 
     async def handle_relationship_remove(self, data: dict, user: Client, http: http):
         """Handles relationships being removed

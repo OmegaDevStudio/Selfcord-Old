@@ -17,6 +17,8 @@ import aiofiles
 import aiohttp
 from aioconsole import aexec, aprint
 
+from selfcord.models.sessions import Session
+
 from .api import Activity, gateway, http
 from .models import (Client, DMChannel, GroupChannel, Guild, InteractionUtil,
                      Option, Search, SlashCommand, TextChannel, User,
@@ -79,13 +81,20 @@ class Bot:
         async def runner():
             data = await self.http.static_login(token)
             self.user = Client(data)
-            await self.gateway.start(token, self.user, self)
+            try:
+                await self.gateway.start(token, self.user, self)
+            except Exception as e:
+                error = "".join(format_exception(e, e, e.__traceback__))
+                log.error(f"Error related to gateway\n{error}")
             if self.debug:
                 log.info("Started Bot")
                 log.info(f"Logged in as {self.user}")
 
-        
-        asyncio.run(runner())
+        try: 
+            asyncio.run(runner())
+        except Exception as e:
+            error = format_exception(e, e, e.__traceback__)
+            log.error(f"Error related to initial run\n{error}")
         
 
     @property
@@ -510,6 +519,21 @@ class Bot:
                 f"Created Guild NAME: {name} TEMPLATE: {template} ICON: {icon_url}"
             )
         return Guild(json, self, self.http)
+
+    async def change_pass(self, old_pass, new_pass):
+        """
+        Method to change password.
+
+        Args:
+            old_pass: Your old password.
+            new_pass: Password you want to change to.
+        """
+        await self.http.request("patch", "/users/@me", json={"password": old_pass, "new_password": new_pass})
+    
+    async def get_sessions(self) -> list[Session] | None:
+        data = await self.http.request("get", "/auth/sessions")
+        if data.get("user_sessions") is not None:
+            return [Session(data, self, self.http) for data in data["user_sessions"]]
 
     async def add_friend(self, user_id: str):
         """
