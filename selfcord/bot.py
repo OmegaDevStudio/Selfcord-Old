@@ -252,6 +252,7 @@ class Bot:
             name = coro.__name__
             if not inspect.iscoroutinefunction(coro):
                 log.error("Not a coroutine")
+                return
             else:
                 cmd = Command(
                     name=name, description=description, aliases=aliases, func=coro

@@ -3,11 +3,13 @@ from __future__ import annotations
 import asyncio
 import os
 import random
+import time
 from traceback import format_exception
 from typing import TYPE_CHECKING
 
 import aiofiles
 import aiohttp
+from aioconsole import aprint
 
 from ..utils import logging
 from .message import Message
@@ -33,6 +35,61 @@ class Messageable:
     def make_nonce(self):
         """Generate pseudorandom number."""
         return str(random.randint(0, 100000000))
+
+    async def search(
+        self,
+        content: str | None = None,
+        author: str | None = None,
+        mentions: str | None = None,
+        has: str | None = None,
+        before: float | None = None,
+        after: float | None = None,
+        offset: int | None = None,
+        ):
+        """
+        Search through channel with specific parameters
+
+        Args:
+            content (str) : Content to search for.
+            author (str) : Author to search for.
+            mentions (str) : Mention to search for.
+            has (str) : Message that contains (file, image, video, etc).
+            before (time) : Before a timestamp.
+            after (time) : After a timestamp.
+            offset (int) : How many messages after to search.
+
+        Returns:
+            total (int) : Total amount of messages possible of receiving.
+            messages (list[Message]) : List of message objects gathered
+
+        """
+        url = f"/channels/{self.id}/messages/search"
+        params = {
+            "content": content,
+            "author_id": author,
+            "mentions": mentions,
+            "has": has,
+            "max_id": before,
+            "min_id": after,
+            "offset": offset,
+        }
+        index = 0
+        for key, value in params.items():
+            if value is not None:
+                index += 1
+                param = f"{key}=={value}"
+                if index == 1:
+                    param = "?" + param
+                else:
+                    param = "&" + param
+                url += param
+                
+        json = await self.http.request("get", url)
+        total = json.get("total_results")
+        messages = json['messages'][0] if json.get("messages") is not None else []
+        messages = [Message(msg, self.bot, self.http) for msg in messages]
+        return total, messages
+        
 
     async def history(self, amount: int = 100, user: bool = False) -> list[Message] | None:
         """
@@ -388,7 +445,8 @@ class TextChannel(Messageable):
         """
         await self.http.request(method="delete", endpoint=f"/channels/{self.id}")
         del self
-    
+   
+
     async def edit(
         self,
         name: str = None,
@@ -448,6 +506,7 @@ class TextChannel(Messageable):
             fields["name"] = name
         else:
             log.error("Name is required")
+            return
         if avatar_url != None:
             data = await self.http.encode_image(avatar_url)
             fields["avatar"] = data
@@ -544,6 +603,7 @@ class VoiceChannel(Voiceable, Messageable):
             fields["name"] = name
         else:
             log.error("Name is required...")
+            return None
         if avatar_url != None:
             data = await self.http.encode_image(avatar_url)
             fields["avatar"] = data
