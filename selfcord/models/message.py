@@ -1,12 +1,20 @@
 from __future__ import annotations
 
 import asyncio
+import logging
+import random
 import time
 import urllib
 from itertools import zip_longest
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..api.http import http
+    from ..bot import Bot
 
 from .user import User
 
+log = logging.getLogger("Message")
 
 class Attachment:
     def __init__(self, data) -> None:
@@ -16,11 +24,151 @@ class Attachment:
         self.size = data.get("size")
         self.id = data.get("id")
 
+class Button:
+    def __init__(self, data: dict, message: Message, bot: Bot, http: http):
+        self.bot = bot
+        self.http = http
+        self._update(data, message)
+
+    def _update(self, data: dict, message: Message):
+        self.type = 2
+        self.style = data.get("style")
+        self.url = data.get("url")
+        self.custom_id = data.get("custom_id")
+        self.label = data.get("label")
+        self.emoji = data.get("emoji")
+        self.disabled = data.get("disabled")
+        self.message = message
+
+    async def trigger(self):
+        data = {
+            "component_type": self.type,
+            "custom_id": self.custom_id
+        }
+        json = {
+            "application_id": self.message.author.id,
+            "channel_id": self.message.channel_id,
+            "data": data,
+            "message_flags": 0,
+            "message_id": self.message.id,
+            "nonce": self.message.make_nonce,
+            "session_id": self.bot.session_id,
+            "type": 3,
+        }
+        if self.message.guild_id is not None:
+            json['guild_id'] = self.message.guild_id
+        json = await self.http.request("post", "/interactions", json=json)
+        log.info(json)
+
+
+
+class Action_Row:
+    ACTION_ROW = 1
+    BUTTON = 2
+    STRING_SELECT = 3
+    TEXT_INPUT = 4
+    USER_SELECT = 5
+    ROLE_SELECT = 6 
+    MENTIONABLE_SELECT = 7
+    CHANNEL_SELECT = 8
+
+    def __init__(self, data: dict, message: Message, bot: Bot, http: http) -> None:
+        self.bot = bot
+        self.http = http
+        self._update(data, message)
+
+    def _update(self, data: dict, message: Message):
+        self.type = 1
+        self.message = message
+        components = data.get("components")
+        if components is not None:
+            self.components = []
+            for component in components:
+                if component.get("type") == self.BUTTON:
+                    self.components.append(Button(component, message, self.bot, self.http))
+                elif component.get("type") in [self.STRING_SELECT, self.USER_SELECT, self.ROLE_SELECT, self.CHANNEL_SELECT, self.MENTIONABLE_SELECT]:
+                    self.components.append(Select_Menu(component, message, self.bot, self.http))
+                elif component.get("type") == self.TEXT_INPUT:
+                    self.components.append(Text_Input(component, message, self.bot, self.http))
+        else:
+            self.components = []
+        
+class Select_Menu:
+    TYPES = {
+        "STRING_SELECT" : 3,
+        "USER_SELECT" : 5,
+        "ROLE_SELECT" : 6,
+        "MENTIONABLE_SELECT" : 7,
+        "CHANNEL_SELECT" : 8,
+    }
+    def __init__(self, data: dict, message: Message, bot: Bot, http: http) -> None:
+        self._update(data, message)
+    
+    def _update(self, data: dict, message: Message):
+        self.raw_type = data.get("type")
+        self.message = message
+        for key, val in self.TYPES.items():
+            if self.raw_type == val:
+                self.type = key
+        self.custom_id = data.get("custom_id")
+        if self.raw_type == 3:
+            if data.get("options") is not None:
+                self.options = [Select_Option(data) for data in data['options']]
+        if self.raw_type == 8:
+            self.channel_types = data.get("channel_types")
+        self.placeholder = data.get("placeholder")
+        self.min_values = data.get("min_values")
+        self.max_values = data.get("max_values")
+        self.disabled = data.get("disabled")
+
+class Text_Input:
+    def __init__(self, data: dict, message: Message, bot: Bot, http: http) -> None:
+        self._update(data, message)
+
+    def _update(self, data: dict, message: Message):
+        self.type = 4
+        self.message = message
+        self.custom_id = data.get("custom_id")
+        self.style = data.get("style")
+        self.label = data.get("label")
+        self.min_length = data.get("min_length")
+        self.max_length = data.get("max_length")
+        self.required = data.get("required")
+        self.value = data.get("value")
+        self.placeholder = data.get("placeholder")
+
+
+class Select_Option:
+    def __init__(self, data) -> None:
+        self._update(data)
+
+    def _update(self, data):
+        self.label = data.get("label")
+        self.value = data.get("value")
+        self.description = data.get("description")
+        self.emoji = data.get("emoji")
+        self.default = data.get("default")
+
+
+            
 
 class Message:
     """Message Object"""
+    ACTION_ROW = 1
+    BUTTON = 2
+    STRING_SELECT = 3
+    TEXT_INPUT = 4
+    USER_SELECT = 5
+    ROLE_SELECT = 6 
+    MENTIONABLE_SELECT = 7
+    CHANNEL_SELECT = 8
 
-    def __init__(self, data, bot, http) -> None:
+    @property
+    def make_nonce(self):
+        """Generate pseudorandom number."""
+        return str(random.randint(0, 100000000))
+
+    def __init__(self, data, bot: Bot, http: http) -> None:
         self.bot = bot
         self.channel = None
         self.guild = None
@@ -46,7 +194,20 @@ class Message:
         self.flags = data.get("flags")
         self.embeds = data.get("embeds")
         self.content = data.get("content")
-        self.components = data.get("components")
+        components = data.get("components")
+        self.components = []
+        for component in components:
+            if component.get("type") == 1:
+                self.components.append(Action_Row(component, self, self.bot, self.http))
+            elif component.get("type") == 2:
+                self.components.append(Button(component, self, self.bot, self.http))
+            elif component.get("type") in [self.STRING_SELECT, self.USER_SELECT, self.ROLE_SELECT, self.CHANNEL_SELECT, self.MENTIONABLE_SELECT]:
+                self.components.append(Select_Menu(component, self, self.bot, self.http))
+            elif component.get("type") == 4:
+                self.components.append(Text_Input(component, self, self.bot, self.http))
+            else:
+                self.components.append(component)
+
         self.timestamp = time.time()
         self.channel_id = data.get("channel_id")
 

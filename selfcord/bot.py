@@ -450,6 +450,20 @@ class Bot:
         return await interaction.interaction_search(
             query, channel_id, type, cursor, bot_id, command_id
         )
+    
+    def get_message(self, message_id: str):
+        """
+        Function to help retrieve messages from bot cache
+
+        Args:
+            message_id (str): The message id to search for
+
+        Returns:
+            Message: The Message object
+        """
+        for message in self.user.messages:
+            if message.id == message_id:
+                return Message
 
     def get_channel(self, channel_id: str):
         """
