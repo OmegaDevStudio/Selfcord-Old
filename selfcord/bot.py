@@ -21,7 +21,7 @@ from selfcord.models.sessions import Session
 
 from .api import Activity, gateway, http
 from .models import (Client, DMChannel, GroupChannel, Guild, InteractionUtil,
-                     Option, Search, SlashCommand, TextChannel, User,
+                     Message, Option, Search, SlashCommand, TextChannel, User,
                      VoiceChannel)
 from .utils import (Command, CommandCollection, Context, Event, Extension,
                     ExtensionCollection, logging)
