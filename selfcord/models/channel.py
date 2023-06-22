@@ -261,7 +261,7 @@ class Messageable:
         Returns:
             Message object.
         """
-        json = {"content": content, "nonce": self.make_nonce, "tts": tts}
+        json = {"content": str(content), "nonce": self.make_nonce, "tts": tts}
         if file_paths != []:
             vals = await self.upload_image(file_paths)
             json |= {"attachments" : vals}
@@ -305,7 +305,7 @@ class Messageable:
             Message object.
         """
         json = {
-            "content": content,
+            "content": str(content),
             "tts": tts,
             "nonce": self.make_nonce,
             "message_reference": {
