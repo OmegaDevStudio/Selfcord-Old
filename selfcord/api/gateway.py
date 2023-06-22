@@ -16,7 +16,7 @@ from ..utils import logging
 from .errors import ReconnectWebsocket
 from .events import EventHandler
 
-log = logging.getLogger("Gateway")
+log = logging.getLogger(__name__)
 
 
 class Activity:

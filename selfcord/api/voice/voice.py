@@ -30,7 +30,7 @@ if TYPE_CHECKING:
     from ...bot import Bot
 
 
-log = logging.getLogger("Voice")
+log = logging.getLogger(__name__)
 
 
 class Voice:

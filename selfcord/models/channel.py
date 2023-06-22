@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from ..bot import Bot
     from ..models.permission import Permission
 
-log = logging.getLogger("Channel")
+log = logging.getLogger(__name__)
 
 
 class Messageable:

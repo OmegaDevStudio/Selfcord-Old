@@ -13,7 +13,7 @@ from aiohttp import ClientSession
 from ..models import Client, User
 from ..utils import logging
 
-log = logging.getLogger("HTTP")
+log = logging.getLogger(__name__)
 
 
 class http:

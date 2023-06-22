@@ -30,7 +30,7 @@ if TYPE_CHECKING:
     from .api.gateway import gateway
     from .api.http import http
 
-log = logging.getLogger()
+log = logging.getLogger(__name__)
 
 
 class Bot:
@@ -410,6 +410,9 @@ class Bot:
             error = "".join(format_exception(e, e, e.__traceback__))
             log.error(f"Failed to load extension events\n{error}")
             return
+
+    async def logout(self):
+        await self.gateway.close()
 
     async def trigger_slash(
         self,

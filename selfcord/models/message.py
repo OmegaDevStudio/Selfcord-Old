@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 from .user import User
 
-log = logging.getLogger("Message")
+log = logging.getLogger(__name__)
 
 class Attachment:
     def __init__(self, data) -> None:

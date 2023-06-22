@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from ..bot import Bot
     from .http import http
 
-log = logging.getLogger("Event")
+log = logging.getLogger(__name__)
 
 
 class EventHandler:
