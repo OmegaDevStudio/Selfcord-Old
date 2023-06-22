@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from ..models import *
 
 
-log = logging.getLogger("Commands")
+log = logging.getLogger(__name__)
 
 
 class Extension:
