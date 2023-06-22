@@ -359,7 +359,8 @@ class Bot:
                     if os.path.exists(path):
                         log.error(f"Path already exists. {path}")
                         return
-                    os.makedirs(dir)
+                    if not os.path.exists(dir):
+                        os.makedirs(dir)
                     lines = text.splitlines()
                     async with aiofiles.open(path, "a+") as f:
                         for line in lines:
