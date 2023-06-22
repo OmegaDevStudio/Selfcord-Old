@@ -227,9 +227,10 @@ class Message:
 
     async def delete(self):
         """Delete the Message Object"""
-        await self.http.request(
+        json = await self.http.request(
             method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}"
         )
+        print(json)
 
     async def edit(self, content: str, file_paths: list[str] = [], delete_after: int | None = None) -> Message:
         """Edits the specified message

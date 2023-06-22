@@ -243,6 +243,7 @@ class Extender:
             name = coro.__name__
             if not inspect.iscoroutinefunction(coro):
                 log.error("Not a coroutine")
+                raise Exception("Not a coroutine")
             else:
                 cmd = Command(
                     name=name, description=description, aliases=aliases, func=coro
@@ -264,6 +265,7 @@ class Extender:
         def decorator(coro):
             if not inspect.iscoroutinefunction(coro):
                 log.error("Not a coroutine")
+                raise Exception("Not a coroutine")
             else:
                 eve = Event(name=event, coro=coro, ext=cls)
                 cls._events[event].append(eve)

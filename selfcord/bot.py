@@ -216,6 +216,7 @@ class Bot:
         def decorator(coro):
             if not inspect.iscoroutinefunction(coro):
                 log.error("Not a coroutine")
+                raise Exception("Not a coroutine")
             else:
                 self._events[event].append(Event(name=event, coro=coro, ext=None))
 
@@ -266,6 +267,7 @@ class Bot:
             name = coro.__name__
             if not inspect.iscoroutinefunction(coro):
                 log.error("Not a coroutine")
+                raise Exception("Not a coroutine")
                 return
             else:
                 cmd = Command(
@@ -293,6 +295,8 @@ class Bot:
         name = coro.__name__
         if not inspect.iscoroutinefunction(coro):
             log.error("Not a coroutine")
+            raise Exception("Not a coroutine")
+
         else:
             cmd = Command(
                 name=name, description=description, aliases=aliases, func=coro

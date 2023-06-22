@@ -201,7 +201,7 @@ class Messageable:
                 await asyncio.gather(
                     *(
                         asyncio.create_task(message.delete())
-                        for message in msgs[:amount][i : i + 3]
+                        for message in msgs[i : i + 3]
                     )
                 )
                 await asyncio.sleep(0.4)
@@ -214,11 +214,13 @@ class Messageable:
                 if len(new_msgs) == 0:
                     break
             for i in range(0, len(msgs), 3):
+                print(msgs[i : i + 3])
+                
                 await asyncio.gather(
                     *(
                         asyncio.create_task(message.delete())
-                        for message in msgs[:amount][i : i + 3]
-                    )
+                        for message in msgs[i : i + 3]
+                    ),
                 )
                 await asyncio.sleep(0.4)
 
@@ -495,13 +497,9 @@ class TextChannel(Messageable):
         if topic is not None and topic != "":
             payload["topic"] = topic
 
-        try:
-            await self.http.request(
-                method="patch", endpoint=f"/channels/{self.id}", json=payload
-            )
-        except Exception as e:
-            error = "".join(format_exception(e, e, e.__traceback__))
-            log.error(f"Could not edit channel \n{error}")
+        await self.http.request(
+            method="patch", endpoint=f"/channels/{self.id}", json=payload
+        )
 
     async def create_webhook(self, name: str = None, avatar_url: str = None) -> Webhook:
         """

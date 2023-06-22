@@ -14,7 +14,7 @@ from ..models import Client, User
 from ..utils import logging
 
 lib, _, _ = __name__.partition(".")
-log = logging.getLogger(lib)
+log = logging.getLogger(__name__)
 
 
 class http:
