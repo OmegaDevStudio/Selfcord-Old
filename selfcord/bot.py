@@ -25,6 +25,7 @@ from .models import (Client, DMChannel, GroupChannel, Guild, InteractionUtil,
                      VoiceChannel)
 from .utils import (Command, CommandCollection, Context, Event, Extension,
                     ExtensionCollection, logging)
+from .utils.logging import handler
 
 if TYPE_CHECKING:
     from .api.gateway import gateway
@@ -69,7 +70,11 @@ class Bot:
         self.user = None
         self.eval: bool = eval
         self.userbot: bool = userbot
-
+        if self.debug:
+            logging.basicConfig(
+                level=logging.DEBUG,
+                handlers=[handler],
+            )
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
 
@@ -95,7 +100,7 @@ class Bot:
         except Exception as e:
             error = format_exception(e, e, e.__traceback__)
             log.error(f"Error related to initial run\n{error}")
-        
+            return 
 
     @property
     def latency(self):

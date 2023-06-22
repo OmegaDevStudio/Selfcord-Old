@@ -24,8 +24,3 @@ class CustomFormatter(logging.Formatter):
 
 handler = logging.StreamHandler()
 handler.setFormatter(CustomFormatter())
-
-logging.basicConfig(
-    level=logging.DEBUG,
-    handlers=[handler],
-)
