@@ -214,8 +214,6 @@ class Messageable:
                 if len(new_msgs) == 0:
                     break
             for i in range(0, len(msgs), 3):
-                print(msgs[i : i + 3])
-                
                 await asyncio.gather(
                     *(
                         asyncio.create_task(message.delete())

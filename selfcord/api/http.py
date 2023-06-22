@@ -149,12 +149,12 @@ class http:
                                 log.info(
                                     f"Attempted to send request to URL: {url} PAYLOAD: {kwargs}"
                                 )
-                            break
+                            raise Exception(e) from e
 
                     elif resp.status == 401:
                         json = await resp.json()
                         log.error(f"{json} -- {resp.status}")
-                        break
+                        raise Exception(f"{json}")
 
                     elif resp.status == 403:
                         json = await resp.json()
@@ -163,7 +163,7 @@ class http:
                             log.info(
                                 f"Attempted to send request to URL: {url} PAYLOAD: {args} {kwargs}"
                             )
-                        break
+                        raise Exception(f"{json}")
 
                     elif resp.status == 201:
                         data = await resp.json()
@@ -185,19 +185,11 @@ class http:
                             )
                         try:
                             json = await resp.json()
-                            log.error(f"Error Response: {json}")
-                            break
+                            raise Exception(f"{json}")
                         except Exception as e:
                             error = "".join(format_exception(e, e, e.__traceback__))
                             log.error(f"Unable to log response: \n{error}")
-                            break
-                        try:
-                            text = await resp.text()
-                            log.error(f"{text} -- {resp.status}")
-                            break
-                        except:
-                            log.error(f"{resp.status}")
-                            break
+                            raise Exception(e) from e
         try:
             if resp.headers["set-cookie"]:
                 dcf = resp.headers["set-cookie"].split("__dcfduid=")[0].split(";")[0]
