@@ -6,7 +6,6 @@ this_directory = Path(__file__).parent
 if __name__ == "__main__":
     this_directory = Path(__file__).parent
     long_description = (this_directory / "README.md").read_text()
-    requirements = open(this_directory / "requirements.txt").read().splitlines()
     setup(
         name="selfcord.py",
         packages=find_packages(
@@ -24,7 +23,14 @@ if __name__ == "__main__":
         author="Shell",
         extras_require={"voice": ["pynacl==1.5.0", "opuslib==3.0.1"]},
         license="MIT",
-        install_requires=requirements,
+        install_requires=[
+            "aiohttp==3.7.4.post0",
+            "aioconsole==0.3.3",
+            "websockets==10.1",
+            "ujson==5.7.0",
+            "aiofiles==0.8.0",
+            "requests==2.31.0"
+        ],
         setup_requires=["pytest-runner"],
         tests_require=["pytest"],
         test_suite="tests",
