@@ -22,5 +22,5 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-handler = logging.StreamHandler()
+handler = logging.StreamHandler() #mert balls
 handler.setFormatter(CustomFormatter())
