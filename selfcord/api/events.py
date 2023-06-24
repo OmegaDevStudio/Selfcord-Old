@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 
 from aioconsole import aprint
 
+from selfcord.models.message import Text_Input
 from selfcord.models.sessions import Event_Session
 
 from ..models import (Client, DMChannel, GroupChannel, Guild, Message,
@@ -476,3 +477,19 @@ class EventHandler:
             if data.get("type") == value:
                 rs_type = type
         await self.bot.emit("relationship_remove", id, rs_type, since)
+
+    async def handle_interaction_modal_create(self, data: dict, user: Client, http: http):
+        """Handles when a text input modal is Created
+
+         Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+        """
+        components = data['components'] if data.get("components") is not None else []
+        new_comps = []
+        for component in components:
+            if component['type'] == 4:
+                new_comps.append(Text_Input(component, self.bot, self.http))
+            
+        await self.bot.emit("modal_create", new_comps)

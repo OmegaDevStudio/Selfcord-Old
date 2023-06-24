@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 
 import aiohttp
 import ujson
+from aioconsole import aprint
 from aiohttp import ClientSession
 
 from ..models import Client, User
@@ -83,7 +84,7 @@ class http:
     def remove_dupes(self, dictionary: dict):
         return set(dictionary)
 
-    async def request(self, method: str, endpoint: str, *args, **kwargs) -> dict:
+    async def request(self, method: str, endpoint: str, *args, **kwargs) -> dict | None:
         """Used to send requests
 
         Args:
@@ -149,12 +150,13 @@ class http:
                                 log.info(
                                     f"Attempted to send request to URL: {url} PAYLOAD: {kwargs}"
                                 )
-                            raise Exception(e) from e
+                            return None
 
                     elif resp.status == 401:
                         json = await resp.json()
                         log.error(f"{json} -- {resp.status}")
-                        raise Exception(f"{json}")
+                        await aprint(json)
+                        return None
 
                     elif resp.status == 403:
                         json = await resp.json()
@@ -163,7 +165,8 @@ class http:
                             log.info(
                                 f"Attempted to send request to URL: {url} PAYLOAD: {args} {kwargs}"
                             )
-                        raise Exception(f"{json}")
+                        await aprint(json)
+                        return None
 
                     elif resp.status == 201:
                         data = await resp.json()
@@ -185,11 +188,12 @@ class http:
                             )
                         try:
                             json = await resp.json()
-                            raise Exception(f"{json}")
+                            await aprint(json)
+                            return None
                         except Exception as e:
                             error = "".join(format_exception(e, e, e.__traceback__))
                             log.error(f"Unable to log response: \n{error}")
-                            raise Exception(e) from e
+                            return None
         try:
             if resp.headers["set-cookie"]:
                 dcf = resp.headers["set-cookie"].split("__dcfduid=")[0].split(";")[0]

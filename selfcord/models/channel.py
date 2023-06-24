@@ -45,6 +45,7 @@ class Messageable:
         before: float | None = None,
         after: float | None = None,
         offset: int | None = None,
+        pinned: bool | None = None
         ):
         """
         Search through channel with specific parameters
@@ -72,6 +73,7 @@ class Messageable:
             "max_id": before,
             "min_id": after,
             "offset": offset,
+            "pinned": pinned,
         }
         index = 0
         for key, value in params.items():
@@ -87,9 +89,14 @@ class Messageable:
         json = await self.http.request("get", url)
         total = json.get("total_results")
         messages = json['messages']if json.get("messages") is not None else []
-        
-        messages = [Message(msg, self.bot, self.http) for msgs in messages for msg in msgs]
-        return total, messages
+        new_msgs = []
+        for msgs in messages:
+            for msg in msgs:
+                msg = Message(msg, self.bot, self.http)
+                if msg.guild_id is None:
+                    setattr(msg, "guild_id", self.guild_id)
+                new_msgs.append(msg)
+        return total, new_msgs
         
 
     async def history(self, amount: int = 100, user: bool = False) -> list[Message] | None:
@@ -228,7 +235,7 @@ class Messageable:
         
 
 
-    async def spam(self, amount: int, content: str, file_paths: list[str] = [], tts=False) -> None:
+    async def spam(self, amount: int, content, file_paths: list[str] = [], tts=False) -> None:
         """
         Send multiple of the same message.
 
@@ -293,7 +300,7 @@ class Messageable:
 
         return Message(resp, self.bot, self.http)
 
-    async def reply(self, message: Message, content: str, file_paths: list[str] = [], delete_after: int | None = None, tts=False) -> Message:
+    async def reply(self, message: Message, content, file_paths: list[str] = [], delete_after: int | None = None, tts=False) -> Message:
         """Reply to a specific message
 
         Args:

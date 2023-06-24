@@ -561,6 +561,25 @@ class Bot:
         data = await self.http.request("get", "/auth/sessions")
         if data.get("user_sessions") is not None:
             return [Session(data, self, self.http) for data in data["user_sessions"]]
+    
+
+    async def reset_relationship(self, user_id: str):
+        """
+        Function remove a specific user from friends or unblocks a user
+
+        Args:
+            user_id (str) : user to remove
+        """
+        await self.http.request("delete", f"/users/@me/relationships/{user_id}")
+
+    async def block(self, user_id: str):
+        """
+        Function to block a user
+        
+        Args:
+            user_id (str) : user to block
+        """
+        await self.http.request("put", f"/users/@me/relationships/{user_id}", json={"type": 2})
 
     async def add_friend(self, user_id: str):
         """

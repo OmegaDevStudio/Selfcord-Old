@@ -105,6 +105,75 @@ class Guild:
                 emoji.guild_id = self.id
                 self.emojis.append(emoji)
 
+    async def search(
+        self,
+        content: str | None = None,
+        author: str | None = None,
+        mentions: str | None = None,
+        has: str | None = None,
+        before: float | None = None,
+        after: float | None = None,
+        offset: int | None = None,
+        pinned: str | None = None,
+        channel: str | None = None
+    ):
+        """
+        Search through channel with specific parameters
+
+        Args:
+            content (str) : Content to search for.
+            author (str) : Author to search for.
+            mentions (str) : Mention to search for.
+            has (str) : Message that contains (file, image, video, etc).
+            before (time) : Before a timestamp.
+            after (time) : After a timestamp.
+            offset (int) : How many messages after to search.
+
+        Returns:
+            total (int) : Total amount of messages possible of receiving.
+            messages (list[Message]) : List of message objects gathered
+
+        """
+        from selfcord.models import Message
+        url = f"/guilds/{self.id}/messages/search"
+        params = {
+            "content": content,
+            "author_id": author,
+            "mentions": mentions,
+            "has": has,
+            "max_id": before,
+            "min_id": after,
+            "offset": offset,
+            "pinned": pinned,
+            "channel_id": channel,
+        }
+        index = 0
+        for key, value in params.items():
+            if value is not None:
+                index += 1
+                param = f"{key}={value}"
+                if index == 1:
+                    param = "?" + param
+                else:
+                    param = "&" + param
+                url += param
+
+        json = await self.http.request("get", url)
+        total = json.get("total_results")
+        messages = json['messages']if json.get("messages") is not None else []
+        
+        new_msgs = []
+        for msgs in messages:
+            for msg in msgs:
+                msg = Message(msg, self.bot, self.http)
+                if msg.guild_id is None:
+                    setattr(msg, "guild_id", self.id)
+                new_msgs.append(msg)
+        return total, new_msgs
+ 
+
+
+
     async def ban(self, user_id: str):
         """Bans a user from the guild
 

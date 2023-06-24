@@ -58,7 +58,6 @@ class Button:
         if self.message.guild_id is not None:
             json['guild_id'] = self.message.guild_id
         json = await self.http.request("post", "/interactions", json=json)
-        log.info(json)
 
 
 
@@ -89,7 +88,7 @@ class Action_Row:
                 elif component.get("type") in [self.STRING_SELECT, self.USER_SELECT, self.ROLE_SELECT, self.CHANNEL_SELECT, self.MENTIONABLE_SELECT]:
                     self.components.append(Select_Menu(component, message, self.bot, self.http))
                 elif component.get("type") == self.TEXT_INPUT:
-                    self.components.append(Text_Input(component, message, self.bot, self.http))
+                    self.components.append(Text_Input(component, self.bot, self.http))
         else:
             self.components = []
         
@@ -122,12 +121,13 @@ class Select_Menu:
         self.disabled = data.get("disabled")
 
 class Text_Input:
-    def __init__(self, data: dict, message: Message, bot: Bot, http: http) -> None:
-        self._update(data, message)
+    def __init__(self, data: dict, bot: Bot, http: http) -> None:
+        self.bot = bot
+        self.http = http
+        self._update(data)
 
-    def _update(self, data: dict, message: Message):
+    def _update(self, data: dict):
         self.type = 4
-        self.message = message
         self.custom_id = data.get("custom_id")
         self.style = data.get("style")
         self.label = data.get("label")
@@ -204,7 +204,7 @@ class Message:
             elif component.get("type") in [self.STRING_SELECT, self.USER_SELECT, self.ROLE_SELECT, self.CHANNEL_SELECT, self.MENTIONABLE_SELECT]:
                 self.components.append(Select_Menu(component, self, self.bot, self.http))
             elif component.get("type") == 4:
-                self.components.append(Text_Input(component, self, self.bot, self.http))
+                self.components.append(Text_Input(component, self.bot, self.http))
             else:
                 self.components.append(component)
 
