@@ -222,7 +222,7 @@ class Guild:
             json={"communication_disabled_until": str(duration)},
         )
 
-    async def txt_channel_create(self, name: str, parent_id: str = None):
+    async def txt_channel_create(self, name: str, parent_id: str | None= None):
         """Creates a Text Channel in the guild
 
         Args:
@@ -237,6 +237,19 @@ class Guild:
             method="post", endpoint=f"/guilds/{self.id}/channels", json=payload
         )
         return TextChannel(channel, self.bot, self.http)
+
+    async def forum_channel_create(self, name: str, parent_id : str | None = None):
+        """Creates a Forum channel in the guild
+
+        Args:
+            name (str): Name of the channel
+            parent_id  (str, optional): ID of the category, defaults to None.
+        """
+        payload = {"name": name, "permission_overwrites": [], "type": 15}
+        if parent_id is not None:
+            payload['parent_id'] = parent_id
+
+        return ForumChannel((await self.http.request("post", f"/guilds/{self.id}/channels", json=payload)), self.bot, self.http)
 
     async def vc_channel_create(self, name: str):
         """Creates a voice channel in the guild
