@@ -5,7 +5,8 @@ from datetime import datetime, timedelta, timezone
 from itertools import zip_longest
 from typing import TYPE_CHECKING
 
-from .channel import Category, Messageable, TextChannel, VoiceChannel
+from .channel import (Category, ForumChannel, Messageable, TextChannel,
+                      VoiceChannel)
 from .emoji import Emoji
 from .role import Role
 from .user import User
@@ -88,10 +89,13 @@ class Guild:
                 if type == self.TEXTCHANNEL or type not in [
                     self.VOICECHANNEL,
                     self.CATEGORY,
+                    self.GUILD_FORUM
                 ]:
                     channel = TextChannel(channel, self.bot, self.http)
                 elif type == self.VOICECHANNEL:
                     channel = VoiceChannel(channel, self.bot, self.http)
+                elif type == self.GUILD_FORUM:
+                    channel = ForumChannel(channel, self.bot, self.http)
                 else:
                     channel = Category(channel, self.bot, self.http)
                 channel.guild_id = self.id

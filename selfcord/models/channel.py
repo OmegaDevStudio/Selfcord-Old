@@ -229,8 +229,6 @@ class Messageable:
                 )
                 await asyncio.sleep(0.4)
 
-    async def thread_create(self, name: str):
-        pass
 
 
     async def spam(self, amount: int, content, file_paths: list[str] = [], tts=False) -> None:
@@ -447,12 +445,14 @@ class TextChannel(Messageable):
         self.name = data.get("name")
         self.id = data.get("id")
         self.guild_id = data.get("guild_id")
+        self.guild = self.bot.get_guild(self.guild_id)
         self.last_message_id = data.get("last_message_id")
         self.flags = data.get("flags")
         self.default_thread_rate_limit_per_user = data.get(
             "default_thread_rate_limit_per_user"
         )
         self.category_id = data.get("parent_id")
+        self.permission_overwrites = data.get("permission_overwrites")
 
     async def delete(self):
         """
@@ -558,6 +558,40 @@ class TextChannel(Messageable):
         )
         return "https://discord.gg/" + data["code"]
 
+class ForumChannel(Messageable):
+    """Forum Channel object"""
+    def __init__(self, data: dict, bot: Bot, http: http) -> None:
+        super().__init__(http, bot)
+        self.bot = bot
+        self.http = http
+        self._update(data)
+    
+    def _update(self, data):
+        self.id = data.get("id")
+        self.type = 15
+        self.last_message_id = data.get("last_message_id")
+        self.flags = data.get("flags")
+        self.guild_id = data.get("guild_id")
+        self.guild = self.bot.get_guild(self.guild_id)
+        self.name = data.get("name")
+        self.category_id = data.get("parent_id")
+        self.rate_limit_per_user = data.get("rate_limit_per_user")
+        self.topic = data.get("topic")
+        self.position = data.get("position")
+        self.permission_overwrites = data.get("permission_overwrites")
+        self.available_tags = data.get("available_tags")
+        self.default_reaction = data.get("default_reaction_emoji")
+        self.default_sort = data.get("default_sort_order")
+        self.default_forum_layout = data.get("default_forum_layout")
+        self.icon_emoji = data.get("icon_emoji")
+        self.theme_color = data.get("theme_color")
+
+    async def thread_create(self, name: str, description: str, applied_tags):
+        referer = f"https://discord.com/channels/{self.guild_id}/{self.id}"
+        await self.http.request("post", f"/channels/{self.id}/threads?use_nested_field=true", headers={"origin": "https://discord.com", "referer": referer}, json={"name": name, "message" : { "content": description}, "applied_tags": applied_tags, "auto_archive_duration": 4320})
+
+
+
 
 class VoiceChannel(Voiceable, Messageable):
     """Voice Channel Object"""
@@ -585,6 +619,7 @@ class VoiceChannel(Voiceable, Messageable):
         self.name = data.get("name")
         self.id = data.get("id")
         self.guild_id = data.get("guild_id")
+        self.guild = self.bot.get_guild(self.guild_id)
         self.last_message_id = data.get("last_message_id")
         self.rtc_region = data.get("rtc_region")
         self.flags = data.get("flags")
@@ -592,7 +627,9 @@ class VoiceChannel(Voiceable, Messageable):
         self.rate_limit_per_user = data.get("rate_limit_per_user")
         self.position = data.get("position")
         self.category_id = data.get("parent_id")
+        self.permission_overwrites = data.get("permission_overwrites")
 
+        
     async def delete(self):
         """
         Deletes the voice channel object.
@@ -680,8 +717,11 @@ class Category:
         self.name = data.get("name")
         self.id = data.get("id")
         self.guild_id = data.get("guild_id")
+        self.guild = self.bot.get_guild(self.guild_id)
         self.position = data.get("position")
         self.flags = data.get("flags")
+        self.permission_overwrites = data.get("permission_overwrites")
+
 
     async def delete(self):
         """Deletes the Category object."""
