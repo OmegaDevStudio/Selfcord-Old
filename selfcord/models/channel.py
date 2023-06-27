@@ -229,10 +229,8 @@ class Messageable:
                 )
                 await asyncio.sleep(0.4)
 
-
-
-
-        
+    async def thread_create(self, name: str):
+        pass
 
 
     async def spam(self, amount: int, content, file_paths: list[str] = [], tts=False) -> None:
