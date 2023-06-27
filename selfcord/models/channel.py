@@ -180,7 +180,8 @@ class Messageable:
     async def delayed_delete(self, message: Message, time: int):
         await asyncio.sleep(time)
         await message.delete()
-
+    
+    
 
     async def purge(self, amount: int = 0) -> None:
         """
@@ -590,8 +591,40 @@ class ForumChannel(Messageable):
         referer = f"https://discord.com/channels/{self.guild_id}/{self.id}"
         await self.http.request("post", f"/channels/{self.id}/threads?use_nested_field=true", headers={"origin": "https://discord.com", "referer": referer}, json={"name": name, "message" : { "content": description}, "applied_tags": applied_tags, "auto_archive_duration": 4320})
 
+class ThreadChannel(Messageable):
+    def __init__(self, data: dict, bot: Bot, http: http):
+        super().__init__(http, bot)
+        self.bot = bot
+        self.http = http
+        self._update(data)
 
+    def _update(self, data):
+        self.id = data.get("id")
+        self.type = data.get("type")
+        self.last_message_id = data.get("last_message_id")
+        self.flags = data.get("flags")
+        self.guild_id = data.get("guild_id")
+        self.guild = self.bot.get_guild(self.guild_id)
+        self.name = data.get("name")
+        self.category_id = data.get("parent_id")
+        self.rate_limit_per_user = data.get("rate_limit_per_user")
+        self.bitrate = data.get("bitrate")
+        self.user_limit = data.get("user_limit")
+        self.rtc_region = data.get("rtc_region")
+        self.owner_id = data.get("owner_id")
+        metadata = data.get("thread_metadata")
+        self.archived = metadata.get("archived")
+        self.archive_timestamp = metadata.get("archive_timestamp")
+        self.auto_archive_duration = metadata.get("auto_archive_duration")
+        self.locked = metadata.get("locked")
+        self.create_timestamp = metadata.get("create_timestamp")
+        self.message_count = data.get("message_count")
+        self.member_count = data.get("member_count")
+        self.total_message_sent = data.get("total_message_sent")
+        self.member_ids = data.get("member_ids_preview")
+        self.members = [User(id, self.bot, self.http) if data.get("member_ids") is not None else [] for id in data['member_ids']]
 
+        
 
 class VoiceChannel(Voiceable, Messageable):
     """Voice Channel Object"""

@@ -225,6 +225,10 @@ class Message:
 
         self.guild = self.bot.get_guild(self.guild_id)
 
+    async def thread_create(self, name: str):
+        """Create a thread for message object"""
+        await self.http.request("post", f"/channels/{self.channel_id}/messages/{self.id}/threads", headers={"origin": "https://discord.com", "referer": f"https://discord.com/{self.guild_id}/self.channel_id"}, json = {"name": name, "auto_archive_duration": 4320, "location": "Message", "type": 11})
+
     async def delete(self):
         """Delete the Message Object"""
         await self.http.request(
