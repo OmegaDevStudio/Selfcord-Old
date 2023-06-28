@@ -138,18 +138,18 @@ class http:
                         try:
                             json = await resp.json()
                             await asyncio.sleep(json["retry_after"])
-                            if self.debug:
-                                log.error(f"429 Ratelimited: {json}")
+                            log.error(f"429 Ratelimited: {json}")
                             continue
                         except Exception as e:
                             error = "".join(format_exception(e, e, e.__traceback__))
                             text = await resp.text()
+                            
                             log.error(f"Error upon parsing json : {text}")
-                            if self.debug:
-                                log.error(f"Error upon parsing json : \n{error}")
-                                log.info(
-                                    f"Attempted to send request to URL: {url} PAYLOAD: {kwargs}"
-                                )
+                            log.error(f"Error upon parsing json : \n{error}")
+                            log.info(
+                                f"Attempted to send request to URL: {url} PAYLOAD: {kwargs}"
+                            )
+                            await aprint(error)
                             return None
 
                     elif resp.status == 401:
@@ -161,10 +161,9 @@ class http:
                     elif resp.status == 403:
                         json = await resp.json()
                         log.error(f"403 Unauthorized: {json}")
-                        if self.debug:
-                            log.info(
-                                f"Attempted to send request to URL: {url} PAYLOAD: {args} {kwargs}"
-                            )
+                        log.info(
+                            f"Attempted to send request to URL: {url} PAYLOAD: {args} {kwargs}"
+                        )
                         await aprint(json)
                         return None
 
@@ -193,6 +192,7 @@ class http:
                         except Exception as e:
                             error = "".join(format_exception(e, e, e.__traceback__))
                             log.error(f"Unable to log response: \n{error}")
+                            await aprint(error)
                             return None
         try:
             if resp.headers["set-cookie"]:
