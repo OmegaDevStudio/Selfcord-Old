@@ -8,6 +8,7 @@ import io
 import os
 import random
 import time
+import urllib
 from collections import defaultdict
 from traceback import format_exception
 from typing import TYPE_CHECKING
@@ -737,3 +738,19 @@ class Bot:
         if self.debug:
             log.debug("Finished changing presence")
             log.info(f"Changed Status to {status}, AFK to {afk}")
+
+    async def change_status(self, status: str, message: str | None = None, emoji: str | None = None):
+        json = {"status": status}
+        if message is not None:
+            if "custom_status" in json:
+                json['custom_status'].update({"text": message})
+            else:
+                json['custom_status'] = {"text": message}
+        if emoji is not None:
+            emoji = emoji.encode("utf-8").decode("utf-8")
+            if "custom_status" in json:
+                json['custom_status'].update({"emoji_name": emoji})
+            else:
+                json['custom_status'] = {"emoji_name": emoji}
+
+        await self.http.request("patch", "/users/@me/settings", json=json)
