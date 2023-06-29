@@ -136,7 +136,15 @@ class Text_Input:
         self.required = data.get("required")
         self.value = data.get("value")
         self.placeholder = data.get("placeholder")
+        self.id = data.get("id")
 
+    
+    async def trigger(self, value: str, message: Message, comp_id: str):
+        comp_id = "form_" + comp_id
+        json = {"type": 5, "application_id": message.author.id, "channel_id": message.channel_id, "data": {"id": self.id, "custom_id": comp_id, "components": [{"type": 1, "components": [{"type": self.type, "custom_id":self.custom_id, "value": value,}]}]}, "session_id": self.bot.session_id, "nonce": message.make_nonce}
+        if message.guild_id is not None:
+            json['guild_id'] = message.guild_id
+        await self.http.request("post", "/interactions", json=json)
 
 class Select_Option:
     def __init__(self, data) -> None:

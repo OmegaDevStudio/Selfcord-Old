@@ -668,8 +668,8 @@ class Bot:
         else:
             log.error("Recipient ID not specified")
 
-    async def join_guild(self, code: str) -> Guild | None:
-        """Helper function to join guilds
+    async def join_invite(self, code: str) -> Guild | None:
+        """Helper function to join invites
         
         Args:
             code (str): Invite Code
@@ -680,9 +680,10 @@ class Bot:
             "session_id": f"{self.session_id}"
         }
         )
-        if data is not None:
+        try:
             return Guild(data['guild'], self, self.http)
-        return None
+        except:
+            return GroupChannel(data['channel'], self, self.http)
     async def redeem_nitro(self, code: str):
         """Helper function to redeem nitro
 

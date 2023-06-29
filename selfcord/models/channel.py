@@ -818,8 +818,7 @@ class GroupChannel(Voiceable, Messageable):
         Args:
             data (dict): JSON data from gateway
         """
-        for user in data.get("recipients"):
-            self.recipients.append(User(user, self.bot, self.http))
+        self.recipients = [User(data, self.bot, self.http) if data.get("recipients") is not None else [] for data in data['recipients']]
         self.name = data.get("name")
         self.owner_id = data.get("owner_id")
         self.last_message_id = data.get("last_message_id")

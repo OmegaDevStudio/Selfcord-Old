@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 from aioconsole import aprint
 
-from selfcord.models.message import Text_Input
+from selfcord.models.message import Action_Row, Text_Input
 from selfcord.models.sessions import Event_Session
 
 from ..models import (Client, DMChannel, GroupChannel, Guild, Message,
@@ -488,8 +488,13 @@ class EventHandler:
         """
         components = data['components'] if data.get("components") is not None else []
         new_comps = []
+        print(data['id'])
         for component in components:
-            if component['type'] == 4:
-                new_comps.append(Text_Input(component, self.bot, self.http))
+            if component['type'] == 1:
+                for comp in component['components']:
+                    if comp['type'] == 4:
+                        text = Text_Input(comp, self.bot, self.http)
+                        setattr(text, "id", data['id'])
+                        new_comps.append(text)
             
         await self.bot.emit("modal_create", new_comps)
