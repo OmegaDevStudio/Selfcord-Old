@@ -763,7 +763,7 @@ class Bot:
 
         await self.http.request("patch", "/users/@me/settings", json=json)
 
-    async def friend_invite(self, id):
+    async def friend_invite(self):
         """Get discord friend invite for specified ID"""
         json = await self.http.request("post", "/users/@me/invites", json={"max_age":0,"max_uses":0,"target_type":None, "flags":0})
         return json['code']
