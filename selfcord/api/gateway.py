@@ -337,6 +337,8 @@ class gateway:
                 item = self.zlib.decompress(item)
             except Exception as e:
                 log.error(f"Could not decompress\n{e}")
+                await self.close()
+                await self.connect()
             item = ujson.loads(item)  # Get json message from gateway
 
             op = item.get("op")  # Op code
@@ -477,6 +479,7 @@ class gateway:
         }
         await self.send_json(payload)
 
+
     async def connect(self):
         """Connect to discord gateway"""
         self.ws = await websockets.connect(
@@ -497,16 +500,35 @@ class gateway:
 
     async def identify(self):
         """Identify to gateway, uses amazing mobile client spoof"""
+        
         payload = {
             "op": 2,
             "d": {
+                "capabilities": 4079,
                 "token": self.token,
+                "client_state": {
+                    "api_code_version": 0,
+                    "highest_last_message_id": "0",
+                    "initial_guild_id": None,
+                    "private_channels_version": "0",
+                    "read_state_version": 0,
+                    "user_guild_settings_version": -1,
+                    "user_settings_version": -1,
+                },
+                "compress": False,
+                "presence": {
+                    "activities": [],
+                    "afk": False,
+                    "since": 0,
+                    "status": "dnd"
+                },
                 "properties": {
-                    "$os": "android",
-                    "$browser": "Discord Android",
-                    "$device": "Discord Android",
-                    "$referrer": "",
-                    "$referring_domain": "",
+                    "os": "Android",
+                    "browser": "Discord Android",
+                    "device": "Discord Android",
+                    "browser_useragent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.157 Chrome/108.0.5359.215 Electron/22.3.2 Safari/537.36",
+                    "system-locale": "en-GB",
+                    "os_arch": "x64"
                 },
             },
         }

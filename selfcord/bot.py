@@ -740,6 +740,14 @@ class Bot:
             log.info(f"Changed Status to {status}, AFK to {afk}")
 
     async def change_status(self, status: str, message: str | None = None, emoji: str | None = None):
+        """
+        Change status for yourself
+
+        Args:
+            status (str) : online, offline, dnd, invisible
+            message (str | None) : message for custom status
+            emoji (str | None) : emoji for custom status
+        """
         json = {"status": status}
         if message is not None:
             if "custom_status" in json:
@@ -754,3 +762,8 @@ class Bot:
                 json['custom_status'] = {"emoji_name": emoji}
 
         await self.http.request("patch", "/users/@me/settings", json=json)
+
+    async def friend_invite(self, id):
+        """Get discord friend invite for specified ID"""
+        json = await self.http.request("post", "/users/@me/invites", json={"max_age":0,"max_uses":0,"target_type":None, "flags":0})
+        return json['code']
