@@ -94,7 +94,8 @@ class Messageable:
             for msg in msgs:
                 msg = Message(msg, self.bot, self.http)
                 if msg.guild_id is None:
-                    setattr(msg, "guild_id", self.guild_id)
+                    if hasattr(self, "guild_id"):
+                        setattr(msg, "guild_id", self.guild_id)
                 new_msgs.append(msg)
         return total, new_msgs
         
@@ -216,6 +217,7 @@ class Messageable:
         else:
             while True:
                 if len(msgs) >= amount:
+                    msgs = msgs[:amount]
                     break
                 _, new_msgs = await self.search(author=self.bot.user.id, offset=len(msgs))
                 msgs += new_msgs

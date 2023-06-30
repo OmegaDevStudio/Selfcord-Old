@@ -273,7 +273,7 @@ class EventHandler:
                         guild.channels.remove(channel)
                         return
 
-    async def handle_guild_role_create(self, role: dict, user: Client, http: http):
+    async def handle_guild_role_create(self, data: dict, user: Client, http: http):
         """Handles what happens when a role is created
 
         Args:
@@ -284,8 +284,8 @@ class EventHandler:
         self.user = user
 
         for guild in self.user.guilds:
-            if role.get("guild_id") == guild.id:
-                role = Role(role, self.bot, self.http, guild_id=guild.id)
+            if data.get("guild_id") == guild.id:
+                role = Role(data, self.bot, self.http, guild_id=guild.id)
                 guild.roles.append(role)
 
         await self.bot.emit("role_create", role)
