@@ -17,7 +17,7 @@ if __name__ == "__main__":
                 "selfcord.api.voice",
             ]
         ),
-        version="0.2.1",
+        version="0.2.2",
         description="A Discord API wrapper designed for selfbots!",
         readme="README.md",
         author="Shell",
