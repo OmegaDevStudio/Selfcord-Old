@@ -771,11 +771,14 @@ class Bot:
     async def view_invites(self):
         """View discord friend invites"""
         json = await self.http.request("get", "/users/@me/invites")
-        codes = []
-        expiry = []
-        for key, value in json.items():
-            if key == "code":
-                codes.append(value)
-            if key == "expires_at":
-                expiry.append(value)
-        return codes, expiry
+        invites = []
+        for items in json:
+            invite = {}
+            for key, value in items.items():
+                if key == "code":
+                    invite['code'] = value
+                if key == "expires_at":
+                    invite['expiry'] = value
+            if invite.get("code") is not None and invite.get("expiry") is not None:
+                invites.append(invite)
+        return invites
