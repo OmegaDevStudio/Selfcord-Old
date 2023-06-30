@@ -767,3 +767,15 @@ class Bot:
         """Get discord friend invite for specified ID"""
         json = await self.http.request("post", "/users/@me/invites", json={"max_age":0,"max_uses":0,"target_type":None, "flags":0})
         return json['code']
+
+    async def view_invites(self):
+        """View discord friend invites"""
+        json = await self.http.request("get", "/users/@me/invites")
+        codes = []
+        expiry = []
+        for key, value in json.items():
+            if key == "code":
+                codes.append(value)
+            if key == "expires_at":
+                expiry.append(value)
+        return codes, expiry
