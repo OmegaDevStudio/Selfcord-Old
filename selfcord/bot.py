@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import asyncio
 import contextlib
 import importlib
@@ -7,6 +8,7 @@ import inspect
 import io
 import os
 import random
+import sys
 import time
 import urllib
 from collections import defaultdict
@@ -193,13 +195,22 @@ class Bot:
                 else:
                     return content
 
+
+
             @self.cmd(description="Executes and runs code", aliases=["exec"])
             async def eval(ctx, *, code):
                 """Runs python code via exec, intended for experienced usage. This can be DANGEROUS if you do not know what you are doing, use with caution."""
                 code = clean_code(code)
+                envs = {
+                    "bot": self,
+                    "ctx": ctx,
+                    "selfcord": sys.modules[__name__],
+                    "__import__": __import__
+                }
+                
                 try:
                     with contextlib.redirect_stdout(io.StringIO()) as f:
-                        await aexec(source=code, local=globals() )
+                        await aexec(code, local=envs)
                         result = f"```{f.getvalue()}\n```"
                 except Exception as e:
                     error = "".join(format_exception(e, e, e.__traceback__))
@@ -477,7 +488,7 @@ class Bot:
         """
         for message in self.user.messages:
             if message.id == message_id:
-                return Message
+                return message
 
     def get_channel(self, channel_id: str):
         """

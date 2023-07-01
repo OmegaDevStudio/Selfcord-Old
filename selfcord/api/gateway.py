@@ -337,8 +337,7 @@ class gateway:
                 item = self.zlib.decompress(item)
             except Exception as e:
                 log.error(f"Could not decompress\n{e}")
-                await self.close()
-                await self.connect()
+                return
             item = ujson.loads(item)  # Get json message from gateway
 
             op = item.get("op")  # Op code
