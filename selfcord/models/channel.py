@@ -175,8 +175,11 @@ class Messageable:
             id = atch['id']
             upload_filename = atch['upload_filename']
             async with aiohttp.ClientSession() as session:
-                async with aiofiles.open(paths[key], "rb") as f:
-                    file = await f.read()
+                if isinstance(paths[key], (bytes, BytesIO, bytearray)):
+                    file = paths[key].getvalue()
+                else:
+                    async with aiofiles.open(paths[key], "rb") as f:
+                        file = await f.read()
                 async with session.put(upload_url, data=file): 
                     pass
             items.append({"uploaded_filename": upload_filename, "filename": os.path.basename(upload_filename) , "id": id})
