@@ -157,13 +157,14 @@ class Messageable:
         files = []
         id = 0
         for path in paths:
-            if isinstance(path, (bytes, bytearray)):
+            print(type(path))
+            if isinstance(path, (bytearray, bytes)):
                 files.append({
                     "file_size": len(path),
                     "filename": f"{random.randint(1, 25555)}.png", 
                     "id": id
                 })
-            if isinstance(path, BytesIO):
+            elif isinstance(path, BytesIO):
                 files.append({
                     "file_size": path.getbuffer().nbytes,
                     "filename": f"{random.randint(1, 25555)}.png", 
@@ -185,8 +186,10 @@ class Messageable:
             id = atch['id']
             upload_filename = atch['upload_filename']
             async with aiohttp.ClientSession() as session:
-                if isinstance(paths[key], (bytes, BytesIO, bytearray)):
+                if isinstance(paths[key], BytesIO):
                     file = paths[key].getvalue()
+                elif isinstance(paths[key], (bytes, bytearray)):
+                    file = paths[key]
                 else:
                     async with aiofiles.open(paths[key], "rb") as f:
                         file = await f.read()
