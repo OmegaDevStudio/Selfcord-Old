@@ -76,6 +76,7 @@ class Profile:
             self.bot.get_guild(guild["id"]) for guild in data.get("mutual_guilds")
         ]
 
+        
         self.id = data["user"]["id"]
         self.premium_type = data.get("premium_type")
         user_profile = data.get("user_profile")

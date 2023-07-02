@@ -157,7 +157,6 @@ class Messageable:
         files = []
         id = 0
         for path in paths:
-            print(type(path))
             if isinstance(path, (bytearray, bytes)):
                 files.append({
                     "file_size": len(path),

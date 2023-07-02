@@ -488,7 +488,6 @@ class EventHandler:
         """
         components = data['components'] if data.get("components") is not None else []
         new_comps = []
-        print(data['id'])
         for component in components:
             if component['type'] == 1:
                 for comp in component['components']:

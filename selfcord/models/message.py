@@ -8,6 +8,9 @@ import urllib
 from itertools import zip_longest
 from typing import TYPE_CHECKING
 
+import aiofiles
+import ujson
+
 if TYPE_CHECKING:
     from ..api.http import http
     from ..bot import Bot
@@ -243,6 +246,9 @@ class Message:
             method="delete", endpoint=f"/channels/{self.channel_id}/messages/{self.id}"
         )
 
+    
+         
+                
     async def edit(self, content: str, file_paths: list = [], delete_after: int | None = None) -> Message:
         """Edits the specified message
 

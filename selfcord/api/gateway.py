@@ -503,7 +503,6 @@ class gateway:
         payload = {
             "op": 2,
             "d": {
-                "capabilities": 4079,
                 "token": self.token,
                 "client_state": {
                     "api_code_version": 0,
