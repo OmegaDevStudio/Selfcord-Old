@@ -5,7 +5,7 @@ import re
 import shlex
 from collections import defaultdict
 from traceback import format_exception
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, get_origin
 
 from .logging import logging
 
@@ -386,7 +386,7 @@ class Context:
         else:
             log.error("Parameter annotation must be callable")
 
-    def convert(self, param, value) -> str | Any:
+    async def convert(self, param, value) -> str | Any:
         """Attempts to turn x value in y value, using get_converter func for the values
 
         Args:
@@ -396,7 +396,14 @@ class Context:
         Returns:
             Type[str]: The type of parameter
         """
+        from ..models import User
         converter = self.get_converter(param)
+        if converter is User:
+            id = re.findall(r"[0-9]{18,19}", value)
+            if len(id) > 0:
+                user = await self.bot.get_user(id[0])
+                return user
+            log.error("You failed to pass valid mention or ID")
         return converter(value)
 
     async def get_arguments(self) -> tuple[list, dict]:
@@ -419,35 +426,28 @@ class Context:
         sh.whitespace_split = True
         splitted = list(sh)
 
-        for index, item in enumerate(splitted):
-            user_regex = re.findall(r"<@[0-9]{18,19}>", item)
-            if len(user_regex) > 0:
-                x = re.findall(r"[0-9]{18,19}", item)
-                if len(x) > 0:
-                    val = x[0]
-                    splitted[index] = val
-            break
+        
         for index, (name, param) in enumerate(signature):
             if name in ["ctx", "self"]:
                 continue
 
             if param.kind is param.POSITIONAL_OR_KEYWORD:
                 try:
-                    arg: str | Any = self.convert(param, splitted.pop(0))
+                    arg: str | Any = await self.convert(param, splitted.pop(0))
                     args.append(arg)
                 except Exception as e:
                     log.error(e)
             if param.kind is param.VAR_KEYWORD:
                 for arg in splitted:
-                    arg = self.convert(param, arg)
+                    arg = await self.convert(param, arg)
                     args.append(arg)
             if param.kind is param.VAR_POSITIONAL:
                 for arg in splitted:
-                    arg = self.convert(param, arg)
+                    arg = await self.convert(param, arg)
                     args.append(arg)
 
             if param.kind is param.KEYWORD_ONLY:
-                arg = self.convert(param, " ".join(splitted))
+                arg = await self.convert(param, " ".join(splitted))
                 kwargs[name] = arg
 
         for key in kwargs.copy():
