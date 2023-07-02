@@ -157,8 +157,18 @@ class Messageable:
         files = []
         id = 0
         for path in paths:
-            if isinstance(path, (bytes, BytesIO, bytearray)):
-                files.append({"file_size": len(path.getbuffer()), "filename": f"{random.randint(1, 255)}.png", "id": id})
+            if isinstance(path, (bytes, bytearray)):
+                files.append({
+                    "file_size": len(path),
+                    "filename": f"{random.randint(1, 25555)}.png", 
+                    "id": id
+                })
+            if isinstance(path, BytesIO):
+                files.append({
+                    "file_size": path.getbuffer().nbytes,
+                    "filename": f"{random.randint(1, 25555)}.png", 
+                    "id": id
+                })
             else:
                 async with aiofiles.open(path, "rb") as f:
                     file = await f.read()
