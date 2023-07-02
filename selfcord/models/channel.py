@@ -251,7 +251,7 @@ class Messageable:
 
 
 
-    async def spam(self, amount: int, content, file_paths: list[str] = [], tts=False) -> None:
+    async def spam(self, amount: int, content, file_paths: list = [], tts=False) -> None:
         """
         Send multiple of the same message.
 
@@ -273,7 +273,7 @@ class Messageable:
             )
             await asyncio.sleep(0.3)
 
-    async def send(self, content=None, file_paths: list[str] = [], delete_after: int | None = None, tts=False) -> Message:
+    async def send(self, content=None, file_paths: list = [], delete_after: int | None = None, tts=False) -> Message:
         """
         Send a message to the text channel.
 
@@ -316,7 +316,7 @@ class Messageable:
 
         return Message(resp, self.bot, self.http)
 
-    async def reply(self, message: Message, content, file_paths: list[str] = [], delete_after: int | None = None, tts=False) -> Message:
+    async def reply(self, message: Message, content, file_paths: list = [], delete_after: int | None = None, tts=False) -> Message:
         """Reply to a specific message
 
         Args:
