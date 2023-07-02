@@ -4,6 +4,7 @@ import asyncio
 import os
 import random
 import time
+from io import BytesIO
 from traceback import format_exception
 from typing import TYPE_CHECKING
 
@@ -152,15 +153,18 @@ class Messageable:
 
         return messages
 
-    async def upload_image(self, paths: list[str]) -> list[dict[str, int | str]]:
+    async def upload_image(self, paths: list) -> list[dict[str, int | str]]:
         files = []
         id = 0
         for path in paths:
-            async with aiofiles.open(path, "rb") as f:
-                file = await f.read()
-                size = len(file)
-                name = os.path.basename(path)
-            files.append({"file_size" : size, "filename": f"{name}", "id": id})
+            if isinstance(path, (bytes, BytesIO, bytearray)):
+                files.append({"file_size": len(path.getbuffer()), "filename": f"{random.randint(1, 255)}.png", "id": id})
+            else:
+                async with aiofiles.open(path, "rb") as f:
+                    file = await f.read()
+                    size = len(file)
+                    name = os.path.basename(path)
+                files.append({"file_size" : size, "filename": f"{name}", "id": id})
             id += 1
 
         json = await self.http.request("post", f"/channels/{self.id}/attachments", json={"files": files})
@@ -171,8 +175,11 @@ class Messageable:
             id = atch['id']
             upload_filename = atch['upload_filename']
             async with aiohttp.ClientSession() as session:
-                async with aiofiles.open(paths[key], "rb") as f:
-                    file = await f.read()
+                if isinstance(paths[key], (bytes, BytesIO, bytearray)):
+                    file = paths[key].getvalue()
+                else:
+                    async with aiofiles.open(paths[key], "rb") as f:
+                        file = await f.read()
                 async with session.put(upload_url, data=file): 
                     pass
             items.append({"uploaded_filename": upload_filename, "filename": os.path.basename(upload_filename) , "id": id})
