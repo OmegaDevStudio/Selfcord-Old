@@ -1,0 +1,29 @@
+selfcord.utils package
+======================
+Where Selfcord Command handling, Extensions, Extender and Logging modules work.
+Submodules
+----------
+
+selfcord.utils.command module
+-----------------------------
+
+.. automodule:: selfcord.utils.command
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+selfcord.utils.logging module
+-----------------------------
+
+.. automodule:: selfcord.utils.logging
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: selfcord.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

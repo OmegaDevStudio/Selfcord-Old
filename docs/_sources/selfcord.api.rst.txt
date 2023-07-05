@@ -1,0 +1,53 @@
+selfcord.api package
+====================
+Selfcord API, where it interacts via Discord API endpoints and Discord Gateway.
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   selfcord.api.voice
+
+Submodules
+----------
+
+selfcord.api.errors module
+--------------------------
+
+.. automodule:: selfcord.api.errors
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+selfcord.api.events module
+--------------------------
+
+.. automodule:: selfcord.api.events
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+selfcord.api.gateway module
+---------------------------
+
+.. automodule:: selfcord.api.gateway
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+selfcord.api.http module
+------------------------
+
+.. automodule:: selfcord.api.http
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: selfcord.api
+   :members:
+   :undoc-members:
+   :show-inheritance:

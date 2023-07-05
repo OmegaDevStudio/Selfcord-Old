@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>selfcord.models package &mdash; Selfcord 0.2.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="selfcord.utils package" href="selfcord.utils.html" />
+    <link rel="prev" title="selfcord.api.voice package" href="selfcord.api.voice.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Selfcord
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">selfcord</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="selfcord.html">selfcord package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="selfcord.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="selfcord.api.html">selfcord.api package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">selfcord.models package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="selfcord.utils.html">selfcord.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="selfcord.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="selfcord.html#module-selfcord.bot">selfcord.bot module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="selfcord.html#module-selfcord">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Selfcord</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">selfcord</a></li>
+          <li class="breadcrumb-item"><a href="selfcord.html">selfcord package</a></li>
+      <li class="breadcrumb-item active">selfcord.models package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/selfcord.models.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="selfcord-models-package">
+<h1>selfcord.models package<a class="headerlink" href="#selfcord-models-package" title="Permalink to this heading"></a></h1>
+<p>Where selfcords models/objects exist. This where you can find methods and attributes for each object.</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-selfcord.models.channel">
+<span id="selfcord-models-channel-module"></span><h2>selfcord.models.channel module<a class="headerlink" href="#module-selfcord.models.channel" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.channel.Category">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.channel.</span></span><span class="sig-name descname"><span class="pre">Category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#Category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Category" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Category Object</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Category.delete">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#Category.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Category.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the Category object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.channel.DMChannel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.channel.</span></span><span class="sig-name descname"><span class="pre">DMChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#DMChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.DMChannel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#selfcord.models.channel.Voiceable" title="selfcord.models.channel.Voiceable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Voiceable</span></code></a>, <a class="reference internal" href="#selfcord.models.channel.Messageable" title="selfcord.models.channel.Messageable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Messageable</span></code></a></p>
+<p>DM Channel Object</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.DMChannel.delete">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#DMChannel.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.DMChannel.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the DM Channel object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.channel.ForumChannel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.channel.</span></span><span class="sig-name descname"><span class="pre">ForumChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#ForumChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.ForumChannel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#selfcord.models.channel.Messageable" title="selfcord.models.channel.Messageable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Messageable</span></code></a></p>
+<p>Forum Channel object</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.ForumChannel.thread_create">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">thread_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">applied_tags</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#ForumChannel.thread_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.ForumChannel.thread_create" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.channel.GroupChannel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.channel.</span></span><span class="sig-name descname"><span class="pre">GroupChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#GroupChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.GroupChannel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#selfcord.models.channel.Voiceable" title="selfcord.models.channel.Voiceable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Voiceable</span></code></a>, <a class="reference internal" href="#selfcord.models.channel.Messageable" title="selfcord.models.channel.Messageable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Messageable</span></code></a></p>
+<p>Group Channel Object</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.GroupChannel.create_invite">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_invite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/selfcord/models/channel.html#GroupChannel.create_invite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.GroupChannel.create_invite" title="Permalink to this definition"></a></dt>
+<dd><p>Creates an invite in the specified group channel</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>None</p>
+</dd>
+<dt>Returns:</dt><dd><p>invite (str): Returns the channel invite link</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.GroupChannel.delete">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#GroupChannel.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.GroupChannel.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the Group Channel Object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.channel.Messageable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.channel.</span></span><span class="sig-name descname"><span class="pre">Messageable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#Messageable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Messageable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Parent class specific for those classes that include a textchat for sending messages.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Messageable.delayed_delete">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delayed_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#Messageable.delayed_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Messageable.delayed_delete" title="Permalink to this definition"></a></dt>
+<dd><p>Method to delay a delete of a message</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>message (message) : Message object
+time (int) : Interval to delete after</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Messageable.history">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">selfcord.models.message.Message</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/selfcord/models/channel.html#Messageable.history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Messageable.history" title="Permalink to this definition"></a></dt>
+<dd><p>Get channel message history.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>amount(int) : Amount of messages to gather. Default is 100.</p>
+</dd>
+<dt>Returns:</dt><dd><p>messages(list) : List of messages from the channel.
+None : If client does not have view permission for the channel or no data found</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="selfcord.models.channel.Messageable.make_nonce">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make_nonce</span></span><a class="headerlink" href="#selfcord.models.channel.Messageable.make_nonce" title="Permalink to this definition"></a></dt>
+<dd><p>Generate pseudorandom number.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Messageable.purge">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">purge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/selfcord/models/channel.html#Messageable.purge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Messageable.purge" title="Permalink to this definition"></a></dt>
+<dd><p>Delete a number of messages, starting from the most recent.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>amount(int) : Number of messages to purge/delete.</p>
+</dd>
+<dt>Returns:</dt><dd><p>No return value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Messageable.reply">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></span><a class="reference internal" href="_modules/selfcord/models/channel.html#Messageable.reply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Messageable.reply" title="Permalink to this definition"></a></dt>
+<dd><p>Reply to a specific message</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>message (str): Message to reply to
+content (_type_, optional): Message content to reply with. Defaults to None.
+tts (bool, optional): Specify whether message is text-to-speech or not. Defaults to False.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Message object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Messageable.search">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mentions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pinned</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#Messageable.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Messageable.search" title="Permalink to this definition"></a></dt>
+<dd><p>Search through channel with specific parameters</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>content (str) : Content to search for.
+author (str) : Author to search for.
+mentions (str) : Mention to search for.
+has (str) : Message that contains (file, image, video, etc).
+before (time) : Before a timestamp.
+after (time) : After a timestamp.
+offset (int) : How many messages after to search.</p>
+</dd>
+<dt>Returns:</dt><dd><p>total (int) : Total amount of messages possible of receiving.
+messages (list[Message]) : List of message objects gathered</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Messageable.send">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></span><a class="reference internal" href="_modules/selfcord/models/channel.html#Messageable.send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Messageable.send" title="Permalink to this definition"></a></dt>
+<dd><p>Send a message to the text channel.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>content(str) : Message content. Should be string type or similar. Discord <cite>embed</cite> type is not allowed.</p></li>
+<li><p>tts(bool) : Specify whether message is text-to-speech or not</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><p>Message object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Messageable.spam">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/selfcord/models/channel.html#Messageable.spam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Messageable.spam" title="Permalink to this definition"></a></dt>
+<dd><p>Send multiple of the same message.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>amount(int) : Number of spam messages to send.</p></li>
+<li><p>content(str) : The message to send.</p></li>
+<li><p>tts(bool) = False : Specify whether it is a TTS message.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><p>No return value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Messageable.upload_image">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">upload_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/selfcord/models/channel.html#Messageable.upload_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Messageable.upload_image" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.channel.TextChannel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.channel.</span></span><span class="sig-name descname"><span class="pre">TextChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#TextChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.TextChannel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#selfcord.models.channel.Messageable" title="selfcord.models.channel.Messageable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Messageable</span></code></a></p>
+<dl>
+<dt>Text Channel Object</dt><dd><p>Represents a Guild/Server channel within Discord.
+All methods are coroutines and thus need to be awaited.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Name of the channel</p>
+</dd>
+<dt>Functions:</dt><dd><ul class="simple">
+<li><p>delete()</p></li>
+<li><p>edit(name[str], parent_id[int], position[int], topic[str])</p></li>
+<li><p>history()</p></li>
+<li><p>purge(amount[int])</p></li>
+<li><p>spam(amount[int], content[str], tts[bool]=False)</p></li>
+<li><p>send()</p></li>
+<li><p>reply()</p></li>
+<li><p>create_webhook()</p></li>
+</ul>
+</dd>
+<dt>Example Object (ref: <a class="reference external" href="https://discord.com/developers/docs/resources/channel#channel-object-example-guild-text-channel">https://discord.com/developers/docs/resources/channel#channel-object-example-guild-text-channel</a>)</dt><dd><dl class="simple">
+<dt>{</dt><dd><p>“id”: “41771983423143937”,
+“guild_id”: “41771983423143937”,
+“name”: “general”,
+“type”: 0,
+“position”: 6,
+“permission_overwrites”: [],
+“rate_limit_per_user”: 2,
+“nsfw”: true,
+“topic”: “24/7 chat about how to gank Mike #2”,
+“last_message_id”: “155117677105512449”,
+“parent_id”: “399942396007890945”,
+“default_auto_archive_duration”: 60</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.TextChannel.create_invite">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_invite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_uses</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/selfcord/models/channel.html#TextChannel.create_invite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.TextChannel.create_invite" title="Permalink to this definition"></a></dt>
+<dd><p>Creates an invite in the specified channel</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>max_age (int, optional) Seconds to invite expiration. Defaults to 0 (infinite).
+max_uses (int, optional) Maximum uses to invite expiration. Defaults to 0 (infinite).</p>
+</dd>
+<dt>Returns:</dt><dd><p>invite (str): Returns the channel invite link</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.TextChannel.create_webhook">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_webhook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avatar_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#selfcord.models.webhook.Webhook" title="selfcord.models.webhook.Webhook"><span class="pre">Webhook</span></a></span></span><a class="reference internal" href="_modules/selfcord/models/channel.html#TextChannel.create_webhook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.TextChannel.create_webhook" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a webhook in the specified channel</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str, optional): Name of the webhook. Defaults to None.
+avatar_url (str, optional): Avatar of the webhook. Requires a URL. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>webhook (Webhook): Returns the created webhook object.</p>
+</dd>
+<dt>Raises:</dt><dd><p>NameError: Name is required</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.TextChannel.delete">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#TextChannel.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.TextChannel.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the text channel object.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>No arguments required</p>
+</dd>
+<dt>Returns:</dt><dd><p>No return value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.TextChannel.edit">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#TextChannel.edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.TextChannel.edit" title="Permalink to this definition"></a></dt>
+<dd><p>Edits the text channel object details. Requires the <cite>Manage Channels</cite> permission.
+Not all details can be modified.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><ul class="simple">
+<li><p>name(str) : Optional - Specifies a new name for the channel object. Defaults to None.</p></li>
+<li><p>parent_id(int) : Optional - Specifies a new parent (category) for the text channel object.</p></li>
+<li><p>position(int) : Optional - Modifies the sorting position of the text channel within the guild.</p></li>
+<li><dl class="simple">
+<dt>topic(str)<span class="classifier">Optional - Modifies the channel topic (0-4096 characters for GUILD_FORUM channels,</span></dt><dd><p>0-1024 characters for all others)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>Notice: Each parent category can contain up to 50 channels.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>e(str) : Exception parsed as string value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.channel.ThreadChannel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.channel.</span></span><span class="sig-name descname"><span class="pre">ThreadChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#ThreadChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.ThreadChannel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#selfcord.models.channel.Messageable" title="selfcord.models.channel.Messageable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Messageable</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.channel.VoiceChannel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.channel.</span></span><span class="sig-name descname"><span class="pre">VoiceChannel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#VoiceChannel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.VoiceChannel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#selfcord.models.channel.Voiceable" title="selfcord.models.channel.Voiceable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Voiceable</span></code></a>, <a class="reference internal" href="#selfcord.models.channel.Messageable" title="selfcord.models.channel.Messageable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Messageable</span></code></a></p>
+<p>Voice Channel Object</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.VoiceChannel.create_invite">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_invite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_age</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_uses</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/selfcord/models/channel.html#VoiceChannel.create_invite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.VoiceChannel.create_invite" title="Permalink to this definition"></a></dt>
+<dd><p>Creates an invite in the specified channel</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>max_age (int, optional) Seconds to invite expiration. Defaults to 0 (infinite).
+max_uses (int, optional) Maximum uses to invite expiration. Defaults to 0 (infinite).</p>
+</dd>
+<dt>Returns:</dt><dd><p>invite (str): Returns the channel invite link</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.VoiceChannel.create_webhook">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_webhook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avatar_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#selfcord.models.webhook.Webhook" title="selfcord.models.webhook.Webhook"><span class="pre">Webhook</span></a></span></span><a class="reference internal" href="_modules/selfcord/models/channel.html#VoiceChannel.create_webhook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.VoiceChannel.create_webhook" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a webhook in the specified channel</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str, optional): Name of the webhook. Defaults to None.
+avatar_url (str, optional): Avatar of the webhook. Requires a URL. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>webhook (Webhook): Returns the created webhook object.</p>
+</dd>
+<dt>Raises:</dt><dd><p>NameError: Name is required</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.VoiceChannel.delete">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#VoiceChannel.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.VoiceChannel.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the voice channel object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.channel.Voiceable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.channel.</span></span><span class="sig-name descname"><span class="pre">Voiceable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#Voiceable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Voiceable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#selfcord.models.channel.Messageable" title="selfcord.models.channel.Messageable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Messageable</span></code></a></p>
+<p>Parent class specific for those classes that include a voice chat, or call functionality</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Voiceable.call">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#Voiceable.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Voiceable.call" title="Permalink to this definition"></a></dt>
+<dd><p>Initiates a call on the specified channel</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Voiceable.leave_call">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">leave_call</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#Voiceable.leave_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Voiceable.leave_call" title="Permalink to this definition"></a></dt>
+<dd><p>Leaves call on the specified channel</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Voiceable.stream_call">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stream_call</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#Voiceable.stream_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Voiceable.stream_call" title="Permalink to this definition"></a></dt>
+<dd><p>Initiates a stream call on the specified channel</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.channel.Voiceable.video_call">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">video_call</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/channel.html#Voiceable.video_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.channel.Voiceable.video_call" title="Permalink to this definition"></a></dt>
+<dd><p>Initiates a video call on the specified channel</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models.client">
+<span id="selfcord-models-client-module"></span><h2>selfcord.models.client module<a class="headerlink" href="#module-selfcord.models.client" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.client.Client">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.client.</span></span><span class="sig-name descname"><span class="pre">Client</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">UserPayload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/client.html#Client"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.client.Client" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Client Object</p>
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models.emoji">
+<span id="selfcord-models-emoji-module"></span><h2>selfcord.models.emoji module<a class="headerlink" href="#module-selfcord.models.emoji" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.emoji.Emoji">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.emoji.</span></span><span class="sig-name descname"><span class="pre">Emoji</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/emoji.html#Emoji"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.emoji.Emoji" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Emoji Object</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.emoji.Emoji.delete">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/emoji.html#Emoji.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.emoji.Emoji.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the Emoji Object</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models.guild">
+<span id="selfcord-models-guild-module"></span><h2>selfcord.models.guild module<a class="headerlink" href="#module-selfcord.models.guild" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.guild.</span></span><span class="sig-name descname"><span class="pre">Guild</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Guild Object</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.ANNOUNCEMENT_THREAD">
+<span class="sig-name descname"><span class="pre">ANNOUNCEMENT_THREAD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#selfcord.models.guild.Guild.ANNOUNCEMENT_THREAD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.CATEGORY">
+<span class="sig-name descname"><span class="pre">CATEGORY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#selfcord.models.guild.Guild.CATEGORY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.GUILD_ANNOUNCEMENT">
+<span class="sig-name descname"><span class="pre">GUILD_ANNOUNCEMENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#selfcord.models.guild.Guild.GUILD_ANNOUNCEMENT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.GUILD_DIRECTORY">
+<span class="sig-name descname"><span class="pre">GUILD_DIRECTORY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14</span></em><a class="headerlink" href="#selfcord.models.guild.Guild.GUILD_DIRECTORY" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.GUILD_FORUM">
+<span class="sig-name descname"><span class="pre">GUILD_FORUM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">15</span></em><a class="headerlink" href="#selfcord.models.guild.Guild.GUILD_FORUM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.GUILD_STAGE_VOICE">
+<span class="sig-name descname"><span class="pre">GUILD_STAGE_VOICE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">13</span></em><a class="headerlink" href="#selfcord.models.guild.Guild.GUILD_STAGE_VOICE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.PRIVATE_THREAD">
+<span class="sig-name descname"><span class="pre">PRIVATE_THREAD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12</span></em><a class="headerlink" href="#selfcord.models.guild.Guild.PRIVATE_THREAD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.PUBLIC_THREAD">
+<span class="sig-name descname"><span class="pre">PUBLIC_THREAD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">11</span></em><a class="headerlink" href="#selfcord.models.guild.Guild.PUBLIC_THREAD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.TEXTCHANNEL">
+<span class="sig-name descname"><span class="pre">TEXTCHANNEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#selfcord.models.guild.Guild.TEXTCHANNEL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.VOICECHANNEL">
+<span class="sig-name descname"><span class="pre">VOICECHANNEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#selfcord.models.guild.Guild.VOICECHANNEL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.ban">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ban</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.ban"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.ban" title="Permalink to this definition"></a></dt>
+<dd><p>Bans a user from the guild</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>user_id (str): User ID specified to ban</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.category_channel_create">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">category_channel_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.category_channel_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.category_channel_create" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a category in the guild</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): Name of the category</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.delete">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the Guild Object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.edit">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icon_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">banner_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.edit" title="Permalink to this definition"></a></dt>
+<dd><p>Edits attributes for a guild</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str, optional): Name of the guild. Defaults to None.
+icon_url (str, optional): Image URL for Icon. Defaults to None.
+banner_url (str, optional): Image URL for Banner. Defaults to None.
+description (str, optional): Description of the guild. Defaults to None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.emoji_create">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">emoji_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.emoji_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.emoji_create" title="Permalink to this definition"></a></dt>
+<dd><p>Creates an emoji in the guild</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): Name of the emoji
+image_url (str): URL for an image</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.forum_channel_create">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">forum_channel_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.forum_channel_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.forum_channel_create" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a Forum channel in the guild</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): Name of the channel
+parent_id  (str, optional): ID of the category, defaults to None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.get_members">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_members</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.get_members"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.get_members" title="Permalink to this definition"></a></dt>
+<dd><p>Get guild members for a guild via chunking</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>channel_id (str): Channel ID to chunk from</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.kick">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">kick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.kick"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.kick" title="Permalink to this definition"></a></dt>
+<dd><p>Kicks a user from the guild</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>user_id (str): User ID specified to kick</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.role_create">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">role_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.role_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.role_create" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a role in the guild</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): Name of the role</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.search">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mentions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">before</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pinned</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.search" title="Permalink to this definition"></a></dt>
+<dd><p>Search through channel with specific parameters</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>content (str) : Content to search for.
+author (str) : Author to search for.
+mentions (str) : Mention to search for.
+has (str) : Message that contains (file, image, video, etc).
+before (time) : Before a timestamp.
+after (time) : After a timestamp.
+offset (int) : How many messages after to search.</p>
+</dd>
+<dt>Returns:</dt><dd><p>total (int) : Total amount of messages possible of receiving.
+messages (list[Message]) : List of message objects gathered</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.timeout">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">timeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.timeout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.timeout" title="Permalink to this definition"></a></dt>
+<dd><p>Timeouts a user in the guild</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>user_id (str): User ID specified to timeout</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.txt_channel_create">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">txt_channel_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.txt_channel_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.txt_channel_create" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a Text Channel in the guild</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): Name of the channel
+parent_id (str, optional): ID of the category. Defaults to None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.utc_now">
+<span class="sig-name descname"><span class="pre">utc_now</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.utc_now"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.utc_now" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.guild.Guild.vc_channel_create">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vc_channel_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/guild.html#Guild.vc_channel_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.guild.Guild.vc_channel_create" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a voice channel in the guild</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>name (str): Name of the channel</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models.interactions">
+<span id="selfcord-models-interactions-module"></span><h2>selfcord.models.interactions module<a class="headerlink" href="#module-selfcord.models.interactions" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.interactions.InteractionUtil">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.interactions.</span></span><span class="sig-name descname"><span class="pre">InteractionUtil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/interactions.html#InteractionUtil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.interactions.InteractionUtil" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Utility class intended for interactions</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.interactions.InteractionUtil.interaction_search">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interaction_search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cursor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#selfcord.models.interactions.Search" title="selfcord.models.interactions.Search"><span class="pre">Search</span></a></span></span><a class="reference internal" href="_modules/selfcord/models/interactions.html#InteractionUtil.interaction_search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.interactions.InteractionUtil.interaction_search" title="Permalink to this definition"></a></dt>
+<dd><p>Search for interactions within a specific guild channel, you can specify certain parameters</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>query (str): Query to search for
+channel_id (str): Channel ID to search within
+type (int): Type of command to search for
+bot_id (str): Specify what bot specifically to search for
+command_id (str): Specify a command id to search for, to view options</p>
+</dd>
+<dt>Returns:</dt><dd><p>Search object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.interactions.InteractionUtil.trigger_slash">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trigger_slash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.models.interactions.SlashCommand" title="selfcord.models.interactions.SlashCommand"><span class="pre">SlashCommand</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#selfcord.models.interactions.Option" title="selfcord.models.interactions.Option"><span class="pre">selfcord.models.interactions.Option</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/interactions.html#InteractionUtil.trigger_slash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.interactions.InteractionUtil.trigger_slash" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.interactions.Option">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.interactions.</span></span><span class="sig-name descname"><span class="pre">Option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/interactions.html#Option"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.interactions.Option" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.interactions.Search">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.interactions.</span></span><span class="sig-name descname"><span class="pre">Search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application_commands</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prev_cursor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_cursor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/interactions.html#Search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.interactions.Search" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Search object returned from Application command search</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.interactions.SlashCommand">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.interactions.</span></span><span class="sig-name descname"><span class="pre">SlashCommand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/interactions.html#SlashCommand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.interactions.SlashCommand" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models.member">
+<span id="selfcord-models-member-module"></span><h2>selfcord.models.member module<a class="headerlink" href="#module-selfcord.models.member" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.member.Member">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.member.</span></span><span class="sig-name descname"><span class="pre">Member</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">UserPayload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/member.html#Member"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.member.Member" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Member Object</p>
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models.message">
+<span id="selfcord-models-message-module"></span><h2>selfcord.models.message module<a class="headerlink" href="#module-selfcord.models.message" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.message.Action_Row">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.message.</span></span><span class="sig-name descname"><span class="pre">Action_Row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Action_Row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Action_Row" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Action_Row.ACTION_ROW">
+<span class="sig-name descname"><span class="pre">ACTION_ROW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#selfcord.models.message.Action_Row.ACTION_ROW" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Action_Row.BUTTON">
+<span class="sig-name descname"><span class="pre">BUTTON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#selfcord.models.message.Action_Row.BUTTON" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Action_Row.CHANNEL_SELECT">
+<span class="sig-name descname"><span class="pre">CHANNEL_SELECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#selfcord.models.message.Action_Row.CHANNEL_SELECT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Action_Row.MENTIONABLE_SELECT">
+<span class="sig-name descname"><span class="pre">MENTIONABLE_SELECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#selfcord.models.message.Action_Row.MENTIONABLE_SELECT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Action_Row.ROLE_SELECT">
+<span class="sig-name descname"><span class="pre">ROLE_SELECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#selfcord.models.message.Action_Row.ROLE_SELECT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Action_Row.STRING_SELECT">
+<span class="sig-name descname"><span class="pre">STRING_SELECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#selfcord.models.message.Action_Row.STRING_SELECT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Action_Row.TEXT_INPUT">
+<span class="sig-name descname"><span class="pre">TEXT_INPUT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#selfcord.models.message.Action_Row.TEXT_INPUT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Action_Row.USER_SELECT">
+<span class="sig-name descname"><span class="pre">USER_SELECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#selfcord.models.message.Action_Row.USER_SELECT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.message.Attachment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.message.</span></span><span class="sig-name descname"><span class="pre">Attachment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Attachment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Attachment" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.message.Button">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.message.</span></span><span class="sig-name descname"><span class="pre">Button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Button"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Button" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.message.Button.trigger">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trigger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Button.trigger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Button.trigger" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.message.Message">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.message.</span></span><span class="sig-name descname"><span class="pre">Message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Message" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Message Object</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.ACTION_ROW">
+<span class="sig-name descname"><span class="pre">ACTION_ROW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#selfcord.models.message.Message.ACTION_ROW" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.BUTTON">
+<span class="sig-name descname"><span class="pre">BUTTON</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#selfcord.models.message.Message.BUTTON" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.CHANNEL_SELECT">
+<span class="sig-name descname"><span class="pre">CHANNEL_SELECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#selfcord.models.message.Message.CHANNEL_SELECT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.MENTIONABLE_SELECT">
+<span class="sig-name descname"><span class="pre">MENTIONABLE_SELECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#selfcord.models.message.Message.MENTIONABLE_SELECT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.ROLE_SELECT">
+<span class="sig-name descname"><span class="pre">ROLE_SELECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#selfcord.models.message.Message.ROLE_SELECT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.STRING_SELECT">
+<span class="sig-name descname"><span class="pre">STRING_SELECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#selfcord.models.message.Message.STRING_SELECT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.TEXT_INPUT">
+<span class="sig-name descname"><span class="pre">TEXT_INPUT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#selfcord.models.message.Message.TEXT_INPUT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.USER_SELECT">
+<span class="sig-name descname"><span class="pre">USER_SELECT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#selfcord.models.message.Message.USER_SELECT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.delete">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Message.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Message.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Delete the Message Object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.edit">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></span><a class="reference internal" href="_modules/selfcord/models/message.html#Message.edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Message.edit" title="Permalink to this definition"></a></dt>
+<dd><p>Edits the specified message</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>content (str): Content to edit message to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.make_nonce">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make_nonce</span></span><a class="headerlink" href="#selfcord.models.message.Message.make_nonce" title="Permalink to this definition"></a></dt>
+<dd><p>Generate pseudorandom number.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.react">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">react</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emoji</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Message.react"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Message.react" title="Permalink to this definition"></a></dt>
+<dd><p>React to a message with an emoji</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>emoji (str): The emoji</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.report">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">breadcrumbs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Message.report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Message.report" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.message.Message.thread_create">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">thread_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Message.thread_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Message.thread_create" title="Permalink to this definition"></a></dt>
+<dd><p>Create a thread for message object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.message.Select_Menu">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.message.</span></span><span class="sig-name descname"><span class="pre">Select_Menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Select_Menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Select_Menu" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.message.Select_Menu.TYPES">
+<span class="sig-name descname"><span class="pre">TYPES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'CHANNEL_SELECT':</span> <span class="pre">8,</span> <span class="pre">'MENTIONABLE_SELECT':</span> <span class="pre">7,</span> <span class="pre">'ROLE_SELECT':</span> <span class="pre">6,</span> <span class="pre">'STRING_SELECT':</span> <span class="pre">3,</span> <span class="pre">'USER_SELECT':</span> <span class="pre">5}</span></em><a class="headerlink" href="#selfcord.models.message.Select_Menu.TYPES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.message.Select_Option">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.message.</span></span><span class="sig-name descname"><span class="pre">Select_Option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Select_Option"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Select_Option" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.message.Text_Input">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.message.</span></span><span class="sig-name descname"><span class="pre">Text_Input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Text_Input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Text_Input" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.message.Text_Input.trigger">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trigger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/message.html#Text_Input.trigger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.message.Text_Input.trigger" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models.permission">
+<span id="selfcord-models-permission-module"></span><h2>selfcord.models.permission module<a class="headerlink" href="#module-selfcord.models.permission" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.permission.Permission">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.permission.</span></span><span class="sig-name descname"><span class="pre">Permission</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/permission.html#Permission"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.permission.Permission" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Permission Object</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.permission.Permission.calculate_permissions">
+<span class="sig-name descname"><span class="pre">calculate_permissions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">perm_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/permission.html#Permission.calculate_permissions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.permission.Permission.calculate_permissions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models.role">
+<span id="selfcord-models-role-module"></span><h2>selfcord.models.role module<a class="headerlink" href="#module-selfcord.models.role" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.role.Role">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.role.</span></span><span class="sig-name descname"><span class="pre">Role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/role.html#Role"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.role.Role" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Role Object</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.role.Role.delete">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/role.html#Role.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.role.Role.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Delete the Role Object</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models.sessions">
+<span id="selfcord-models-sessions-module"></span><h2>selfcord.models.sessions module<a class="headerlink" href="#module-selfcord.models.sessions" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.sessions.Event_Session">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.sessions.</span></span><span class="sig-name descname"><span class="pre">Event_Session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/sessions.html#Event_Session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.sessions.Event_Session" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.sessions.Session">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.sessions.</span></span><span class="sig-name descname"><span class="pre">Session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/sessions.html#Session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.sessions.Session" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.sessions.Session.remove">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/sessions.html#Session.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.sessions.Session.remove" title="Permalink to this definition"></a></dt>
+<dd><p>Method to logout of a particular session</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>password: Your password</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models.user">
+<span id="selfcord-models-user-module"></span><h2>selfcord.models.user module<a class="headerlink" href="#module-selfcord.models.user" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.user.Connected_Account">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.user.</span></span><span class="sig-name descname"><span class="pre">Connected_Account</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/user.html#Connected_Account"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.user.Connected_Account" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.user.Profile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.user.</span></span><span class="sig-name descname"><span class="pre">Profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">UserPayload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/user.html#Profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.user.Profile" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.user.User">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.user.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">UserPayload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.html#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/user.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.user.User" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>User Object</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="selfcord.models.user.User.b64token">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">b64token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#selfcord.models.user.User.b64token" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the b64 user id</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>str: The b64 user id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.user.User.create_dm">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_dm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/user.html#User.create_dm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.user.User.create_dm" title="Permalink to this definition"></a></dt>
+<dd><p>Create a dm for the user</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="selfcord.models.user.User.created_at">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">created_at</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#selfcord.models.user.User.created_at" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the time in which the User was created</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>datetime.datetime: The timestamp</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="selfcord.models.user.User.flags">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">flags</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#selfcord.models.user.User.flags" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the flags of the user as a string</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list[str]: The flags</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.user.User.get_mutual_friends">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_mutual_friends</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#selfcord.models.user.User" title="selfcord.models.user.User"><span class="pre">selfcord.models.user.User</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/selfcord/models/user.html#User.get_mutual_friends"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.user.User.get_mutual_friends" title="Permalink to this definition"></a></dt>
+<dd><p>Get the User mutual friends</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list[User]: Mutual friends</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.user.User.get_profile">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_profile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#selfcord.models.user.Profile" title="selfcord.models.user.Profile"><span class="pre">Profile</span></a></span></span><a class="reference internal" href="_modules/selfcord/models/user.html#User.get_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.user.User.get_profile" title="Permalink to this definition"></a></dt>
+<dd><p>Get the User profile</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Profile: The User Profile object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="selfcord.models.user.User.public_flags">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">public_flags</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#selfcord.models.user.User.public_flags" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the public flags of the user as a string</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list[str]: The flags</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.user.UserFlags">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.user.</span></span><span class="sig-name descname"><span class="pre">UserFlags</span></span><a class="reference internal" href="_modules/selfcord/models/user.html#UserFlags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.user.UserFlags" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="selfcord.models.user.UserFlags.FLAGS">
+<span class="sig-name descname"><span class="pre">FLAGS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'active_developer':</span> <span class="pre">4194304,</span> <span class="pre">'bot_http_interactions':</span> <span class="pre">524288,</span> <span class="pre">'bug_hunter':</span> <span class="pre">8,</span> <span class="pre">'bug_hunter_level_2':</span> <span class="pre">16384,</span> <span class="pre">'collaborator_staff':</span> <span class="pre">1125899906842624,</span> <span class="pre">'deleted':</span> <span class="pre">17179869184,</span> <span class="pre">'deleted_sus_activity':</span> <span class="pre">34359738368,</span> <span class="pre">'disabled':</span> <span class="pre">2199023255552,</span> <span class="pre">'disabled_nitro':</span> <span class="pre">2097152,</span> <span class="pre">'discord_certified_moderator':</span> <span class="pre">262144,</span> <span class="pre">'early_supporter':</span> <span class="pre">512,</span> <span class="pre">'has_unread_urgent_messages':</span> <span class="pre">8192,</span> <span class="pre">'higher_ratelimits':</span> <span class="pre">8589934592,</span> <span class="pre">'hypesquad':</span> <span class="pre">4,</span> <span class="pre">'hypesquad_balance':</span> <span class="pre">256,</span> <span class="pre">'hypesquad_bravery':</span> <span class="pre">64,</span> <span class="pre">'hypesquad_brilliance':</span> <span class="pre">128,</span> <span class="pre">'mfa_sms':</span> <span class="pre">16,</span> <span class="pre">'partner':</span> <span class="pre">2,</span> <span class="pre">'premium_discriminator':</span> <span class="pre">137438953472,</span> <span class="pre">'premium_promo_dismissed':</span> <span class="pre">32,</span> <span class="pre">'quarantined':</span> <span class="pre">17592186044416,</span> <span class="pre">'restricted_collaborator':</span> <span class="pre">2251799813685248,</span> <span class="pre">'self_deleted':</span> <span class="pre">68719476736,</span> <span class="pre">'spammer':</span> <span class="pre">1048576,</span> <span class="pre">'staff':</span> <span class="pre">1,</span> <span class="pre">'system':</span> <span class="pre">4096,</span> <span class="pre">'team_user':</span> <span class="pre">1024,</span> <span class="pre">'used_desktop_client':</span> <span class="pre">274877906944,</span> <span class="pre">'used_mobile_client':</span> <span class="pre">1099511627776,</span> <span class="pre">'used_web_client':</span> <span class="pre">549755813888,</span> <span class="pre">'verified':</span> <span class="pre">8796093022208,</span> <span class="pre">'verified_bot':</span> <span class="pre">65536,</span> <span class="pre">'verified_bot_developer':</span> <span class="pre">131072}</span></em><a class="headerlink" href="#selfcord.models.user.UserFlags.FLAGS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.user.UserFlags.calculate_flags">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calculate_flags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flag_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/user.html#UserFlags.calculate_flags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.user.UserFlags.calculate_flags" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models.webhook">
+<span id="selfcord-models-webhook-module"></span><h2>selfcord.models.webhook module<a class="headerlink" href="#module-selfcord.models.webhook" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="selfcord.models.webhook.Webhook">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.models.webhook.</span></span><span class="sig-name descname"><span class="pre">Webhook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/webhook.html#Webhook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.webhook.Webhook" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.webhook.Webhook.delete">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/webhook.html#Webhook.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.webhook.Webhook.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the webhook object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="selfcord.models.webhook.Webhook.send">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/models/webhook.html#Webhook.send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.models.webhook.Webhook.send" title="Permalink to this definition"></a></dt>
+<dd><p>Send a message via the webhook</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>content (str): Content of the message to send</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-selfcord.models">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-selfcord.models" title="Permalink to this heading"></a></h2>
+<p>Where Selfcord Objects/Models reside. This is where you can access the methods/attributes of each object within selfcord, provided with documentation mostly.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="selfcord.api.voice.html" class="btn btn-neutral float-left" title="selfcord.api.voice package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="selfcord.utils.html" class="btn btn-neutral float-right" title="selfcord.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Shell1010.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

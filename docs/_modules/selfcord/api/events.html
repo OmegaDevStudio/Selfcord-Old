@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>selfcord.api.events &mdash; Selfcord 0.2.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Selfcord
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">selfcord</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Selfcord</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">selfcord.api.events</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for selfcord.api.events</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">perf_counter</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">from</span> <span class="nn">aioconsole</span> <span class="kn">import</span> <span class="n">aprint</span>
+
+<span class="kn">from</span> <span class="nn">selfcord.models.message</span> <span class="kn">import</span> <span class="n">Action_Row</span><span class="p">,</span> <span class="n">Text_Input</span>
+<span class="kn">from</span> <span class="nn">selfcord.models.sessions</span> <span class="kn">import</span> <span class="n">Event_Session</span>
+
+<span class="kn">from</span> <span class="nn">..models</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="n">DMChannel</span><span class="p">,</span> <span class="n">GroupChannel</span><span class="p">,</span> <span class="n">Guild</span><span class="p">,</span> <span class="n">Message</span><span class="p">,</span>
+                      <span class="n">TextChannel</span><span class="p">,</span> <span class="n">User</span><span class="p">,</span> <span class="n">VoiceChannel</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..models.role</span> <span class="kn">import</span> <span class="n">Role</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">logging</span>
+<span class="kn">from</span> <span class="nn">.voice</span> <span class="kn">import</span> <span class="n">Voice</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">..bot</span> <span class="kn">import</span> <span class="n">Bot</span>
+    <span class="kn">from</span> <span class="nn">.http</span> <span class="kn">import</span> <span class="n">http</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="EventHandler"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler">[docs]</a><span class="k">class</span> <span class="nc">EventHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Used to handle discord events</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bot</span><span class="p">,</span> <span class="n">http</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_events</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">:</span> <span class="n">http</span> <span class="o">=</span> <span class="n">http</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">:</span> <span class="n">Bot</span> <span class="o">=</span> <span class="n">bot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">debug</span>
+
+<div class="viewcode-block" id="EventHandler.handle_ready"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_ready">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_ready</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles what happens when the ready event is fired, when the bot first connects</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="k">for</span> <span class="n">relationship</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;relationships&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">relationship</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">friends</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">User</span><span class="p">(</span><span class="n">relationship</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="n">http</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;private_channels&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">channel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">private_channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DMChannel</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="n">http</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">channel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">private_channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GroupChannel</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="n">http</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">guild</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;guilds&quot;</span><span class="p">):</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_guild_create</span><span class="p">(</span><span class="n">guild</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">http</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;session_id&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">resume_url</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;resume_gateway_url&quot;</span><span class="p">)</span>
+        <span class="c1"># Sends data from ready to the event handler in main.py (if it exists)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;ready&quot;</span><span class="p">,</span> <span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">t1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_guild_create"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_guild_create">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_guild_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles what happens when a guild is created</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="n">guild</span> <span class="o">=</span> <span class="n">Guild</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="n">http</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">guilds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guild</span><span class="p">)</span>
+
+        <span class="c1"># Sends data from ready to the event handler in main.py (if it exists)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;guild_create&quot;</span><span class="p">,</span> <span class="n">guild</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_message_create"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_message_create">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_message_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles what happens when a message is created, or sent</span>
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="n">http</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="c1"># Sends data from ready to the event handler in main.py (if it exists)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">userbot</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">prefixes</span><span class="p">:</span>
+                <span class="c1"># Attempts to invoke the command if has prefix</span>
+                <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">process_commands</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">prefixes</span><span class="p">:</span>
+                <span class="c1"># Attempts to invoke the command if has prefix and from the user</span>
+                <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">process_commands</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_message_delete"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_message_delete">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_message_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles what happens when a message is deleted. Very little data will be logged if the message is not in the bots cache.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">messages</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">&quot;deleted_time&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;message_delete&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">deleted_messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+
+            <span class="k">class</span> <span class="nc">deleted_message</span><span class="p">:</span>
+                <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tts&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">references_message</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;referenced_message&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mentions</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mentions&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;flags&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">embeds</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;embeds&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;components&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">channel_id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;channel_id&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">attachments</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attachments&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">guild_id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;guild_id&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">guild</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">deleted_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+            <span class="n">message</span> <span class="o">=</span> <span class="n">deleted_message</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;message_delete&quot;</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_channel_create"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_channel_create">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_channel_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles what happens when a channel is created</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            channel (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="k">if</span> <span class="n">channel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">channel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;guild_id&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">guild</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">guilds</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">guild</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">:</span>
+                    <span class="n">channel</span> <span class="o">=</span> <span class="n">TextChannel</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+                    <span class="n">guild</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">channel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">channel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">private_channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DMChannel</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="n">http</span><span class="p">))</span>
+
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="n">channel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
+            <span class="ow">and</span> <span class="n">channel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span>
+            <span class="ow">and</span> <span class="n">channel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="p">):</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;guild_id&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">guild</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">guilds</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">guild</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">:</span>
+                    <span class="n">channel</span> <span class="o">=</span> <span class="n">VoiceChannel</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+                    <span class="n">guild</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">private_channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GroupChannel</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="n">http</span><span class="p">))</span>
+
+        <span class="c1"># Sends data from ready to the event handler in main.py (if it exists)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;channel_create&quot;</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_guild_member_list_update"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_guild_member_list_update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_guild_member_list_update</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles what happens when a member chunk payload is received</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="n">ops</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;ops&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">main</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="n">main</span><span class="p">[</span><span class="s2">&quot;op&quot;</span><span class="p">]</span>
+            <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">main</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;INSERT&quot;</span> <span class="ow">and</span> <span class="s2">&quot;DELETE&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ops</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">person</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">main</span><span class="p">[</span><span class="s2">&quot;item&quot;</span><span class="p">][</span><span class="s2">&quot;member&quot;</span><span class="p">][</span><span class="s2">&quot;user&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span>
+                        <span class="s2">&quot;member_chunk&quot;</span><span class="p">,</span>
+                        <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">other</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">join</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">leave</span><span class="o">=</span><span class="n">person</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="k">elif</span> <span class="s2">&quot;INSERT&quot;</span> <span class="ow">in</span> <span class="n">ops</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">person</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">main</span><span class="p">[</span><span class="s2">&quot;item&quot;</span><span class="p">][</span><span class="s2">&quot;member&quot;</span><span class="p">][</span><span class="s2">&quot;user&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span>
+                        <span class="s2">&quot;member_chunk&quot;</span><span class="p">,</span>
+                        <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">other</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">join</span><span class="o">=</span><span class="n">person</span><span class="p">,</span>
+                        <span class="n">leave</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="k">elif</span> <span class="s2">&quot;UPDATE&quot;</span> <span class="ow">in</span> <span class="n">ops</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">person</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">main</span><span class="p">[</span><span class="s2">&quot;item&quot;</span><span class="p">][</span><span class="s2">&quot;member&quot;</span><span class="p">][</span><span class="s2">&quot;user&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+                    <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span>
+                        <span class="s2">&quot;member_chunk&quot;</span><span class="p">,</span>
+                        <span class="n">members</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">other</span><span class="o">=</span><span class="n">person</span><span class="p">,</span>
+                        <span class="n">join</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">leave</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">continue</span>
+            <span class="k">elif</span> <span class="s2">&quot;SYNC&quot;</span> <span class="ow">in</span> <span class="n">ops</span><span class="p">:</span>
+                <span class="n">users</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">main</span><span class="p">[</span><span class="s2">&quot;items&quot;</span><span class="p">]:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">users</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">User</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;member&quot;</span><span class="p">][</span><span class="s2">&quot;user&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">))</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span>
+                    <span class="s2">&quot;member_chunk&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">users</span><span class="p">,</span> <span class="n">other</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">leave</span><span class="o">=</span><span class="kc">None</span>
+                <span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_channel_delete"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_channel_delete">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_channel_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles what happens when a channel is deleted</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">private_channels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">channel</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;channel_delete&quot;</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">private_channels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+                <span class="k">return</span>
+
+        <span class="n">guild_id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;guild_id&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">guild_id</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">guild</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">guilds</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">guild_id</span> <span class="o">==</span> <span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">guild</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">channel</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">:</span>
+                            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;channel_delete&quot;</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
+                            <span class="n">guild</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+                            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">guild</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">guilds</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">guild</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">channel</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">:</span>
+                        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;channel_delete&quot;</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
+                        <span class="n">guild</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+                        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_guild_role_create"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_guild_role_create">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_guild_role_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles what happens when a role is created</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+
+        <span class="k">for</span> <span class="n">guild</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">guilds</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;guild_id&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                <span class="n">role</span> <span class="o">=</span> <span class="n">Role</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">,</span> <span class="n">guild_id</span><span class="o">=</span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="n">guild</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;role_create&quot;</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_guild_role_delete"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_guild_role_delete">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_guild_role_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles what happens when a role is deleted</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+
+        <span class="k">for</span> <span class="n">guild</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">guilds</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">role</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;guild_id&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">guild</span><span class="o">.</span><span class="n">roles</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">role</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">role</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;role_delete&quot;</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+                        <span class="n">guild</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+                        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_call_update"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_call_update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_call_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+        <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">get_channel</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;channel_id&quot;</span><span class="p">])</span>
+        <span class="n">region</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;region&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">DMChannel</span><span class="p">):</span>
+            <span class="n">users</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">recipient</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">GroupChannel</span><span class="p">):</span>
+            <span class="n">users</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">recipients</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;call_update&quot;</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">users</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_call_create"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_call_create">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_call_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+        <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">get_channel</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;channel_id&quot;</span><span class="p">])</span>
+        <span class="n">region</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;region&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">DMChannel</span><span class="p">):</span>
+            <span class="n">users</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">recipient</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">GroupChannel</span><span class="p">):</span>
+            <span class="n">users</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">recipients</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;call_create&quot;</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">users</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_call_delete"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_call_delete">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_call_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+        <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">get_channel</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;channel_id&quot;</span><span class="p">])</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;call_delete&quot;</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_voice_state_update"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_voice_state_update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_voice_state_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles the voice state updating</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;channel_id&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;session_id&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_presence_update"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_presence_update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_presence_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles the presence updating</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LISTENING</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">CUSTOM</span> <span class="o">=</span> <span class="mi">4</span>
+
+        <span class="n">last_modified</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;last_modified&quot;</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">)</span>
+        <span class="n">check</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">check</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+        <span class="n">client_status</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;client_status&quot;</span><span class="p">)</span>
+        <span class="n">activity</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;activities&quot;</span><span class="p">)</span>
+        <span class="n">activities</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">activity</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">PLAYING</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">STREAMING</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">WATCHING</span> <span class="o">=</span> <span class="mi">3</span>
+            <span class="k">for</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">activity</span><span class="p">:</span>
+                <span class="nb">type</span> <span class="o">=</span> <span class="n">activity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">PLAYING</span><span class="p">:</span>
+                    <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;PLAYING&quot;</span>
+                <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">STREAMING</span><span class="p">:</span>
+                    <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;STREAMING&quot;</span>
+                <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="n">WATCHING</span><span class="p">:</span>
+                    <span class="nb">type</span> <span class="o">==</span> <span class="s2">&quot;WATCHING&quot;</span>
+                <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;CUSTOM&quot;</span>
+                <span class="n">activities</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;Type&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="n">activity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)})</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span>
+            <span class="s2">&quot;presence_update&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">last_modified</span><span class="p">,</span> <span class="n">client_status</span><span class="p">,</span> <span class="n">activities</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_voice_server_update"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_voice_server_update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_voice_server_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles the voice server updating</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;token&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;endpoint&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;guild_id&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_id</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;channel_id&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_id</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;guild_id&quot;</span><span class="p">]</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voice</span> <span class="o">=</span> <span class="n">Voice</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span>
+            <span class="n">debug</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">voice_start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">voice</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.voice_start"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.voice_start">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">voice_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voice</span><span class="p">:</span> <span class="n">Voice</span><span class="p">):</span>
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">voice</span><span class="o">.</span><span class="n">start</span><span class="p">())</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="s2">&quot;voice&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">voice</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Voice attribute created&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Created voice attribute with Session ID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">session_id</span><span class="si">}</span><span class="s2"> Endpoint: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_relationship_add"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_relationship_add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_relationship_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles relationships being added</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;NONE&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;FRIEND&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;BLOCKED&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&quot;PENDING_INCOMING&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;PENDING_OUTGOING&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;since&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">types</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">rs_type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;relationship_add&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">rs_type</span><span class="p">,</span> <span class="n">since</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="EventHandler.handle_sessions_replace"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_sessions_replace">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_sessions_replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles sessions being created/removed. Used to log initial data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+        <span class="n">sessions</span> <span class="o">=</span> <span class="p">[</span><span class="n">Event_Session</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">)</span> <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;session&quot;</span><span class="p">,</span> <span class="n">sessions</span><span class="p">)</span></div>
+        
+
+
+<div class="viewcode-block" id="EventHandler.handle_relationship_remove"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_relationship_remove">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_relationship_remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles relationships being removed</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;NONE&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;FRIEND&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;BLOCKED&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&quot;PENDING_INCOMING&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">&quot;PENDING_OUTGOING&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        <span class="n">since</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;since&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">types</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">rs_type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;relationship_remove&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">rs_type</span><span class="p">,</span> <span class="n">since</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EventHandler.handle_interaction_modal_create"><a class="viewcode-back" href="../../../selfcord.api.html#selfcord.api.events.EventHandler.handle_interaction_modal_create">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle_interaction_modal_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">Client</span><span class="p">,</span> <span class="n">http</span><span class="p">:</span> <span class="n">http</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles when a text input modal is Created</span>
+
+<span class="sd">         Args:</span>
+<span class="sd">            data (dict): JSON data from gateway</span>
+<span class="sd">            user (Client): The client instance</span>
+<span class="sd">            http (http): HTTP instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">components</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;components&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="n">new_comps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">component</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">component</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">comp</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                        <span class="n">text</span> <span class="o">=</span> <span class="n">Text_Input</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+                        <span class="nb">setattr</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+                        <span class="n">new_comps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&quot;modal_create&quot;</span><span class="p">,</span> <span class="n">new_comps</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Shell1010.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+selfcord.api.voice package
+==========================
+Selfcord Voice, where it interacts with discords voice websockets and voice connections. Currently incomplete due to voice packets sucking.
+Submodules
+----------
+
+selfcord.api.voice.voice module
+-------------------------------
+
+.. automodule:: selfcord.api.voice.voice
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: selfcord.api.voice
+   :members:
+   :undoc-members:
+   :show-inheritance:

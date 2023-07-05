@@ -1,0 +1,66 @@
+.. Selfcord documentation master file, created by
+   sphinx-quickstart on Wed Jul  5 15:57:17 2023.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to Selfcord's documentation!
+====================================
+This is documentation for selfcord.py, a Discord API wrapper built in python, designed for selfbots. Please remember selfbotting is against discord's Terms of Service and that this may cause your account to be disabled. We Have measures in place to lower this likelihood, e.g Spoofing cookies, headers, but can be inevitable if you spam the API in a short period of time. Use this lib with caution.
+
+*Features*
+============
+* Modern Pythonic API
+* Easy to use with Object-Oriented design
+* Optimised for both speed and memory
+* Prevents detection of selfbotting via spoofing
+* Clean documentation (lol maybe not)
+* Community Support
+
+Quick Start
+===========
+:Example: Simple ping command bot that replies with "pong!".
+.. code-block:: python
+   :linenos:
+
+   import selfcord
+
+   bot = selfcord.Bot(prefixes=["!", "?"]) #  We allow multiple prefixes!
+
+   @bot.on("ready") # Set events like this!
+   async def ready(time):
+      print(f"Selfbot is ready!\nSeconds to startup: {time}")
+
+   @bot.cmd()
+   async def ping(ctx):
+      await ctx.reply("pong!")
+
+:Example: Simple Purge command.
+.. code-block:: python
+   :linenos:
+
+   import selfcord
+
+   bot = selfcord.Bot(prefixes=["!", "?"]) #  We allow multiple prefixes!
+
+   @bot.on("ready") # Set events like this!
+   async def ready(time):
+      print(f"Selfbot is ready!\nSeconds to startup: {time}")
+
+   @bot.cmd()
+   async def purge(ctx, amount: int):
+      await ctx.purge(amount)
+
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   modules
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

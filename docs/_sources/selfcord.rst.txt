@@ -1,0 +1,31 @@
+selfcord package
+================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   selfcord.api
+   selfcord.models
+   selfcord.utils
+
+Submodules
+----------
+
+selfcord.bot module
+-------------------
+
+.. automodule:: selfcord.bot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: selfcord
+   :members:
+   :undoc-members:
+   :show-inheritance:
