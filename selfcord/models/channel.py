@@ -198,6 +198,11 @@ class Messageable:
         return items
     
     async def delayed_delete(self, message: Message, time: int):
+        """Method to delay a delete of a message
+        
+        Args:
+            message (message) : Message object
+            time (int) : Interval to delete after"""
         await asyncio.sleep(time)
         await message.delete()
     

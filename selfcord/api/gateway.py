@@ -472,6 +472,7 @@ class gateway:
             f"{self.bot.resume_url}?encoding=json&v=9&compress=zlib-stream"
         )
         self.alive = True
+        await asyncio.sleep(1.5)
         payload = {
             "op": 6,
             "d": {"token": self.token, "session_id": self.bot.session_id, "seq": seq},

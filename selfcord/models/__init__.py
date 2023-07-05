@@ -1,3 +1,4 @@
+"""Where Selfcord Objects/Models reside. This is where you can access the methods/attributes of each object within selfcord, provided with documentation mostly."""
 from .channel import (Category, DMChannel, GroupChannel, Messageable,
                       TextChannel, Voiceable, VoiceChannel)
 from .client import Client
