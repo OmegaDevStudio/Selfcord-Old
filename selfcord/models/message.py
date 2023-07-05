@@ -297,3 +297,19 @@ class Message:
             endpoint=f"/channels/{self.channel_id}/messages/{self.id}/reactions/{raw_reaction}/%40me?location=Message&burst=false",
             headers={"referer": f"https://discord.com/channels/@me/{self.channel_id}"},
         )
+
+    async def report(self, breadcrumbs: list = []):
+        await self.http.request(
+            method="post",
+            endpoint="/reporting/message",
+            json={
+                "version": "1.0",
+                "variant": "3",
+                "language": "en",
+                "breadcrumbs": breadcrumbs,
+                "elements": {},
+                "name": "message",
+                "channel_id": self.channel_id,
+                "message_id": self.id
+            }
+        )
