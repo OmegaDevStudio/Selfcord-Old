@@ -6,7 +6,6 @@
   <title>selfcord.models.user &mdash; Selfcord 0.2.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -148,7 +147,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">bot</span><span class="o">.</span><span class="n">get_guild</span><span class="p">(</span><span class="n">guild</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">guild</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mutual_guilds&quot;</span><span class="p">)</span>
         <span class="p">]</span>
 
-        
+        <span class="k">for</span> <span class="n">guild</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutual_guilds</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">guild</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">guild</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">premium_type</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;premium_type&quot;</span><span class="p">)</span>
         <span class="n">user_profile</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user_profile&quot;</span><span class="p">)</span>

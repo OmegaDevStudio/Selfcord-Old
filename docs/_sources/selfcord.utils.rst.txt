@@ -1,6 +1,6 @@
 selfcord.utils package
 ======================
-Where Selfcord Command handling, Extensions, Extender and Logging modules work.
+
 Submodules
 ----------
 

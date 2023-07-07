@@ -7,7 +7,6 @@
   <title>selfcord.api.voice package &mdash; Selfcord 0.2.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -91,16 +90,27 @@
              
   <section id="selfcord-api-voice-package">
 <h1>selfcord.api.voice package<a class="headerlink" href="#selfcord-api-voice-package" title="Permalink to this heading"></a></h1>
-<p>Selfcord Voice, where it interacts with discords voice websockets and voice connections. Currently incomplete due to voice packets sucking.
-Submodules
-———-</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
 <section id="module-selfcord.api.voice.voice">
 <span id="selfcord-api-voice-voice-module"></span><h2>selfcord.api.voice.voice module<a class="headerlink" href="#module-selfcord.api.voice.voice" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.voice.voice.</span></span><span class="sig-name descname"><span class="pre">Voice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><span class="pre">Bot</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.voice.voice.</span></span><span class="sig-name descname"><span class="pre">Voice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Voice class used to interact with voice websockets and send data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>endpoint</strong> (<em>str</em>) – </p></li>
+<li><p><strong>server_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>bot</strong> (<a class="reference internal" href="selfcord.html#selfcord.bot.Bot" title="selfcord.bot.Bot"><em>Bot</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.CHANNELS">
 <span class="sig-name descname"><span class="pre">CHANNELS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#selfcord.api.voice.voice.Voice.CHANNELS" title="Permalink to this definition"></a></dt>
@@ -154,8 +164,17 @@ Submodules
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.checked_add">
-<span class="sig-name descname"><span class="pre">checked_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.checked_add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.checked_add" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">checked_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.checked_add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.checked_add" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attr</strong> (<em>str</em>) – </p></li>
+<li><p><strong>value</strong> (<em>int</em>) – </p></li>
+<li><p><strong>limit</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.close">
@@ -171,33 +190,66 @@ Submodules
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.encode_data">
-<span class="sig-name descname"><span class="pre">encode_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.encode_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.encode_data" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">encode_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.encode_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.encode_data" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>bytes</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.encrypt_xsalsa20_poly1305">
-<span class="sig-name descname"><span class="pre">encrypt_xsalsa20_poly1305</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.encrypt_xsalsa20_poly1305"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.encrypt_xsalsa20_poly1305" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">encrypt_xsalsa20_poly1305</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.encrypt_xsalsa20_poly1305"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.encrypt_xsalsa20_poly1305" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>header</strong> (<em>bytes</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bytes</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.get_voice_packet">
-<span class="sig-name descname"><span class="pre">get_voice_packet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.get_voice_packet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.get_voice_packet" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_voice_packet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoded</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.get_voice_packet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.get_voice_packet" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>encoded</strong> (<em>bytes</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.handle_description">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.handle_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.handle_description" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.handle_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.handle_description" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.handle_ready">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.handle_ready"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.handle_ready" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.handle_ready"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.handle_ready" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.heartbeat">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">heartbeat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.heartbeat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.heartbeat" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">heartbeat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.heartbeat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.heartbeat" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.identify">
@@ -222,22 +274,37 @@ Submodules
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.send_audio_data">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_audio_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.send_audio_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.send_audio_data" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_audio_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.send_audio_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.send_audio_data" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>bytes</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.send_encode_audio_data">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_encode_audio_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.send_encode_audio_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.send_encode_audio_data" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_encode_audio_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.send_encode_audio_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.send_encode_audio_data" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>bytes</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.voice.voice.Voice.send_json">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.send_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.send_json" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/voice/voice.html#Voice.send_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.voice.voice.Voice.send_json" title="Permalink to this definition"></a></dt>
 <dd><p>Send json to the websocket
 Args:</p>
 <blockquote>
 <div><p>payload (dict): Valid payload to send to the gateway</p>
 </div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -260,7 +327,6 @@ Args:</p>
 </section>
 <section id="module-selfcord.api.voice">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-selfcord.api.voice" title="Permalink to this heading"></a></h2>
-<p>Where Selfcord interacts with voice. Currently incomplete, voice packets do not properly play.</p>
 </section>
 </section>
 

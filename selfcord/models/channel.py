@@ -51,19 +51,6 @@ class Messageable:
         """
         Search through channel with specific parameters
 
-        Args:
-            content (str) : Content to search for.
-            author (str) : Author to search for.
-            mentions (str) : Mention to search for.
-            has (str) : Message that contains (file, image, video, etc).
-            before (time) : Before a timestamp.
-            after (time) : After a timestamp.
-            offset (int) : How many messages after to search.
-
-        Returns:
-            total (int) : Total amount of messages possible of receiving.
-            messages (list[Message]) : List of message objects gathered
-
         """
         url = f"/channels/{self.id}/messages/search"
         params = {

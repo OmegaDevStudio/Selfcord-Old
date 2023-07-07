@@ -7,7 +7,6 @@
   <title>selfcord.utils package &mdash; Selfcord 0.2.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -89,9 +88,9 @@
              
   <section id="selfcord-utils-package">
 <h1>selfcord.utils package<a class="headerlink" href="#selfcord-utils-package" title="Permalink to this heading"></a></h1>
-<p>Where Selfcord Command handling, Extensions, Extender and Logging modules work.
-Submodules
-———-</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
 <section id="module-selfcord.utils.command">
 <span id="selfcord-utils-command-module"></span><h2>selfcord.utils.command module<a class="headerlink" href="#module-selfcord.utils.command" title="Permalink to this heading"></a></h2>
 <dl class="py class">
@@ -108,13 +107,18 @@ Submodules
 <p>Commands collection, where commands are stored into. Utilised for help commands and general command invocation.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.CommandCollection.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.utils.command.Command" title="selfcord.utils.command.Command"><span class="pre">Command</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#CommandCollection.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.CommandCollection.add" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#CommandCollection.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.CommandCollection.add" title="Permalink to this definition"></a></dt>
 <dd><p>Add a Command to the collection</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>cmd (Command): Command to be added</p>
 </dd>
 <dt>Raises:</dt><dd><p>ValueError: cmd must be a subclass of Command
 ValueError: Name or Alias is already registered</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cmd</strong> (<a class="reference internal" href="#selfcord.utils.command.Command" title="selfcord.utils.command.Command"><em>Command</em></a>) – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -145,12 +149,17 @@ ValueError: Name or Alias is already registered</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.CommandCollection.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alias</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#selfcord.utils.command.Command" title="selfcord.utils.command.Command"><span class="pre">Command</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/selfcord/utils/command.html#CommandCollection.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.CommandCollection.get" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alias</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#CommandCollection.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.CommandCollection.get" title="Permalink to this definition"></a></dt>
 <dd><p>Get a specific command from the collection</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>alias (str): Name of the command</p>
 </dd>
 <dt>Returns:</dt><dd><p>Command: Command obtained</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#selfcord.utils.command.Command" title="selfcord.utils.command.Command"><em>Command</em></a> | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -172,6 +181,8 @@ ValueError: Name or Alias is already registered</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.utils.command.</span></span><span class="sig-name descname"><span class="pre">Context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Context related for commands, and invocation</p>
+<dl class="field-list simple">
+</dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="selfcord.utils.command.Context.alias">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alias</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#selfcord.utils.command.Context.alias" title="Permalink to this definition"></a></dt>
@@ -209,7 +220,7 @@ ValueError: Name or Alias is already registered</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.Context.convert">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.convert" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.convert" title="Permalink to this definition"></a></dt>
 <dd><p>Attempts to turn x value in y value, using get_converter func for the values</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>param (_type_): function parameter
@@ -218,32 +229,58 @@ value (_type_): value in message</p>
 <dt>Returns:</dt><dd><p>Type[str]: The type of parameter</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | <em>Any</em></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.Context.edit">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="selfcord.models.html#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.edit" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_after</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.edit" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function to edit the message you sent</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>content (str): Content to edit to</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_paths</strong> (<em>list</em>) – </p></li>
+<li><p><strong>delete_after</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="selfcord.models.html#selfcord.models.message.Message" title="selfcord.models.message.Message">Message</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.Context.get_arguments">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.get_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.get_arguments" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_arguments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.get_arguments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.get_arguments" title="Permalink to this definition"></a></dt>
 <dd><p>Get arguments by checking function arguments and comparing to arguments in message.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>_type_: _description_</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list, dict]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.Context.get_converter">
-<span class="sig-name descname"><span class="pre">get_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.get_converter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.get_converter" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.get_converter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.get_converter" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>type[str] | <em>Any</em> | None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="selfcord.utils.command.Context.guild">
@@ -263,43 +300,79 @@ value (_type_): value in message</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.Context.purge">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">purge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.purge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.purge" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">purge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.purge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.purge" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function to purge messages in the current channel, uses asyncio gather.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>amount (int): The amount of messages to purge, defaults to All.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>amount</strong> (<em>int</em>) – </p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.Context.reply">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="selfcord.models.html#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.reply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.reply" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_after</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.reply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.reply" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function to reply to your own message containing the command</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>content (str): The message you would like to send
 tts (bool, optional): Whether message should be tts or not. Defaults to False.</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_paths</strong> (<em>list</em>) – </p></li>
+<li><p><strong>delete_after</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="selfcord.models.html#selfcord.models.message.Message" title="selfcord.models.message.Message">Message</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.Context.send">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_after</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="selfcord.models.html#selfcord.models.message.Message" title="selfcord.models.message.Message"><span class="pre">Message</span></a></span></span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.send" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete_after</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.send" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function to send message to the current channel</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>content (str): The message you would like to send
 tts (bool, optional): Whether message should be tts or not. Defaults to False.</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_paths</strong> (<em>list</em>) – </p></li>
+<li><p><strong>delete_after</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="selfcord.models.html#selfcord.models.message.Message" title="selfcord.models.message.Message">Message</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.Context.spam">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.spam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.spam" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amount</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Context.spam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Context.spam" title="Permalink to this definition"></a></dt>
 <dd><p>Helper function to spam messages in the current channel (uses asyncio.gather !!!!)</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>amount (int): Amount of messages to spam
 content (str): The message you would like to send</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>amount</strong> (<em>int</em>) – </p></li>
+<li><p><strong>file_paths</strong> (<em>list</em>) – </p></li>
+<li><p><strong>tts</strong> (<em>bool</em>) – </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -308,9 +381,17 @@ content (str): The message you would like to send</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="selfcord.utils.command.Event">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.utils.command.</span></span><span class="sig-name descname"><span class="pre">Event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.utils.command.Extension" title="selfcord.utils.command.Extension"><span class="pre">Extension</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Event" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.utils.command.</span></span><span class="sig-name descname"><span class="pre">Event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coro</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Event" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Event object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>ext</strong> (<a class="reference internal" href="#selfcord.utils.command.Extension" title="selfcord.utils.command.Extension"><em>Extension</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
@@ -334,13 +415,21 @@ aliases (list, optional): Alternative names for command. Defaults to [].</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.Extender.cmd">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aliases</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Extender.cmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Extender.cmd" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cmd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aliases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Extender.cmd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Extender.cmd" title="Permalink to this definition"></a></dt>
 <dd><p>Decorator to add commands for the bot</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>description (str, optional): Description of command. Defaults to “”.
 aliases (list[str], optional): Alternative names for command. Defaults to [].</p>
 </dd>
 <dt>Raises:</dt><dd><p>RuntimeWarning: If you suck and don’t use a coroutine</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>description</strong> (<em>str</em>) – </p></li>
+<li><p><strong>aliases</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -352,10 +441,15 @@ aliases (list[str], optional): Alternative names for command. Defaults to [].</p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.Extender.on">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Extender.on"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Extender.on" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">on</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#Extender.on"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.Extender.on" title="Permalink to this definition"></a></dt>
 <dd><p>Decorator for events</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>event (str): The event to check for</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> (<em>str</em>) – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -376,7 +470,7 @@ aliases (list[str], optional): Alternative names for command. Defaults to [].</p
 <p>Extension collection, where extensions are stored into. Utilised for Extender, Extensions as a whole. This is also used within help commands and command invocation.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.ExtensionCollection.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.utils.command.Extension" title="selfcord.utils.command.Extension"><span class="pre">Extension</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#ExtensionCollection.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.ExtensionCollection.add" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ext</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#ExtensionCollection.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.ExtensionCollection.add" title="Permalink to this definition"></a></dt>
 <dd><p>Adds an extension</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>ext (Extension): Extension to add</p>
@@ -385,16 +479,29 @@ aliases (list[str], optional): Alternative names for command. Defaults to [].</p
 ValueError: A name or alias is already registered</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ext</strong> (<a class="reference internal" href="#selfcord.utils.command.Extension" title="selfcord.utils.command.Extension"><em>Extension</em></a>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.command.ExtensionCollection.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#selfcord.utils.command.Extension" title="selfcord.utils.command.Extension"><span class="pre">Extension</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/selfcord/utils/command.html#ExtensionCollection.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.ExtensionCollection.get" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alias</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/command.html#ExtensionCollection.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.command.ExtensionCollection.get" title="Permalink to this definition"></a></dt>
 <dd><p>Get an extension</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>alias (str): Name of the extension</p>
 </dd>
 <dt>Returns:</dt><dd><p>Extension: Extension obtained</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>alias</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#selfcord.utils.command.Extension" title="selfcord.utils.command.Extension"><em>Extension</em></a> | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -410,7 +517,7 @@ ValueError: A name or alias is already registered</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Formatter</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.utils.logging.CustomFormatter.format">
-<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LogRecord</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/selfcord/utils/logging.html#CustomFormatter.format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.logging.CustomFormatter.format" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/utils/logging.html#CustomFormatter.format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.utils.logging.CustomFormatter.format" title="Permalink to this definition"></a></dt>
 <dd><p>Format the specified record as text.</p>
 <p>The record’s attribute dictionary is used as the operand to a
 string formatting operation which yields the returned string.
@@ -420,6 +527,14 @@ using LogRecord.getMessage(). If the formatting string uses the
 time (as determined by a call to usesTime(), formatTime() is
 called to format the event time. If there is exception information,
 it is formatted using formatException() and appended to the message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>record</strong> (<em>LogRecord</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -427,7 +542,6 @@ it is formatted using formatException() and appended to the message.</p>
 </section>
 <section id="module-selfcord.utils">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-selfcord.utils" title="Permalink to this heading"></a></h2>
-<p>Where command handling and logging reside. This also is where I wrote extensions in commands.py</p>
 </section>
 </section>
 

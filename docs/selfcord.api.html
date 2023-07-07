@@ -7,7 +7,6 @@
   <title>selfcord.api package &mdash; Selfcord 0.2.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -90,52 +89,19 @@
              
   <section id="selfcord-api-package">
 <h1>selfcord.api package<a class="headerlink" href="#selfcord-api-package" title="Permalink to this heading"></a></h1>
-<p>Selfcord API, where it interacts via Discord API endpoints and Discord Gateway.
-Subpackages
-———–</p>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="selfcord.api.voice.html">selfcord.api.voice package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="selfcord.api.voice.html#module-selfcord.api.voice.voice">selfcord.api.voice.voice module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice"><code class="docutils literal notranslate"><span class="pre">Voice</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.CHANNELS"><code class="docutils literal notranslate"><span class="pre">Voice.CHANNELS</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.FRAME_LENGTH"><code class="docutils literal notranslate"><span class="pre">Voice.FRAME_LENGTH</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.FRAME_SIZE"><code class="docutils literal notranslate"><span class="pre">Voice.FRAME_SIZE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.HEARTBEAT"><code class="docutils literal notranslate"><span class="pre">Voice.HEARTBEAT</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.HEARTBEAT_ACK"><code class="docutils literal notranslate"><span class="pre">Voice.HEARTBEAT_ACK</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.READY"><code class="docutils literal notranslate"><span class="pre">Voice.READY</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.SAMPLES_PER_FRAME"><code class="docutils literal notranslate"><span class="pre">Voice.SAMPLES_PER_FRAME</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.SAMPLE_SIZE"><code class="docutils literal notranslate"><span class="pre">Voice.SAMPLE_SIZE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.SAMPLING_RATE"><code class="docutils literal notranslate"><span class="pre">Voice.SAMPLING_RATE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.SESSION_DESCRIPTION"><code class="docutils literal notranslate"><span class="pre">Voice.SESSION_DESCRIPTION</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.checked_add"><code class="docutils literal notranslate"><span class="pre">Voice.checked_add()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.close"><code class="docutils literal notranslate"><span class="pre">Voice.close()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.connect"><code class="docutils literal notranslate"><span class="pre">Voice.connect()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.encode_data"><code class="docutils literal notranslate"><span class="pre">Voice.encode_data()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.encrypt_xsalsa20_poly1305"><code class="docutils literal notranslate"><span class="pre">Voice.encrypt_xsalsa20_poly1305()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.get_voice_packet"><code class="docutils literal notranslate"><span class="pre">Voice.get_voice_packet()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.handle_description"><code class="docutils literal notranslate"><span class="pre">Voice.handle_description()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.handle_ready"><code class="docutils literal notranslate"><span class="pre">Voice.handle_ready()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.heartbeat"><code class="docutils literal notranslate"><span class="pre">Voice.heartbeat()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.identify"><code class="docutils literal notranslate"><span class="pre">Voice.identify()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.ip_discovery"><code class="docutils literal notranslate"><span class="pre">Voice.ip_discovery()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.play"><code class="docutils literal notranslate"><span class="pre">Voice.play()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.recv_msg"><code class="docutils literal notranslate"><span class="pre">Voice.recv_msg()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.send_audio_data"><code class="docutils literal notranslate"><span class="pre">Voice.send_audio_data()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.send_encode_audio_data"><code class="docutils literal notranslate"><span class="pre">Voice.send_encode_audio_data()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.send_json"><code class="docutils literal notranslate"><span class="pre">Voice.send_json()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.speak"><code class="docutils literal notranslate"><span class="pre">Voice.speak()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.start"><code class="docutils literal notranslate"><span class="pre">Voice.start()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice.udp_select"><code class="docutils literal notranslate"><span class="pre">Voice.udp_select()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="selfcord.api.voice.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="selfcord.api.voice.html#module-selfcord.api.voice.voice">selfcord.api.voice.voice module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="selfcord.api.voice.html#module-selfcord.api.voice">Module contents</a></li>
 </ul>
 </li>
 </ul>
 </div>
+</section>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
@@ -149,26 +115,61 @@ Subpackages
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="selfcord.api.errors.Funnu">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.errors.</span></span><span class="sig-name descname"><span class="pre">Funnu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/errors.html#Funnu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.errors.Funnu" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.errors.</span></span><span class="sig-name descname"><span class="pre">Funnu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/errors.html#Funnu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.errors.Funnu" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#selfcord.api.errors.DiscordException" title="selfcord.api.errors.DiscordException"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscordException</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>object</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="selfcord.api.errors.LoginFailure">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.errors.</span></span><span class="sig-name descname"><span class="pre">LoginFailure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/errors.html#LoginFailure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.errors.LoginFailure" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.errors.</span></span><span class="sig-name descname"><span class="pre">LoginFailure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/errors.html#LoginFailure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.errors.LoginFailure" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#selfcord.api.errors.DiscordException" title="selfcord.api.errors.DiscordException"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscordException</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>status</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="selfcord.api.errors.ReconnectWebsocket">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.errors.</span></span><span class="sig-name descname"><span class="pre">ReconnectWebsocket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/errors.html#ReconnectWebsocket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.errors.ReconnectWebsocket" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.errors.</span></span><span class="sig-name descname"><span class="pre">ReconnectWebsocket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/errors.html#ReconnectWebsocket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.errors.ReconnectWebsocket" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#selfcord.api.errors.DiscordException" title="selfcord.api.errors.DiscordException"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscordException</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="selfcord.api.errors.RuntimeError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.errors.</span></span><span class="sig-name descname"><span class="pre">RuntimeError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/errors.html#RuntimeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.errors.RuntimeError" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.errors.</span></span><span class="sig-name descname"><span class="pre">RuntimeError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/errors.html#RuntimeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.errors.RuntimeError" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#selfcord.api.errors.DiscordException" title="selfcord.api.errors.DiscordException"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscordException</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -181,22 +182,49 @@ Subpackages
 <p>Used to handle discord events</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_call_create">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_call_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_call_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_call_create" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_call_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_call_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_call_create" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_call_delete">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_call_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_call_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_call_delete" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_call_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_call_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_call_delete" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_call_update">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_call_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_call_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_call_update" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_call_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_call_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_call_update" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_channel_create">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_channel_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_channel_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_channel_create" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_channel_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_channel_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_channel_create" title="Permalink to this definition"></a></dt>
 <dd><p>Handles what happens when a channel is created</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>channel (dict): JSON data from gateway
@@ -204,11 +232,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channel</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_channel_delete">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_channel_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_channel_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_channel_delete" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_channel_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_channel_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_channel_delete" title="Permalink to this definition"></a></dt>
 <dd><p>Handles what happens when a channel is deleted</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -216,11 +253,19 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_guild_create">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_guild_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_guild_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_guild_create" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_guild_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_guild_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_guild_create" title="Permalink to this definition"></a></dt>
 <dd><p>Handles what happens when a guild is created</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -228,11 +273,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_guild_member_list_update">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_guild_member_list_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_guild_member_list_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_guild_member_list_update" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_guild_member_list_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_guild_member_list_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_guild_member_list_update" title="Permalink to this definition"></a></dt>
 <dd><p>Handles what happens when a member chunk payload is received</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -240,11 +294,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_guild_role_create">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_guild_role_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_guild_role_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_guild_role_create" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_guild_role_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_guild_role_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_guild_role_create" title="Permalink to this definition"></a></dt>
 <dd><p>Handles what happens when a role is created</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -252,11 +315,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_guild_role_delete">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_guild_role_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_guild_role_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_guild_role_delete" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_guild_role_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_guild_role_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_guild_role_delete" title="Permalink to this definition"></a></dt>
 <dd><p>Handles what happens when a role is deleted</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -264,11 +336,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>role</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_interaction_modal_create">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_interaction_modal_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_interaction_modal_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_interaction_modal_create" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_interaction_modal_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_interaction_modal_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_interaction_modal_create" title="Permalink to this definition"></a></dt>
 <dd><p>Handles when a text input modal is Created</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -276,11 +357,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_message_create">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_message_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_message_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_message_create" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_message_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_message_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_message_create" title="Permalink to this definition"></a></dt>
 <dd><p>Handles what happens when a message is created, or sent
 Args:</p>
 <blockquote>
@@ -288,11 +378,20 @@ Args:</p>
 user (Client): The client instance
 http (http): HTTP instance</p>
 </div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_message_delete">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_message_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_message_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_message_delete" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_message_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_message_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_message_delete" title="Permalink to this definition"></a></dt>
 <dd><p>Handles what happens when a message is deleted. Very little data will be logged if the message is not in the bots cache.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -300,11 +399,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_presence_update">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_presence_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_presence_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_presence_update" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_presence_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_presence_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_presence_update" title="Permalink to this definition"></a></dt>
 <dd><p>Handles the presence updating</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -312,11 +420,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_ready">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_ready"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_ready" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_ready"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_ready" title="Permalink to this definition"></a></dt>
 <dd><p>Handles what happens when the ready event is fired, when the bot first connects</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -324,11 +441,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_relationship_add">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_relationship_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_relationship_add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_relationship_add" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_relationship_add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_relationship_add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_relationship_add" title="Permalink to this definition"></a></dt>
 <dd><p>Handles relationships being added</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -336,11 +462,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_relationship_remove">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_relationship_remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_relationship_remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_relationship_remove" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_relationship_remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_relationship_remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_relationship_remove" title="Permalink to this definition"></a></dt>
 <dd><p>Handles relationships being removed</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -348,11 +483,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_sessions_replace">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_sessions_replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_sessions_replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_sessions_replace" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_sessions_replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_sessions_replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_sessions_replace" title="Permalink to this definition"></a></dt>
 <dd><p>Handles sessions being created/removed. Used to log initial data.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -360,11 +504,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_voice_server_update">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_voice_server_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_voice_server_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_voice_server_update" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_voice_server_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_voice_server_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_voice_server_update" title="Permalink to this definition"></a></dt>
 <dd><p>Handles the voice server updating</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -372,11 +525,20 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.handle_voice_state_update">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_voice_state_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_voice_state_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_voice_state_update" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">handle_voice_state_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">http</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.handle_voice_state_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.handle_voice_state_update" title="Permalink to this definition"></a></dt>
 <dd><p>Handles the voice state updating</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>data (dict): JSON data from gateway
@@ -384,12 +546,26 @@ user (Client): The client instance
 http (http): HTTP instance</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.events.EventHandler.voice_start">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">voice_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">voice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice" title="selfcord.api.voice.voice.Voice"><span class="pre">Voice</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.voice_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.voice_start" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">voice_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">voice</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/events.html#EventHandler.voice_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.events.EventHandler.voice_start" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>voice</strong> (<a class="reference internal" href="selfcord.api.voice.html#selfcord.api.voice.voice.Voice" title="selfcord.api.voice.voice.Voice"><em>Voice</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -402,7 +578,7 @@ http (http): HTTP instance</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.Activity.Game">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Game</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buttons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/selfcord/api/gateway.html#Activity.Game"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.Activity.Game" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Game</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buttons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#Activity.Game"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.Activity.Game" title="Permalink to this definition"></a></dt>
 <dd><p>Method to generate activity dict for the “Playing …” payload</p>
 <dl>
 <dt>Args:</dt><dd><p>name (str): Name of the activity
@@ -419,11 +595,26 @@ key (str): Key for the large image</p>
 <dt>Returns:</dt><dd><p>dict[str, int]: Dict for the activity object for payload</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>details</strong> (<em>str</em>) – </p></li>
+<li><p><strong>state</strong> (<em>str</em>) – </p></li>
+<li><p><strong>buttons</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>application_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>key</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, int]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.Activity.Listen">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Listen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buttons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/selfcord/api/gateway.html#Activity.Listen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.Activity.Listen" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Listen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buttons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#Activity.Listen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.Activity.Listen" title="Permalink to this definition"></a></dt>
 <dd><p>Method to generate activity dict for the “Listening …” payload</p>
 <dl>
 <dt>Args:</dt><dd><p>name (str): Name of the activity
@@ -440,11 +631,26 @@ key (str): Key for the large image</p>
 <dt>Returns:</dt><dd><p>dict[str, int]: Dict for the activity object for payload</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>details</strong> (<em>str</em>) – </p></li>
+<li><p><strong>state</strong> (<em>str</em>) – </p></li>
+<li><p><strong>buttons</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>application_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>key</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, int]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.Activity.Stream">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buttons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/selfcord/api/gateway.html#Activity.Stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.Activity.Stream" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buttons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#Activity.Stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.Activity.Stream" title="Permalink to this definition"></a></dt>
 <dd><p>Method to generate activity dict for the “Streaming …” payload</p>
 <dl>
 <dt>Args:</dt><dd><p>name (str): Name of the activity
@@ -462,11 +668,27 @@ key (str): Key for the large image</p>
 <dt>Returns:</dt><dd><p>dict[str, int]: Dict for the activity object for payload</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>details</strong> (<em>str</em>) – </p></li>
+<li><p><strong>state</strong> (<em>str</em>) – </p></li>
+<li><p><strong>url</strong> (<em>str</em>) – </p></li>
+<li><p><strong>buttons</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>application_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>key</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, int]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.Activity.Watch">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Watch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buttons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/selfcord/api/gateway.html#Activity.Watch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.Activity.Watch" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Watch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buttons</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">application_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#Activity.Watch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.Activity.Watch" title="Permalink to this definition"></a></dt>
 <dd><p>Method to generate activity dict for the “Watching …” payload</p>
 <dl>
 <dt>Args:</dt><dd><p>name (str): Name of the activity
@@ -483,15 +705,38 @@ key (str): Key for the large image</p>
 <dt>Returns:</dt><dd><p>dict[str, int]: Dict for the activity object for payload</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>details</strong> (<em>str</em>) – </p></li>
+<li><p><strong>state</strong> (<em>str</em>) – </p></li>
+<li><p><strong>buttons</strong> (<em>dict</em>) – </p></li>
+<li><p><strong>application_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>key</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, int]</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="selfcord.api.gateway.gateway">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.gateway.</span></span><span class="sig-name descname"><span class="pre">gateway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">http</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><span class="pre">http</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.gateway.</span></span><span class="sig-name descname"><span class="pre">gateway</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">http</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Discord Gateway instance, used to initialise gateway connections</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>http</strong> (<a class="reference internal" href="#selfcord.api.http.http" title="selfcord.api.http.http"><em>http</em></a>) – </p></li>
+<li><p><strong>debug</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="selfcord.api.gateway.gateway.DISPATCH">
 <span class="sig-name descname"><span class="pre">DISPATCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#selfcord.api.gateway.gateway.DISPATCH" title="Permalink to this definition"></a></dt>
@@ -559,23 +804,37 @@ key (str): Key for the large image</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.gateway.call">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guild</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.call" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guild</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.call" title="Permalink to this definition"></a></dt>
 <dd><p>Initiates a discord call</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>channel (str): Channel ID
 guild (str, optional): Guild ID. Defaults to None.</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>channel</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.gateway.change_presence">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">change_presence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">afk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.change_presence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.change_presence" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">change_presence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">afk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.change_presence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.change_presence" title="Permalink to this definition"></a></dt>
 <dd><p>Change the clients current presence</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>status (str): online, offline or dnd
 afk (bool): Whether client is set as AFK
 activity (Activity): Activity object</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>status</strong> (<em>str</em>) – </p></li>
+<li><p><strong>afk</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>activity</strong> (<em>dict</em>) – </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -621,11 +880,20 @@ activity (Activity): Activity object</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.gateway.lazy_chunk">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lazy_chunk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.lazy_chunk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.lazy_chunk" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lazy_chunk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guild_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amount</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.lazy_chunk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.lazy_chunk" title="Permalink to this definition"></a></dt>
 <dd><p>Sends lazy guild request to gather current online members</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>guild_id (str): The guild id specified
 channel_id (str): The channel id specified</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>guild_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>channel_id</strong> (<em>str</em>) – </p></li>
+<li><p><strong>amount</strong> (<em>int</em>) – </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -638,8 +906,13 @@ channel_id (str): The channel id specified</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.gateway.reconnect">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.reconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.reconnect" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reconnect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.reconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.reconnect" title="Permalink to this definition"></a></dt>
 <dd><p>Reconnect to discord gateway</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seq</strong> (<em>int</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -655,17 +928,22 @@ channel_id (str): The channel id specified</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.gateway.send_json">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.send_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.send_json" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">send_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.send_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.send_json" title="Permalink to this definition"></a></dt>
 <dd><p>Send json to the gateway</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>payload (dict): Valid payload to send to the gateway</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>payload</strong> (<em>dict</em>) – </p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.gateway.start">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><span class="pre">Client</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.start" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bot</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.start" title="Permalink to this definition"></a></dt>
 <dd><p>Start discord gateway connection</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>token (str): User token
@@ -673,26 +951,44 @@ user (Client): User client
 bot (_type_): Bot class</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> (<em>str</em>) – </p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="selfcord.models.html#selfcord.models.client.Client" title="selfcord.models.client.Client"><em>Client</em></a>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.gateway.stream_call">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stream_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guild</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.stream_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.stream_call" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stream_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guild</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.stream_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.stream_call" title="Permalink to this definition"></a></dt>
 <dd><p>Initiates a discord stream call</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>channel (str): Channel ID
 guild (str, optional): Guild ID. Defaults to None.</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>channel</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.gateway.gateway.video_call">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">video_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guild</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.video_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.video_call" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">video_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guild</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/gateway.html#gateway.video_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.gateway.gateway.video_call" title="Permalink to this definition"></a></dt>
 <dd><p>Initiates a discord video call</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>channel (str): Channel ID
 guild (str, optional): Guild ID. Defaults to None.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>channel</strong> (<em>str</em>) – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -707,14 +1003,24 @@ guild (str, optional): Guild ID. Defaults to None.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">selfcord.api.http.</span></span><span class="sig-name descname"><span class="pre">http</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/http.html#http"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.http.http" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base HTTP class to aid making requests via discord api</p>
+<dl class="field-list simple">
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.http.http.encode_image">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encode_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/selfcord/api/http.html#http.encode_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.http.http.encode_image" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encode_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/http.html#http.encode_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.http.http.encode_image" title="Permalink to this definition"></a></dt>
 <dd><p>Turn an image url into a b64 payload</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>url (str): The URL of the image</p>
 </dd>
 <dt>Returns:</dt><dd><p>str: The b64 payload</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -727,12 +1033,17 @@ guild (str, optional): Guild ID. Defaults to None.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.http.http.remove_dupes">
-<span class="sig-name descname"><span class="pre">remove_dupes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/http.html#http.remove_dupes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.http.http.remove_dupes" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">remove_dupes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/http.html#http.remove_dupes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.http.http.remove_dupes" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dictionary</strong> (<em>dict</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.http.http.request">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/selfcord/api/http.html#http.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.http.http.request" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/http.html#http.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.http.http.request" title="Permalink to this definition"></a></dt>
 <dd><p>Used to send requests</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>method (str): HTTP method
@@ -743,16 +1054,32 @@ endpoint (str): Discord api endpoint</p>
 <dt>Returns:</dt><dd><p>dict: Data, json data</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<em>str</em>) – </p></li>
+<li><p><strong>endpoint</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict | None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="selfcord.api.http.http.static_login">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">static_login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/http.html#http.static_login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.http.http.static_login" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">static_login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/selfcord/api/http.html#http.static_login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#selfcord.api.http.http.static_login" title="Permalink to this definition"></a></dt>
 <dd><p>Used to retrieve basic token information</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>token (str): User token</p>
 </dd>
 <dt>Returns:</dt><dd><p>Client: A Client object</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>token</strong> (<em>str</em>) – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -762,7 +1089,6 @@ endpoint (str): Discord api endpoint</p>
 </section>
 <section id="module-selfcord.api">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-selfcord.api" title="Permalink to this heading"></a></h2>
-<p>Where Selfcord interacts with discords API directly, using discord gateway (websockets) and http requests. This is also where events are located.</p>
 </section>
 </section>
 

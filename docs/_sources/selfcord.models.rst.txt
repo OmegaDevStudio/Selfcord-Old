@@ -1,6 +1,5 @@
 selfcord.models package
 =======================
-Where selfcords models/objects exist. This where you can find methods and attributes for each object.
 
 Submodules
 ----------

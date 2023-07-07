@@ -41,6 +41,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("ready")
         """
         self.user = user
         for relationship in data.get("relationships"):
@@ -67,6 +70,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("guild_create")
         """
         self.user = user
         guild = Guild(data, self.bot, http)
@@ -81,6 +87,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("message")
         """
         self.user = user
         message = Message(data, self.bot, http)
@@ -107,6 +116,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("message_delete")
         """
         self.user = user
         id = data.get("id")
@@ -146,6 +158,9 @@ class EventHandler:
             channel (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("channel_create")
         """
         self.user = user
         if channel.get("type") == 0 or channel.get("type") not in [1, 2, 3]:
@@ -184,6 +199,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("member_chunk")
         """
         self.user = user
         ops = []
@@ -247,6 +265,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("channel_delete")
         """
         self.user = user
         id = data.get("id")
@@ -280,6 +301,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("role_create")
         """
         self.user = user
 
@@ -297,6 +321,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("role_delete")
         """
         self.user = user
 
@@ -309,6 +336,16 @@ class EventHandler:
                         return
 
     async def handle_call_update(self, data: dict, user: Client, http: http):
+        """Handles what happens when a voice call is updated
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+
+        Usage:
+            @bot.on("call_update")
+        """
         channel = self.bot.get_channel(data["channel_id"])
         region = data.get("region")
         if isinstance(channel, DMChannel):
@@ -319,6 +356,16 @@ class EventHandler:
         await self.bot.emit("call_update", channel, users, region)
 
     async def handle_call_create(self, data: dict, user: Client, http: http):
+        """Handles what happens when a voice call is created
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+
+        Usage:
+            @bot.on("call_create")
+        """
         channel = self.bot.get_channel(data["channel_id"])
         region = data.get("region")
         if isinstance(channel, DMChannel):
@@ -329,6 +376,16 @@ class EventHandler:
         await self.bot.emit("call_create", channel, users, region)
 
     async def handle_call_delete(self, data: dict, user: Client, http: http):
+        """Handles what happens when a voice call is ended
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+
+        Usage:
+            @bot.on("call_delete")
+        """
         channel = self.bot.get_channel(data["channel_id"])
         await self.bot.emit("call_delete", channel)
 
@@ -339,9 +396,13 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("voice_state_update")
         """
         if data["channel_id"] != None:
             self.session_id = data["session_id"]
+            await self.bot.emit("voice_state_update")
 
     async def handle_presence_update(self, data: dict, user: Client, http: http):
         """Handles the presence updating
@@ -350,6 +411,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("presence_update")
         """
         LISTENING = 2
         CUSTOM = 4
@@ -392,6 +456,7 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
         """
         self.token = data["token"]
         self.endpoint = data["endpoint"]
@@ -426,6 +491,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("relationship_add")
         """
         types = {
             "NONE": 0,
@@ -448,6 +516,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("session")
         """
     
         sessions = [Event_Session(session, self.bot, self.http) for session in data]
@@ -462,6 +533,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("relationship_remove")
         """
         types = {
             "NONE": 0,
@@ -485,6 +559,9 @@ class EventHandler:
             data (dict): JSON data from gateway
             user (Client): The client instance
             http (http): HTTP instance
+
+        Usage:
+            @bot.on("modal_create")
         """
         components = data['components'] if data.get("components") is not None else []
         new_comps = []

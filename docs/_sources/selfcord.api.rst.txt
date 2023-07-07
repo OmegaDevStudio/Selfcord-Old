@@ -1,11 +1,11 @@
 selfcord.api package
 ====================
-Selfcord API, where it interacts via Discord API endpoints and Discord Gateway.
+
 Subpackages
 -----------
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
 
    selfcord.api.voice
 
