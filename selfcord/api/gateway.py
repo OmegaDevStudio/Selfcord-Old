@@ -346,6 +346,8 @@ class gateway:
             s = item.get("s")
             if op == self.RECONNECT:
                 await self.close()
+                log.info(f"DATA: {data}\nOP: {op}\nEVENT: {event}")
+                await asyncio.sleep(7)
                 await self.reconnect(s)
                 self.fired = True
                 log.error("Reconnect websocket")

@@ -552,6 +552,38 @@ class EventHandler:
                 rs_type = type
         await self.bot.emit("relationship_remove", id, rs_type, since)
 
+    async def handle_channel_recipient_add(self, data: dict, user: Client, http: http):
+        """Handles relationships being removed
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+
+        Usage:
+            @bot.on("group_add")
+        """
+        person = User(data.get('user'), self.bot, self.http)
+        channel = self.bot.get_channel(data.get("channel_id"))
+        await self.bot.emit("group_add", channel, person)
+
+    async def handle_channel_recipient_remove(self, data: dict, user: Client, http: http):
+        """Handles relationships being removed
+
+        Args:
+            data (dict): JSON data from gateway
+            user (Client): The client instance
+            http (http): HTTP instance
+
+        Usage:
+            @bot.on("group_remove")
+        """
+        person = User(data.get('user'), self.bot, self.http)
+        channel = self.bot.get_channel(data.get("channel_id"))
+        await self.bot.emit("group_remove", channel, person)
+
+    
+
     async def handle_interaction_modal_create(self, data: dict, user: Client, http: http):
         """Handles when a text input modal is Created
 
