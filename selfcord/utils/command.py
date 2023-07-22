@@ -5,7 +5,7 @@ import re
 import shlex
 from collections import defaultdict
 from traceback import format_exception
-from typing import TYPE_CHECKING, Any, get_origin
+from typing import TYPE_CHECKING, Any
 
 from .logging import logging
 
@@ -419,7 +419,7 @@ class Context:
             signature = self.command.signature
         if self.command_content == "":
             return args, kwargs
-        if self.command_content == None:
+        if self.command_content is None:
             return args, kwargs
         sh = shlex.shlex(self.command_content[1:], posix=False)
         sh.whitespace = " "
@@ -471,6 +471,7 @@ class Context:
                 args.insert(1, self)
             else:
                 args.insert(0, self)
+
         try:
             await func(*args, **kwargs)
         except Exception as e:

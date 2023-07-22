@@ -523,6 +523,26 @@ class Bot:
             if guild.id == guild_id:
                 return guild
 
+    def fetch_user(self, user_id: str) -> User | None:
+        for user in self.user.friends:
+            if user.id == user_id:
+                return user
+        for guild in self.user.guilds:
+            for user in guild.members:
+                if user.id == user_id:
+                    return user
+        for channel in self.user.private_channels:
+            if isinstance(channel, DMChannel):
+                if channel.recipient.id == user_id:
+                    return channel.recipient
+            if isinstance(channel, GroupChannel):
+                for user in channel.recipients:
+                    if user.id == user_id:
+                        return user
+        else:
+            return None
+
+
     async def get_user(self, user_id: str) -> User:
         """
         Function to retrieve user data. Probably need to be friends with them to retrieve the details.

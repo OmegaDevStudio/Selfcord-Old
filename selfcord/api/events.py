@@ -404,7 +404,7 @@ class EventHandler:
             self.session_id = data["session_id"]
             await self.bot.emit("voice_state_update")
 
-    async def handle_presence_update(self, data: dict, user: Client, http: http):
+    async def handle_presence_update(self, data: dict, user, http: http):
         """Handles the presence updating
 
         Args:
@@ -420,16 +420,20 @@ class EventHandler:
 
         last_modified = data.get("last_modified")
         status = data.get("status")
-        check = data.get("user").get("username")
-        if check is None:
-            user = data.get("user").get("id")
+        user = data.get("user")
+        if user is not None:
+            check = user.get("name")
+            if check is None:
+                user = data.get("user").get("id")
 
+            else:
+                user = User(user, self.bot, self.http)
         else:
-            user = User(data.get("user"), self.bot, self.http)
+            user = None
         client_status = data.get("client_status")
         activity = data.get("activities")
         activities = []
-        if activity != None:
+        if activity is not None:
             PLAYING = 0
             STREAMING = 1
             WATCHING = 3
