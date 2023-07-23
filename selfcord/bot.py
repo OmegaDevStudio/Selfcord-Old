@@ -819,7 +819,9 @@ class Bot:
         return invites
 
 	async def change_password(self, new_password: str):
-		self.http.request("patch", "/users/@me", json={"password": self.password,"new_password": new_password})
+		json = await self.http.request("patch", "/users/@me", json={"password": self.password,"new_password": new_password})
+
+		self.token = json['token']
 
 	async def change_username(self, new_name: str):
-		self.http.request("patch", "/users/@me", json={"username":new_name, "password": self.password})
+		await self.http.request("patch", "/users/@me", json={"username":new_name, "password": self.password})
