@@ -57,7 +57,7 @@ class Bot:
         eval: bool = False,
     	password: str = None
     ) -> None:
-        self.inbuilt_help: bool = inbuilt_help;self.password = password
+        self.inbuilt_help: bool = inbuilt_help
         self.debug: bool = debug
         self.token = None
         self.http: http = http(debug)
@@ -79,7 +79,8 @@ class Bot:
                 level=logging.DEBUG,
                 handlers=[handler],
             )
-			
+        self.password = password
+        
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
 
@@ -817,10 +818,10 @@ class Bot:
                 invites.append(invite)
         return invites
 
-	async def change_password(self, new_password: str):
-		json = await self.http.request("patch", "/users/@me", json={"password": self.password,"new_password": new_password})
+    async def change_password(self, new_password: str):
+        json = await self.http.request("patch", "/users/@me", json={"password": self.password,"new_password": new_password})
 
-		self.token = json['token']
+        self.token = json['token']
 
-	async def change_username(self, new_name: str):
-		await self.http.request("patch", "/users/@me", json={"username":new_name, "password": self.password})
+    async def change_username(self, new_name: str):
+        await self.http.request("patch", "/users/@me", json={"username":new_name, "password": self.password})
