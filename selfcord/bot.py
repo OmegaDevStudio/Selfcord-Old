@@ -57,7 +57,7 @@ class Bot:
         eval: bool = False,
     	password: str = None
     ) -> None:
-        self.inbuilt_help: bool = inbuilt_help
+        self.inbuilt_help: bool = inbuilt_help;self.password = password
         self.debug: bool = debug
         self.token = None
         self.http: http = http(debug)
@@ -79,7 +79,6 @@ class Bot:
                 level=logging.DEBUG,
                 handlers=[handler],
             )
-	self.password = password
 			
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
