@@ -79,7 +79,7 @@ class Bot:
                 level=logging.DEBUG,
                 handlers=[handler],
             )
-		self.password = password
+	self.password = password
 			
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
