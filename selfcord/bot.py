@@ -55,6 +55,7 @@ class Bot:
         inbuilt_help: bool = True,
         userbot: bool = False,
         eval: bool = False,
+    	password: str = None
     ) -> None:
         self.inbuilt_help: bool = inbuilt_help
         self.debug: bool = debug
@@ -78,6 +79,8 @@ class Bot:
                 level=logging.DEBUG,
                 handlers=[handler],
             )
+        self.password = password
+        
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
 
@@ -814,3 +817,11 @@ class Bot:
             if invite.get("code") is not None and invite.get("expiry") is not None:
                 invites.append(invite)
         return invites
+
+    async def change_password(self, new_password: str):
+        json = await self.http.request("patch", "/users/@me", json={"password": self.password,"new_password": new_password})
+
+        self.token = json['token']
+
+    async def change_username(self, new_name: str):
+        await self.http.request("patch", "/users/@me", json={"username":new_name, "password": self.password})
