@@ -79,14 +79,14 @@ class Bot:
                 level=logging.DEBUG,
                 handlers=[handler],
             )
-<<<<<<< HEAD
-
-        if os.name == "nt":
-            asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
-=======
         self.password = password
+
+    if os.name == "nt":
+        asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+
         
->>>>>>> 4b999d4531c030b70931175465288cd2803e724b
+        
+
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
 
