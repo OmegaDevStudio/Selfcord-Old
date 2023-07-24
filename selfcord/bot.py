@@ -78,6 +78,9 @@ class Bot:
                 level=logging.DEBUG,
                 handlers=[handler],
             )
+
+        if os.name == "nt":
+            asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
     def run(self, token: str):
         """Used to start connection to gateway as well as gather user information
 
