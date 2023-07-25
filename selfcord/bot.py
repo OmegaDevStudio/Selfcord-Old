@@ -831,3 +831,9 @@ class Bot:
 
     async def change_username(self, new_name: str):
         await self.http.request("patch", "/users/@me", json={"username":new_name, "password": self.password})
+
+    async def create_app(self, name: str, team_id: int = None):
+        # I don't know what type team id is supposed to be but imma assume its an integer
+        await self.http.request("post", "/applications", json={"name": name, "team_id": team_id})
+
+        # TODO: return an object that contains all the attributes of the app
