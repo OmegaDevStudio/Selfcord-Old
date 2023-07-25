@@ -1,8 +1,8 @@
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from ..api.http import http
-    from ..bot import Bot
+# if TYPE_CHECKING:
+from ..api.http import http
+from ..bot import Bot
 
 class Application:
     def __init__(self, AppPayload: dict, bot: Bot, http: http):
@@ -34,6 +34,6 @@ class Application:
         self.token = data["token"]
 
     async def add_redirect_url(self, url: str):
-        await self.http.request("patch", "/applications/1133249005929906197", json={"redirect_uris":[url],"rpc_origins":[],"custom_install_url":None,"install_params":None})
+        await self.http.request("patch", f"/applications/{self.id}", json={"redirect_uris":[url],"rpc_origins":[],"custom_install_url":None,"install_params":None})
 
     # TODO add oauth2 url generator im too lazy to add that entire list
