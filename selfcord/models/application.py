@@ -10,7 +10,7 @@ class Application:
     def __init__(self, AppPayload: dict, http: http):
         self.http: http = http
 
-        self.id = int(AppPayload.get("id"))
+        self.id = AppPayload.get("id")
         self.name = AppPayload.get("name")
         self.icon = AppPayload.get("icon")
         self.description = AppPayload.get("description")
