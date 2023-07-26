@@ -25,7 +25,7 @@ from selfcord.models.sessions import Session
 from .api import Activity, gateway, http
 from .models import (Client, DMChannel, GroupChannel, Guild, InteractionUtil,
                      Message, Option, Search, SlashCommand, TextChannel, User,
-                     VoiceChannel)
+                     VoiceChannel, Application)
 from .utils import (Command, CommandCollection, Context, Event, Extension,
                     ExtensionCollection, logging)
 from .utils.logging import handler
@@ -834,6 +834,6 @@ class Bot:
 
     async def create_app(self, name: str, team_id: int = None):
         # I don't know what type team id is supposed to be but imma assume its an integer
-        await self.http.request("post", "/applications", json={"name": name, "team_id": team_id})
-
-        # TODO: return an object that contains all the attributes of the app
+        data = await self.http.request("post", "/applications", json={"name": name, "team_id": team_id})
+        
+        return Application(data, self.http)

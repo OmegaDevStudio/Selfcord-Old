@@ -7,8 +7,7 @@ if TYPE_CHECKING:
     from ..bot import Bot
 
 class Application:
-    def __init__(self, AppPayload: dict, bot: Bot, http: http):
-        self.bot: Bot = bot
+    def __init__(self, AppPayload: dict, http: http):
         self.http: http = http
 
         self.id = int(AppPayload.get("id"))
