@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
-# if TYPE_CHECKING:
-from ..api.http import http
-from ..bot import Bot
+if TYPE_CHECKING:
+    from ..api.http import http
+    from ..bot import Bot
 
 class Application:
     def __init__(self, AppPayload: dict, bot: Bot, http: http):
