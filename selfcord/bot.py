@@ -125,7 +125,7 @@ class Bot:
     def friends(self):
         return self._friends
 
-    @friends.setter()
+    @friends.setter
     async def set_friends(self):
         relations = await self.http.request("get", "/@me/relationships")
         friends = [] # haha no friends this list is empty
