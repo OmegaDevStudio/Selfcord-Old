@@ -80,6 +80,8 @@ class Bot:
                 handlers=[handler],
             )
         self.password = password
+        self.friends = None # cuz you don't got any
+
 
     if os.name == "nt":
         asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
@@ -118,6 +120,21 @@ class Bot:
     def latency(self):
         """Latency of heartbeat ack, gateway latency essentially"""
         return self.gateway.latency
+
+    @property
+    def friends(self):
+        return self._friends
+
+    @friends.setter()
+    async def set_friends(self):
+        relations = await self.http.request("get", "/@me/relationships")
+        friends = [] # haha no friends this list is empty
+        
+        for person in relations:
+            if person["type"] == 1:
+                friends.append(person)
+
+        self.friends = friends
 
     # For events
     async def inbuilt_commands(self):
