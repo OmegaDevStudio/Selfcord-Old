@@ -25,7 +25,7 @@ from selfcord.models.sessions import Session
 from .api import Activity, gateway, http
 from .models import (Client, DMChannel, GroupChannel, Guild, InteractionUtil,
                      Message, Option, Search, SlashCommand, TextChannel, User,
-                     VoiceChannel)
+                     VoiceChannel, Application)
 from .utils import (Command, CommandCollection, Context, Event, Extension,
                     ExtensionCollection, logging)
 from .utils.logging import handler
@@ -831,3 +831,9 @@ class Bot:
 
     async def change_username(self, new_name: str):
         await self.http.request("patch", "/users/@me", json={"username":new_name, "password": self.password})
+
+    async def create_app(self, name: str, team_id: int = None):
+        # I don't know what type team id is supposed to be but imma assume its an integer
+        data = await self.http.request("post", "/applications", json={"name": name, "team_id": team_id})
+        
+        return Application(data, self.http)
