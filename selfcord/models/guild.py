@@ -111,6 +111,9 @@ class Guild:
                 emoji.guild_id = self.id
                 self.emojis.append(emoji)
 
+        if self.member_count > 5000:
+            await self.get_members()
+
     async def search(
         self,
         content: str | None = None,
@@ -302,6 +305,8 @@ class Guild:
             json={"name": f"{name}", "image": image},
         )
         return Emoji(emoji, self.bot, self.http)
+
+    
 
     async def get_members(self, channel_id: str):
         """Get guild members for a guild via chunking

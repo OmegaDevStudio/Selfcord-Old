@@ -459,6 +459,23 @@ class gateway:
             log.debug("Finished guild lazy chunking")
             log.info(f"Subscription to GUILD: {guild_id} with CHANNEL: {channel_id}")
 
+    async def cache_guild(self, guild_id: str, channel_id: str):
+        """Attempts to cache guild to get events
+
+        Args:
+            guild_id (str): The guild id specified
+            channel_id (str): The channel id specified
+        """
+        payload = {
+            "op": 14,
+            "d": {
+                "guild_id": guild_id,
+                "channels": {channel_id: [0, 99]},
+                "typing": True,
+                "threads": True
+                }
+        }
+        await self.send_json(payload)
     async def send_json(self, payload: dict):
         """Send json to the gateway
 
