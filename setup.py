@@ -24,7 +24,7 @@ if __name__ == "__main__":
         extras_require={"voice": ["pynacl==1.5.0", "opuslib==3.0.1"]},
         license="MIT",
         install_requires=[
-            "aiohttp==3.7.4.post0",
+            "aiohttp==3.8.5",
             "aioconsole==0.3.3",
             "websockets==10.1",
             "ujson==5.7.0",
