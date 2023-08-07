@@ -1,4 +1,4 @@
-aiohttp==3.7.4.post0
+aiohttp==3.8.5
 aioconsole==0.3.3
 websockets==10.1
 opuslib==3.0.1
