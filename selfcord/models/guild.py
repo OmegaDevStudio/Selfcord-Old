@@ -111,6 +111,8 @@ class Guild:
                 emoji.guild_id = self.id
                 self.emojis.append(emoji)
 
+        
+
     async def search(
         self,
         content: str | None = None,
@@ -303,6 +305,8 @@ class Guild:
         )
         return Emoji(emoji, self.bot, self.http)
 
+    
+
     async def get_members(self, channel_id: str):
         """Get guild members for a guild via chunking
 
@@ -310,6 +314,14 @@ class Guild:
             channel_id (str): Channel ID to chunk from
         """
         await self.bot.gateway.lazy_chunk(self.id, channel_id, self.member_count)
+
+    async def cache_guild(self, channel_id: str):
+        """Cache a guild for events
+
+        Args:
+            channel_id (str): Channel ID to cache from
+        """
+        await self.bot.gateway.cache_guild(self.id, channel_id)
 
     async def edit(
         self,
