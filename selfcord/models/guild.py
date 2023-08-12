@@ -366,3 +366,7 @@ class Guild:
     async def delete(self):
         """Deletes the Guild Object"""
         await self.http.request(method="delete", endpoint=f"/guilds/{self.id}")
+
+    async def ack(self):
+        # marks the guild as read
+        await self.http.request(method="post", endpoint=f"/guilds/{self.id}/ack")
