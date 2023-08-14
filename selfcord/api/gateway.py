@@ -475,6 +475,7 @@ class gateway:
                 "threads": True
                 }
         }
+        print(payload)
         await self.send_json(payload)
     async def send_json(self, payload: dict):
         """Send json to the gateway

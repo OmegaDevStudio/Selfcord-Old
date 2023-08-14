@@ -206,11 +206,12 @@ class User:
 
     async def create_dm(self):
         """Create a dm for the user"""
-        await self.http.request(
+        from .channel import DMChannel
+        return DMChannel(await self.http.request(
             method="post",
             endpoint="/users/@me/channels",
             json={"recipients": [self.id]},
-        )
+        ), self.bot, self.http)
 
     async def get_profile(self) -> Profile:
         """Get the User profile

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import random
 import time
 from time import perf_counter
 from typing import TYPE_CHECKING
@@ -81,11 +82,7 @@ class EventHandler:
         # Sends data from ready to the event handler in main.py (if it exists)
         await self.bot.emit("guild_create", guild)
         if guild.member_count > 2000:
-            for channel in guild.channels:
-                asyncio.create_task(
-                    guild.cache_guild(channel.id)
-                )
-                await asyncio.sleep(2)
+            asyncio.create_task(guild.cache_guild(random.choice(guild.channels).id)) 
 
     async def handle_message_create(self, data: dict, user: Client, http: http):
         """Handles what happens when a message is created, or sent

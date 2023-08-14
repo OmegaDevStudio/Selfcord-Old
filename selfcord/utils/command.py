@@ -47,6 +47,9 @@ class ExtensionCollection:
     def __iter__(self):
         yield from self.extensions.values()
 
+    def __len__(self):
+        return len(self.extensions.keys())
+
     def _is_already_registered(self, ext: Extension) -> bool:
         """Whether the specified Extension is already registered
 
