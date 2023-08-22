@@ -122,6 +122,9 @@ async def snipe(ctx):
 
 bot.run(token)
 ```
+### Captcha
+[2Captcha](https://2captcha.com/?from=15127673) is the only captcha solving service supported currently.
+
 ## Some Useful Links
 - [Documentation](https://github.com/Shell1010/Selfcord/wiki)
 - [Other Documentation (messy)](https://github.com/Shell1010/Selfcord/tree/main/docs)
