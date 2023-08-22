@@ -1,5 +1,4 @@
 <div align="center">
-<img src="./logo.png" widht="180" height="180" style="border-radius: 100%;">
 <h1 align="center">SELFCORD</h1>
 <strong><i>A Powerful Library for Discord Selfbots</i></strong>
 <br>
