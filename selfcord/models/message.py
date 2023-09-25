@@ -198,6 +198,8 @@ class Message:
         Args:
             data (dict): JSON data from gateway
         """
+        self._data = data
+
         self.tts = data.get("tts")
         self.referenced_message = data.get("referenced_message")
         self.author = User(data.get("author"), self.bot, self.http)
@@ -219,7 +221,8 @@ class Message:
             else:
                 self.components.append(component)
 
-        self.timestamp = time.time()
+        timestamp = data.get('timestamp')
+        self.timestamp = datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M:%S.%f%z').timestamp() if timestamp else time.time()
         self.channel_id = data.get("channel_id")
 
         attachments = data.get("attachments")
