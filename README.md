@@ -14,6 +14,9 @@
 </a>
 </div>
 
+## Notes
+Haven't been updating this for a while. Rewrite is at [this repository](https://github.com/OmegaDevStudio/Selfcord). This repository will be made obsolete after I have fully ported everything.
+
 ## Feautres
  - Modern Pythonic API using `async`/`await` syntax
  - Easy to use with an object oriented design
